@@ -18,10 +18,9 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">{{ __("Title") }}</th>
-								<th scope="col">{{ __("Contact name") }}</th>
+								<th scope="col">{{ __("Contact") }}</th>
 								<th scope="col">{{ __("Phone") }}</th>
 								<th scope="col">{{ __("E-mail") }}</th>
-								<th scope="col">{{ __("Address") }}</th>
 								<th scope="col">{{ __("City") }}</th>
 
                                 <th scope="col">{{ __('Actions') }}</th>
@@ -35,7 +34,6 @@
 									<td>{{ $client->contact }}</td>
 									<td>{{ $client->phone }}</td>
 									<td>{{ $client->email }}</td>
-									<td>{{ $client->address }}</td>
 									<td>{{ $client->city }}</td>
 
                                     <td>
