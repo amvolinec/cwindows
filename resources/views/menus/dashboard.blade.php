@@ -10,11 +10,11 @@
                     <li class="active"><a href="{{ route('forms.index') }}"><i class="fa fa-tachometer"
                                                                                aria-hidden="true"></i> Dashboard</a>
                     </li>
-                    <li><a href=" {{ route('client.index') }}"><i class="fa fa-address-book" aria-hidden="true"></i>
+                    <li><a href="{{ route('client.index') }}"><i class="fa fa-address-book" aria-hidden="true"></i>
                             Clients</a></li>
-                    <li><a href=" {{ route('architect.index') }}"><i class="fa fa-building-o" aria-hidden="true"></i>
+                    <li><a href="{{ route('architect.index') }}"><i class="fa fa-building-o" aria-hidden="true"></i>
                             Architects</a></li>
-                    <li><a href="#"><i class="fa fa-file-o" aria-hidden="true"></i> Offers</a></li>
+                    <li><a href="{{ route('offer.index') }}"><i class="fa fa-file-o" aria-hidden="true"></i> Offers</a></li>
 
                     <!-- Dropdown-->
                     <li class="panel panel-default" id="dropdown">
