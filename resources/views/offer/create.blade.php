@@ -24,19 +24,6 @@
                             @csrf
 
                             <div class="form-group row">
-                                <label for="date" class="col-md-4 col-form-label text-md-right">{{ __('Date') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="date" type="date" class="form-control @error('date') is-invalid @enderror" name="date" value="{{ $offer->date ??  old('date') }}" autocomplete="date" >
-
-                                    @error('date')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
                                 <label for="client_id" class="col-md-4 col-form-label text-md-right">{{ __('Client Id') }}</label>
 
                                 <div class="col-md-6">

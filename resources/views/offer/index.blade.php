@@ -39,9 +39,9 @@
                             @foreach($offers AS $offer)
                                 <tr>
                                     <th scope="row">{{ $offer->id  }}</th>
-                                    <td>{{ $offer->date }}</td>
-									<td>{{ $offer->client_id }}</td>
-									<td>{{ $offer->architect_id }}</td>
+                                    <td>{{ $offer->created_at }}</td>
+									<td>{{ $offer->client->title }}</td>
+									<td>{{ $offer->architect->title }}</td>
 									<td>{{ $offer->enquiry_date }}</td>
 									<td>{{ $offer->price_1_date }}</td>
 									<td>{{ $offer->price_1 }}</td>
