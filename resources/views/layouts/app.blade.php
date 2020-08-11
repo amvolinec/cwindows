@@ -22,10 +22,12 @@
 </head>
 <body>
 <div id="app">
+    @if(Auth::check())
     <div class="sidebar">
         @include('menus.dashboard')
     </div>
-    <div class="container-fluid main-container with-sidebar mt-0">
+    @endif
+    <div class="container-fluid main-container mt-0 @if(Auth::check()) with-sidebar @endif">
         <div class="row">
             <div class="col-md-12 p-0">
 
