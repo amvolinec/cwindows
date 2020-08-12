@@ -22,6 +22,12 @@ class OfferController extends Controller
         return view('offer.index', ['offers' => $offers]);
     }
 
+     public function get()
+    {
+        return Offer::with(['client', 'architect'])->get();
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *

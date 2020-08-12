@@ -20,6 +20,9 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('errors', require('./components/ErrorsComponent.vue').default);
+Vue.component('deals', require('./components/DealsComponent.vue').default);
+Vue.component('deals-popup', require('./components/DealsPopupComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,4 +32,37 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    data: {
+        group: 0,
+        task: 0,
+        error: false,
+        errorMessage: '',
+        popup: false,
+    },
+    methods: {
+        fetchError(error){
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                this.error = true;
+                // let message = '';
+                // error.response.data.errors.forEach( (key, value) => {
+                //     message += e;
+                // });
+                this.errorMessage = error.response.data.message;
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+            }
+            console.log(error.config);
+        }
+    }
 });
