@@ -10,7 +10,7 @@
                     <div class="card-body">
 
                         <form action="{{ route('architect.create') }}">
-                            <button class="btn btn-success mb-3">+</button>
+                            <button class="btn btn-success mb-3"><i class="fas fa-plus"></i></button>
                         </form>
 
                         <table class="table table-sm">
@@ -36,12 +36,12 @@
 
                                     <td>
                                         <a class="btn btn-sm btn-success float-right" style="margin: 0 8px;"
-                                           href="{{ route('architect.edit', $architect->id) }}">{{ __('Edit') }}</a>
+                                           href="{{ route('architect.edit', $architect->id) }}"><i class="fas fa-edit"></i></a>
                                         <form class="float-right" action="{{ route('architect.destroy', $architect->id) }}"
                                               method="post" onsubmit="return confirm('Do you really want to delete?');">
                                             @method('delete')
                                             @csrf
-                                            <button class="btn btn-sm btn-danger" type="submit">{{ __('Delete') }}</button>
+                                            <button class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash"></i></button>
                                         </form>
 
                                     </td>

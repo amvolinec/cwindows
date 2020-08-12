@@ -5,16 +5,22 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Name') }}</div>
+                    <div class="card-header">
+                        <div class="d-inline-block" style="vertical-align: top;">
+                            <form action="{{ route('offer.create') }}">
+                                @method('post')
+                                @csrf
+                                <button class="btn btn-success"><i class="fas fa-plus"></i></button>
+                            </form>
+                        </div>
+                        <div class="d-inline-block" style="vertical-align: top; padding: 6px;">
+                            <h4 >{{ __('Offers') }}</h4>
+                        </div>
+                    </div>
 
                     <div class="card-body">
-
-                        <form action="{{ route('offer.create') }}">
-                            <button class="btn btn-success mb-3">+</button>
-                        </form>
-
-                        <table class="table table-sm">
-                            <thead class="thead-dark">
+                        <table class="table table-sm table-striped">
+                            <thead class="thead">
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">{{ __("Date") }}</th>
@@ -40,8 +46,8 @@
                                 <tr>
                                     <th scope="row">{{ $offer->id  }}</th>
                                     <td>{{ $offer->created_at }}</td>
-									<td>{{ $offer->client->title }}</td>
-									<td>{{ $offer->architect->title }}</td>
+									<td>{{ $offer->client->title ?? ''}}</td>
+									<td>{{ $offer->architect->title ?? '' }}</td>
 									<td>{{ $offer->enquiry_date }}</td>
 									<td>{{ $offer->price_1_date }}</td>
 									<td>{{ $offer->price_1 }}</td>
@@ -55,15 +61,14 @@
 									<td>{{ $offer->other_services }}</td>
 
                                     <td>
-                                        <a class="btn btn-sm btn-success float-right" style="margin: 0 8px;"
-                                           href="{{ route('offer.edit', $offer->id) }}">{{ __('Edit') }}</a>
                                         <form class="float-right" action="{{ route('offer.destroy', $offer->id) }}"
                                               method="post" onsubmit="return confirm('Do you really want to delete?');">
                                             @method('delete')
                                             @csrf
-                                            <button class="btn btn-sm btn-danger" type="submit">{{ __('Delete') }}</button>
+                                            <button class="btn btn-sm btn-outline-danger" type="submit"><i class="fas fa-trash"></i></button>
                                         </form>
-
+                                        <a class="btn btn-sm btn-outline-success float-right" style="margin: 0 8px;"
+                                           href="{{ route('offer.edit', $offer->id) }}"><i class="fas fa-edit"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

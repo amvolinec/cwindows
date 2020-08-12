@@ -22,4 +22,6 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('offer', 'OfferController');
     Route::resource('architect', 'ArchitectController');
     Route::resource('client', 'ClientController');
+
+    Route::get('dump', 'DumpController@run')->name('dump');
 });
