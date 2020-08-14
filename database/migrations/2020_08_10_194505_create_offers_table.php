@@ -19,6 +19,8 @@ class CreateOffersTable extends Migration
 			$table->unsignedBigInteger('client_id')->nullable();
 			$table->unsignedBigInteger('architect_id')->nullable();
 			$table->date('enquiry_date')->nullable();
+			$table->date('planed_date')->nullable();
+			$table->string('title')->nullable();
 			$table->string('pv')->nullable();
 			$table->string('area')->nullable();
 			$table->integer('positions')->nullable();
@@ -26,6 +28,7 @@ class CreateOffersTable extends Migration
 			$table->unsignedSmallInteger('state_id')->nullable();
 			$table->string('state_comment')->nullable();
 			$table->string('info')->nullable();
+			$table->string('pipeline')->nullable();
 			$table->string('enquiry_channel')->nullable();
 			$table->string('klaes')->nullable();
 			$table->date('contract_date')->nullable();
@@ -41,6 +44,7 @@ class CreateOffersTable extends Migration
 			$table->decimal('balance', 8, 2)->nullable();
 			$table->string('other_services')->nullable();
 			$table->decimal('sales_profit', 8, 2)->nullable();
+            $table->decimal('planned_amount_percents',8,2)->nullable();
 			$table->decimal('project_amount', 8, 2)->nullable();
 			$table->decimal('project_amount_with_vat', 8, 2)->nullable();
             $table->timestamps();

@@ -1,4 +1,4 @@
-<template>
+<template ref="offers">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -25,9 +25,9 @@
                         </thead>
                         <tbody>
                         <tr class="group-line" v-for="item in items">
-                            <th scope="row">{{ item.created_at }}</th>
-                            <td>{{ item.client.title }}</td>
-                            <td>{{ item.client.contact }}</td>
+                            <th scope="row">{{ item.planed_date }}</th>
+                            <td>{{ item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : ''}}</td>
+                            <td>{{ item.client !== null && (typeof item.client.name !== undefined) ? item.client.name : ''}}</td>
                             <td>{{ item.title }}</td>
                             <td>{{ item.total }}</td>
                             <td>
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <deals-popup></deals-popup>
+        <deals-popup ref="popup"></deals-popup>
     </div>
 </template>
 
@@ -56,6 +56,11 @@ export default {
     },
     created() {
         this.fetchItems();
+    },
+    mounted() {
+        this.$root.$on('offerAdded', () => {
+            this.fetchItems();
+        });
     },
     methods: {
         fetchItems() {

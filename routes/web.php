@@ -31,4 +31,5 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::post('get-companies', 'CompanyController@getCompany')->name('get.company');
     Route::post('get-contacts', 'ClientController@getContact')->name('get.company');
+    Route::post('set-offer', 'OfferController@setOffer')->name('set.offer');
 });
