@@ -15,6 +15,7 @@ class CreateOffersTable extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->bigIncrements('id');
+			$table->unsignedBigInteger('company_id')->nullable();
 			$table->unsignedBigInteger('client_id')->nullable();
 			$table->unsignedBigInteger('architect_id')->nullable();
 			$table->date('enquiry_date')->nullable();
@@ -22,7 +23,7 @@ class CreateOffersTable extends Migration
 			$table->string('area')->nullable();
 			$table->integer('positions')->nullable();
 			$table->string('profile')->nullable();
-			$table->enum('state', ['Inquiry','Proposal','Order'])->default('Inquiry');
+			$table->unsignedSmallInteger('state_id')->nullable();
 			$table->string('state_comment')->nullable();
 			$table->string('info')->nullable();
 			$table->string('enquiry_channel')->nullable();

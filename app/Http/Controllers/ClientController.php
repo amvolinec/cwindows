@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Company;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -16,7 +17,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::all();
+        $clients = Client::with('company')->get();
         return view('client.index', ['clients' => $clients]);
     }
 
@@ -27,7 +28,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('client.create');
+        return view('client.create', ['companies' => Company::all()]);
     }
 
     /**
@@ -61,7 +62,7 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        return view ('client.create' , ['client' => $client]);
+        return view ('client.create' , ['client' => $client, 'companies' => Company::all()]);
     }
 
     /**
@@ -88,4 +89,19 @@ class ClientController extends Controller
         $client->delete();
         return redirect()->route('client.index');
     }
+
+    public function getContact(Request $request){
+        if($request->has('name')) {
+            $where = array();
+            array_push($where, ['name', 'like', '%' . $request->get('name') . '%']);
+            if($request->has('companyId') && $request->get('companyId') > 0){
+                array_push($where, ['company_id', '=', $request->get('companyId')]);
+            }
+            $companies = Client::where($where)->get();
+        } else {
+            $companies = [];
+        }
+        return $companies;
+    }
+
 }
