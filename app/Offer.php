@@ -27,4 +27,9 @@ class Offer extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function state()
+    {
+        return $this->belongsTo('App\State');
+    }
 }

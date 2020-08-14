@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
@@ -13,8 +13,8 @@
                             <button class="btn btn-success mb-3"><i class="fas fa-plus"></i></button>
                         </form>
 
-                        <table class="table table-sm">
-                            <thead class="thead-dark">
+                        <table class="table table-sm table-striped">
+                            <thead class="thead">
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">{{ __("Title") }}</th>

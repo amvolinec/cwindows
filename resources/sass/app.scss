@@ -146,3 +146,14 @@
     font-size: 12px;
     color: #0d3251;
 }
+
+.stage {color: #fafafa; text-align: center; padding: 4px; border-radius: 4px;}
+.stage.first { background: #aaabbc;};
+.stage.enquiry { background: #8b8982;};
+.stage.proposal { background: #aab4b3;};
+.stage.negotiation { background: #373f47;};
+.stage.contract { background: #c3dbd9;};
+.stage.manufacturing { background: #006a4e;};
+.stage.completed { background: #6dacaa;};
+.stage.lost { background: #ff82a9;};
+.stage.canceled { background: #ffc0be;};

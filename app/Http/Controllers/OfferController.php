@@ -26,7 +26,7 @@ class OfferController extends Controller
 
     public function get()
     {
-        return Offer::with(['client', 'architect', 'company'])->get();
+        return Offer::with(['client', 'architect', 'company', 'state'])->get();
 
     }
 

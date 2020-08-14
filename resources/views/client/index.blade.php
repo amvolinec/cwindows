@@ -19,7 +19,7 @@
                     </div>
 
                     <div class="card-body">
-                        <table class="table table-sm">
+                        <table class="table table-sm table-striped">
                             <thead class="thead">
                             <tr>
                                 <th scope="col">#</th>

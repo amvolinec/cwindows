@@ -1956,6 +1956,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2136,7 +2142,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2165,6 +2170,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     var _this = this;
 
     this.$root.$on('editOffer', function (item) {
+      _this.fetchStates();
+
       _this.offer = item;
       _this.offer.company_id = item.company !== null && _typeof(item.company.id) !== undefined ? item.company.id : 0;
       _this.offer.company_name = item.company !== null && _typeof(item.company.name) !== undefined ? item.company.name : '';
@@ -47900,7 +47907,28 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(item.title))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.total))]),
+                    _c("td", [_vm._v(_vm._s(item.project_amount))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.planned_amount_percents))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "div",
+                        { staticClass: "stage ", class: item.state.class },
+                        [
+                          _vm._v(
+                            _vm._s(
+                              item.state !== null &&
+                                typeof item.state.name !== undefined
+                                ? item.state.name
+                                : ""
+                            )
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.info))]),
                     _vm._v(" "),
                     _c("td", [
                       _c(
@@ -47973,9 +48001,15 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Title")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Total")]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Planed amount")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Probability %")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Stage")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Comments")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
       ])
     ])
   }
@@ -48022,9 +48056,9 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                    " +
+                      "\n                " +
                         _vm._s(this.message) +
-                        "\n                "
+                        "\n            "
                     )
                   ]
                 )
@@ -48108,7 +48142,7 @@ var render = function() {
                 _vm._v(" "),
                 _vm.offer.company_id === 0 && _vm.offer.company_name.length > 2
                   ? _c("div", { staticClass: "float-right drop-new" }, [
-                      _vm._v("New\n                        ")
+                      _vm._v("New\n                    ")
                     ])
                   : _vm._e(),
                 _vm._v(" "),
@@ -48208,7 +48242,7 @@ var render = function() {
                 _vm._v(" "),
                 _vm.offer.client_id === 0 && _vm.offer.client_name.length > 2
                   ? _c("div", { staticClass: "float-right drop-new" }, [
-                      _vm._v("New\n                        ")
+                      _vm._v("New\n                    ")
                     ])
                   : _vm._e(),
                 _vm._v(" "),
@@ -48383,7 +48417,11 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("datetime", {
-                  attrs: { "input-class": "form-control col-md-8" },
+                  attrs: {
+                    id: "planed_date",
+                    type: "date",
+                    "input-class": "form-control col-md-8"
+                  },
                   model: {
                     value: _vm.offer.planed_date,
                     callback: function($$v) {
@@ -48569,9 +48607,7 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "fas fa-times" }),
-                  _vm._v(
-                    "\n                        Cancel\n                    "
-                  )
+                  _vm._v("\n                    Cancel\n                ")
                 ]
               ),
               _vm._v(" "),
@@ -48584,7 +48620,7 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "fas fa-save" }, [
-                    _vm._v("\n                        Save")
+                    _vm._v("\n                    Save")
                   ])
                 ]
               )

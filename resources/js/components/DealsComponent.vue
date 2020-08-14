@@ -19,8 +19,11 @@
                             <th scope="col">Company</th>
                             <th scope="col">Contact</th>
                             <th scope="col">Title</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col">Planed amount</th>
+                            <th scope="col">Probability %</th>
+                            <th scope="col">Stage</th>
+                            <th scope="col">Comments</th>
+                            <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -29,7 +32,10 @@
                             <td>{{ item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : ''}}</td>
                             <td>{{ item.client !== null && (typeof item.client.name !== undefined) ? item.client.name : ''}}</td>
                             <td>{{ item.title }}</td>
-                            <td>{{ item.total }}</td>
+                            <td>{{ item.project_amount }}</td>
+                            <td>{{ item.planned_amount_percents }}</td>
+                            <td><div class="stage " v-bind:class="item.state.class">{{ item.state !== null && (typeof item.state.name !== undefined) ? item.state.name : ''}}</div></td>
+                            <td>{{ item.info }}</td>
                             <td>
                                 <button class="btn btn-sm btn-outline-secondary" @click="itemLoad(item)"><i class="far fa-edit"></i></button>
                                 <button class="btn btn-sm btn-outline-danger" @click="itemDelete(item)"><i class="fas fa-trash"></i></button>

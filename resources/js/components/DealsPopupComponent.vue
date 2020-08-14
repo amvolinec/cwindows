@@ -77,8 +77,7 @@
 
                 <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="planed_date">Planned date of sale</label>
-<!--                    <input id="planed_date" type="text" class="form-control col-md-8" name="planed_date" v-model="offer.planed_date">-->
-                    <datetime v-model="offer.planed_date" input-class="form-control col-md-8"></datetime>
+                    <datetime id="planed_date" v-model="offer.planed_date" type="date" input-class="form-control col-md-8"></datetime>
                 </div>
 
                 <div class="form-group row">
@@ -139,6 +138,7 @@ export default {
     },
     mounted() {
         this.$root.$on('editOffer', (item) => {
+            this.fetchStates();
             this.offer = item;
             this.offer.company_id = item.company !== null && (typeof item.company.id !== undefined) ? item.company.id : 0;
             this.offer.company_name = item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : '';
