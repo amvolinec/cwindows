@@ -8,6 +8,9 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import { Datetime } from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css'
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -23,6 +26,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('errors', require('./components/ErrorsComponent.vue').default);
 Vue.component('deals', require('./components/DealsComponent.vue').default);
 Vue.component('deals-popup', require('./components/DealsPopupComponent.vue').default);
+Vue.component('nope-popup', require('./components/NopePopupComponent.vue').default);
+Vue.component('datetime', Datetime);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -38,6 +43,7 @@ const app = new Vue({
         error: false,
         errorMessage: '',
         popup: false,
+        nope: false,
     },
     methods: {
         fetchError(error){

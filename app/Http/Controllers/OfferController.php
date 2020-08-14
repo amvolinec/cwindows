@@ -6,6 +6,7 @@ use App\Architect;
 use App\Client;
 use App\Company;
 use App\Offer;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -100,22 +101,31 @@ class OfferController extends Controller
 
     public function setOffer(Request $request)
     {
-        $offer = new Offer();
+        if(!$request->has('id') || (int)$request->get('id') === 0){
+            $offer = new Offer();
+        } else {
+            $offer = Offer::findOrFail($request->get('id'));
+        }
 
-        if ($request->get('company_id') > 0) {
+
+        if ((int)$request->get('company_id') > 0) {
+
             $company = Company::find($request->get('company_id'));
-            $offer->company_id = $company->id;
-        } else if (!empty($request->get('company_name'))) {
+            $offer->company_id = (int)$request->get('company_id');
+
+        } else if ($request->has('company_name')) {
+
             $company = Company::create(['name' => $request->get('company_name')]);
             $offer->company_id = $company->id;
+
         } else {
             $company = null;
         }
 
-        if ($request->get('contact_id') > 0) {
-            $client = Client::find($request->get('contact_id'));
-        } else if (!empty($request->get('contact_name'))) {
-            $client = Client::create(['name' => $request->get('contact_name')]);
+        if ($request->get('client_id') > 0) {
+            $client = Client::find($request->get('client_id'));
+        } else if (!empty($request->get('client_name'))) {
+            $client = Client::create(['name' => $request->get('client_name')]);
 
             if (!empty($company)) {
                 $client->company_id = $company->id;
@@ -129,15 +139,18 @@ class OfferController extends Controller
             return ['status' => 'error', 'message' => 'Title not defined!'];
         }
 
+        $client->save();
+
         try {
             $offer->title = $request->get('title');
             $offer->client_id = $client->id;
             $offer->state_id = $request->get('state_id');
             $offer->pipeline = $request->has('pipeline') ? $request->get('pipeline') : '';
-            $offer->planed_date = $request->has('planed') ? $request->get('planed') : null;
-            $offer->project_amount = $request->has('amount') ? (float)$request->get('amount') : 0;
-            $offer->planned_amount_percents = $request->has('probability') ? (float)$request->get('probability') : 0;
-            $offer->info = $request->has('comment') ? $request->get('comment') : '';
+            $offer->planed_date = $request->has('planed_date') ? substr($request->get('planed_date'), 0, 10) : null;
+            $offer->project_amount = $request->has('project_amount') ? (float)$request->get('project_amount') : 0;
+            $offer->planned_amount_percents = $request->has('planned_amount_percents') ? (float)$request->get('planned_amount_percents') : 0;
+            $offer->info = $request->has('info') ? $request->get('info') : '';
+            $offer->user_id = $request->get('user_id');
 
             $offer->save();
 
@@ -145,6 +158,18 @@ class OfferController extends Controller
             return ['status' => 'error', 'message' => $exception->getMessage()];
         }
 
-        return ['status' => 'success'];
+        return ['status' => 'success', 'message' => json_encode($company)];
+    }
+
+    public function deleteMany(Request $request)
+    {
+        try {
+            Offer::where('id', $request->get('id'))->delete();
+
+            return ['status' => 'success'];
+
+        } catch (Exception $e) {
+            return ['status' => 'error', 'message' => $e->getMessage()];
+        }
     }
 }

@@ -15,9 +15,9 @@ class CreateOffersTable extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->bigIncrements('id');
-			$table->unsignedBigInteger('company_id')->nullable();
-			$table->unsignedBigInteger('client_id')->nullable();
-			$table->unsignedBigInteger('architect_id')->nullable();
+			$table->unsignedBigInteger('company_id')->nullable()->index();
+			$table->unsignedBigInteger('client_id')->nullable()->index();
+			$table->unsignedBigInteger('architect_id')->nullable()->index();
 			$table->date('enquiry_date')->nullable();
 			$table->date('planed_date')->nullable();
 			$table->string('title')->nullable();
@@ -25,7 +25,7 @@ class CreateOffersTable extends Migration
 			$table->string('area')->nullable();
 			$table->integer('positions')->nullable();
 			$table->string('profile')->nullable();
-			$table->unsignedSmallInteger('state_id')->nullable();
+			$table->unsignedSmallInteger('state_id')->nullable()->index();
 			$table->string('state_comment')->nullable();
 			$table->string('info')->nullable();
 			$table->string('pipeline')->nullable();
@@ -47,6 +47,7 @@ class CreateOffersTable extends Migration
             $table->decimal('planned_amount_percents',8,2)->nullable();
 			$table->decimal('project_amount', 8, 2)->nullable();
 			$table->decimal('project_amount_with_vat', 8, 2)->nullable();
+            $table->unsignedSmallInteger('user_id')->nullable()->index();
             $table->timestamps();
         });
     }

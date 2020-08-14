@@ -9,7 +9,7 @@
                 <div class="alert alert-danger" role="alert" v-if="this.message.length > 0">
                     {{ this.message }}
                 </div>
-
+                <input type="hidden" v-model="offer.id">
                 <div class="form-group row">
 
                     <label class="col-md-4 text-right col-form-label" for="company">Company</label>
@@ -35,21 +35,21 @@
 
                 <div class="form-group row">
 
-                    <label class="col-md-4 text-right col-form-label" for="contact">Contact</label>
+                    <label class="col-md-4 text-right col-form-label" for="client">Contact</label>
 
                     <div class="col-md-8 p-0">
-                        <input type="hidden" v-model="offer.contact_id">
-                        <input id="contact" type="text" class="form-control" name="contact" @keyup="getContact"
-                               @focusin="hideCompany" v-model="offer.contact_name">
+                        <input type="hidden" v-model="offer.client_id">
+                        <input id="client" type="text" class="form-control" name="client" @keyup="getContact"
+                               @focusin="hideCompany" v-model="offer.client_name">
                         <div class="float-right drop-new"
-                             v-if="offer.contact_id === 0 && offer.contact_name.length > 2">New
+                             v-if="offer.client_id === 0 && offer.client_name.length > 2">New
                         </div>
                         <div class="dropdown-select" v-if="showDropContact">
-                            <ul v-for="contact in contacts">
-                                <li v-bind:data-id="contact.id" @click="setContact(contact)">
-                                    <div class="drop-name">{{ contact.name }}</div>
-                                    <div class="drop-name">{{ contact.phone }}</div>
-                                    <div class="drop-name">{{ contact.email }}</div>
+                            <ul v-for="client in clients">
+                                <li v-bind:data-id="client.id" @click="setContact(client)">
+                                    <div class="drop-name">{{ client.name }}</div>
+                                    <div class="drop-name">{{ client.phone }}</div>
+                                    <div class="drop-name">{{ client.email }}</div>
                                 </li>
                             </ul>
                         </div>
@@ -76,33 +76,34 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="planed">Planned date of sale</label>
-                    <input id="planed" type="text" class="form-control col-md-8" name="planed" v-model="offer.planed">
+                    <label class="col-md-4 text-right col-form-label" for="planed_date">Planned date of sale</label>
+<!--                    <input id="planed_date" type="text" class="form-control col-md-8" name="planed_date" v-model="offer.planed_date">-->
+                    <datetime v-model="offer.planed_date" input-class="form-control col-md-8"></datetime>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="amount">Planned amount</label>
-                    <input id="amount" type="text" class="form-control col-md-8" name="amount" v-model="offer.amount">
+                    <label class="col-md-4 text-right col-form-label" for="project_amount">Planned amount</label>
+                    <input id="project_amount" type="text" class="form-control col-md-8" name="project_amount" v-model="offer.project_amount">
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="probability">Probability %</label>
-                    <input id="probability" type="text" class="form-control col-md-8" name="probability"
-                           v-model="offer.probability">
+                    <label class="col-md-4 text-right col-form-label" for="planned_amount_percents">Probability %</label>
+                    <input id="planned_amount_percents" type="text" class="form-control col-md-8" name="planned_amount_percents"
+                           v-model="offer.planned_amount_percents">
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="comment">Comment</label>
-                    <input id="comment" type="text" class="form-control col-md-8" name="comment"
-                           v-model="offer.comment">
+                    <label class="col-md-4 text-right col-form-label" for="info">Comment</label>
+                    <input id="info" type="text" class="form-control col-md-8" name="info"
+                           v-model="offer.info">
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="person_id">Person</label>
+                    <label class="col-md-4 text-right col-form-label" for="user_id">Person</label>
 
-                    <select id="person_id" type="text" class="form-control col-md-8" name="person_id"
-                            v-model="offer.person_id">
-                        <option v-for="person in persons" v-bind:value="person.id">{{ person.name }}</option>
+                    <select id="user_id" type="text" class="form-control col-md-8" name="user_id"
+                            v-model="offer.user_id">
+                        <option v-for="user in users" v-bind:value="user.id">{{ user.name }}</option>
                     </select>
                 </div>
 
@@ -124,10 +125,10 @@ export default {
     data() {
         return {
             companies: [],
-            contacts: [],
+            clients: [],
             states: [],
-            persons: [],
-            offer: {company_name: '', company_id: 0, contact_id: 0, contact_name: '', person_id: 0, state_id: 1},
+            users: [],
+            offer: {id: 0, company_name: '', company_id: 0, client_id: 0, client_name: '', user_id: 0, state_id: 1},
             showDropCompany: false,
             showDropContact: false,
             message: '',
@@ -136,12 +137,21 @@ export default {
     created() {
         this.fetchStates();
     },
+    mounted() {
+        this.$root.$on('editOffer', (item) => {
+            this.offer = item;
+            this.offer.company_id = item.company !== null && (typeof item.company.id !== undefined) ? item.company.id : 0;
+            this.offer.company_name = item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : '';
+            this.offer.client_id = item.client !== null && (typeof item.client.id !== undefined) ? item.client.id : 0;
+            this.offer.client_name = item.client !== null && (typeof item.client.name !== undefined) ? item.client.name : '';
+        });
+    },
     methods: {
         fetchStates() {
             axios.get('/states').then(response => {
                 this.states = response.data.states;
-                this.persons = response.data.persons;
-                this.offer.person_id = response.data.person_id;
+                this.users = response.data.users;
+                this.offer.user_id = response.data.user_id;
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -163,16 +173,16 @@ export default {
             });
         },
         getContact(e) {
-            this.offer.contact_id = 0;
+            this.offer.client_id = 0;
             if (e.key === 'Escape') {
                 this.showDropContact = false;
                 return;
             }
-            axios.post('/get-contacts', {
-                name: this.offer.contact_name,
+            axios.post('/get-clients', {
+                name: this.offer.client_name,
                 companyId: this.offer.company_id
             }).then(response => {
-                this.contacts = response.data;
+                this.clients = response.data;
                 this.showDropContact = true;
             }).catch((error) => {
                 this.$root.fetchError(error);
@@ -186,10 +196,10 @@ export default {
             this.offer.company_name = company.name;
             this.offer.company_id = company.id;
         },
-        setContact(contact) {
+        setContact(client) {
             this.showDropContact = false;
-            this.offer.contact_name = contact.name;
-            this.offer.contact_id = contact.id;
+            this.offer.client_name = client.name;
+            this.offer.client_id = client.id;
         },
         hideCompany() {
             this.showDropCompany = false;
@@ -212,10 +222,10 @@ export default {
         },
         clearPopup() {
             this.companies = [];
-            this.contacts = [];
+            this.clients = [];
             this.states = [];
-            this.persons = [];
-            this.offer = {company_name: '', company_id: 0, contact_id: 0, contact_name: '', person_id: 0, state_id: 1};
+            this.users = [];
+            this.offer = {company_name: '', company_id: 0, client_id: 0, client_name: '', user_id: 0, state_id: 1};
             this.showDropCompany = false;
             this.showDropContact = false;
             this.message = '';

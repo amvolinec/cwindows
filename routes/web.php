@@ -30,6 +30,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('states', 'StateController@getStates')->name('states');
 
     Route::post('get-companies', 'CompanyController@getCompany')->name('get.company');
-    Route::post('get-contacts', 'ClientController@getContact')->name('get.company');
+    Route::post('get-clients', 'ClientController@getContact')->name('get.clients');
     Route::post('set-offer', 'OfferController@setOffer')->name('set.offer');
+
+    Route::delete('offers', 'OfferController@deleteMany');
 });

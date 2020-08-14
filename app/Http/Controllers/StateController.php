@@ -92,6 +92,6 @@ class StateController extends Controller
     }
 
     public function getStates(){
-        return ['states' => State::all(), 'persons' => User::all(), 'person_id' => Auth::id()];
+        return ['states' => State::all(), 'users' => User::all(), 'user_id' => Auth::id()];
     }
 }

@@ -15,12 +15,12 @@
                     <table class="table table-sm table-striped">
                         <thead class="thead">
                         <tr>
-                            <th scope="col" width="10%">Created</th>
+                            <th scope="col">Date planed</th>
                             <th scope="col">Company</th>
                             <th scope="col">Contact</th>
                             <th scope="col">Title</th>
                             <th scope="col">Total</th>
-                            <th scope="col" width="15%">Actions</th>
+                            <th scope="col">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -31,10 +31,8 @@
                             <td>{{ item.title }}</td>
                             <td>{{ item.total }}</td>
                             <td>
-                                <button class="btn btn-sm btn-outline-secondary" @click="itemLoad(item)"><i
-                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                <button class="btn btn-sm btn-outline-danger" @click="itemDelete(item)"><i
-                                    class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                <button class="btn btn-sm btn-outline-secondary" @click="itemLoad(item)"><i class="far fa-edit"></i></button>
+                                <button class="btn btn-sm btn-outline-danger" @click="itemDelete(item)"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
                         </tbody>
@@ -44,6 +42,7 @@
             </div>
         </div>
         <deals-popup ref="popup"></deals-popup>
+        <nope-popup ref="nope"></nope-popup>
     </div>
 </template>
 
@@ -74,10 +73,14 @@ export default {
             this.$root.$data.popup = true;
         },
         itemLoad(item) {
+            this.$root.$emit('editOffer', item);
             this.$root.$data.popup = true;
         },
         itemDelete(item) {
-            this.$root.$data.popup = false;
+            let data = {id: item.id, route: 'offers', message: 'Delete ' + item.title + ' ?'};
+            this.$root.$emit('nopeItem', data);
+            this.$root.$data.nope = true;
+            this.fetchItems();
         }
     }
 }
