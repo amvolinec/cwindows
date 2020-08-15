@@ -155,13 +155,17 @@ class CreateProductsTable extends Migration
 
         Schema::create('prices', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->datetime('from_date')->nullable();
+            $table->datetime('date_from')->nullable();
             $table->unsignedDecimal('price', 11, 2);
+            $table->unsignedBigInteger('product_id')->nullable()->default(null);
+            $table->unsignedBigInteger('user_id')->nullable()->default(null);
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
+
+
     }
 
     /**
@@ -171,11 +175,11 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('product_attributes');
+        Schema::dropIfExists('products');
         Schema::dropIfExists('prices');
         Schema::dropIfExists('items');
         Schema::dropIfExists('orders');
-        Schema::dropIfExists('products');
-        Schema::dropIfExists('product_attributes');
         Schema::dropIfExists('attributes');
         Schema::dropIfExists('models');
         Schema::dropIfExists('generics');
