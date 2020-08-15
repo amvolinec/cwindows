@@ -63,7 +63,7 @@
                                                    class="col-md-4 col-form-label text-md-right">{{ __('Company') }}</label>
 
                                             <div class="col-md-6">
-                                                <select class="form-control" name="company_id" id="company_id">
+                                                <select class="form-control select2" name="company_id" id="company_id">
                                                     <option value="" disabled
                                                             selected>{{ __('Select your option') }}</option>
                                                     @foreach($companies as $item)

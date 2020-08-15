@@ -101,7 +101,7 @@ class OfferController extends Controller
 
     public function setOffer(Request $request)
     {
-        if(!$request->has('id') || (int)$request->get('id') === 0){
+        if (!$request->has('id') || (int)$request->get('id') === 0) {
             $offer = new Offer();
         } else {
             $offer = Offer::findOrFail($request->get('id'));
@@ -113,7 +113,7 @@ class OfferController extends Controller
             $company = Company::find($request->get('company_id'));
             $offer->company_id = (int)$request->get('company_id');
 
-        } else if ($request->has('company_name')) {
+        } else if ($request->has('company_name') && !empty($request->get('company_name'))) {
 
             $company = Company::create(['name' => $request->get('company_name')]);
             $offer->company_id = $company->id;
