@@ -131,6 +131,37 @@ class CreateProductsTable extends Migration
             $table->timestamps();
         });
 
+        Schema::create('orders', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('client_id')->nullable()->default(null);
+            $table->datetime('purchase_date')->nullable();
+            $table->unsignedDecimal('total_amount', 11, 2);
+            $table->timestamps();
+
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('set null');
+        });
+
+        Schema::create('items', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('order_id')->nullable()->default(null);
+            $table->unsignedBigInteger('product_id')->nullable()->default(null);
+            $table->unsignedDecimal('price', 11, 2);
+            $table->unsignedDecimal('quantity', 11, 3);
+            $table->timestamps();
+
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
+        });
+
+        Schema::create('prices', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->datetime('from_date')->nullable();
+            $table->unsignedDecimal('price', 11, 2);
+            $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('set null');
+        });
     }
 
     /**
@@ -140,6 +171,9 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('prices');
+        Schema::dropIfExists('items');
+        Schema::dropIfExists('orders');
         Schema::dropIfExists('products');
         Schema::dropIfExists('product_attributes');
         Schema::dropIfExists('attributes');
