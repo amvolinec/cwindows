@@ -16,7 +16,7 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        $warehouses = Warehouse::all();
+        $warehouses = Warehouse::paginate(20);
         return view('warehouse.index', ['warehouses' => $warehouses]);
     }
 
@@ -45,12 +45,12 @@ class WarehouseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Warehouse  $warehouse
-     * @return RedirectResponse
+     * @param  $id
+     * @return View
      */
-    public function show(Warehouse $warehouse)
+    public function show($id)
     {
-        return redirect()->route('warehouse.index');
+        return view('warehouse.index', ['warehouses' => Warehouse::where('id', $id)->paginate()]);
     }
 
     /**
@@ -87,5 +87,20 @@ class WarehouseController extends Controller
     {
         $warehouse->delete();
         return redirect()->route('warehouse.index');
+    }
+
+    public function find(Request $request, $search = false)
+    {
+        $string = $search ? $search : $request->get('string');
+
+        $data = Warehouse::where('name', 'like', '%' . $string . '%')
+            // ->orWhere('title', 'like', '%' . $string . '%')
+            ;
+
+        if ($search !== false && !empty($search)) {
+            return view('warehouse.index', ['warehouses' => $data->paginate(20), 'search' => $string]);
+        } else {
+            return $data->take(10)->get();
+        }
     }
 }

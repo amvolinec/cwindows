@@ -33,7 +33,7 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return RedirectResponse
      */
     public function store(Request $request)
@@ -45,30 +45,31 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Company  $company
-     * @return RedirectResponse
+     * @param Company $company
+     * @return View
      */
-    public function show(Company $company)
+    public function show($id)
     {
-        return redirect()->route('company.index');
+        $companies = Company::where('id', $id)->get();
+        return view('company.index', ['companies' => $companies]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Company  $company
+     * @param Company $company
      * @return View
      */
     public function edit(Company $company)
     {
-        return view ('company.create' , ['company' => $company]);
+        return view('company.create', ['company' => $company]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  Company  $company
+     * @param Request $request
+     * @param Company $company
      * @return RedirectResponse
      */
     public function update(Request $request, Company $company)
@@ -80,7 +81,7 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Company  $company
+     * @param Company $company
      * @return RedirectResponse
      */
     public function destroy(Company $company)
@@ -89,12 +90,31 @@ class CompanyController extends Controller
         return redirect()->route('company.index');
     }
 
-    public function getCompany(Request $request){
-        if($request->has('name')) {
+    public function getCompany(Request $request)
+    {
+        if ($request->has('name')) {
             $companies = Company::where('name', 'like', '%' . $request->get('name') . '%')->get();
         } else {
             $companies = [];
         }
         return $companies;
+    }
+
+    public function find(Request $request, $search = false)
+    {
+        $string = $search ? $search : $request->get('string');
+
+        $data = Company::where('code', 'like', '%' . $string . '%')
+            ->orWhere('name', 'like', '%' . $string . '%')
+            ->orWhere('email', 'like', '%' . $string . '%')
+            ->orWhere('phone', 'like', '%' . $string . '%')
+            ->orWhere('address', 'like', '%' . $string . '%')
+            ->take(10)->get();
+
+        if ($search !== false && !empty($search)) {
+            return view('company.index', ['companies' => $data, 'search' => $string]);
+        } else {
+            return $data;
+        }
     }
 }

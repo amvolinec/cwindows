@@ -27,6 +27,7 @@ Vue.component('errors', require('./components/ErrorsComponent.vue').default);
 Vue.component('deals', require('./components/DealsComponent.vue').default);
 Vue.component('deals-popup', require('./components/DealsPopupComponent.vue').default);
 Vue.component('nope-popup', require('./components/NopePopupComponent.vue').default);
+Vue.component('find', require('./components/FindComponent.vue').default);
 Vue.component('datetime', Datetime);
 
 /**

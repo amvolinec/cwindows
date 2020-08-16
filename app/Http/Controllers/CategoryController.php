@@ -45,12 +45,12 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Category  $category
-     * @return RedirectResponse
+     * @param  $id
+     * @return View
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        return redirect()->route('category.index');
+        return view('category.index', ['categories' => Category::where('id', $id)->paginate(10)]);
     }
 
     /**
@@ -87,5 +87,19 @@ class CategoryController extends Controller
     {
         $category->delete();
         return redirect()->route('category.index');
+    }
+
+    public function find(Request $request, $search = false)
+    {
+        $string = $search ? $search : $request->get('string');
+
+        $data = Category::where('name', 'like', '%' . $string . '%');
+            // ->orWhere('title', 'like', '%' . $string . '%')
+
+        if ($search !== false && !empty($search)) {
+            return view('category.index', ['categories' => $data->paginate(20), 'search' => $string]);
+        } else {
+            return $data->take(10)->get();
+        }
     }
 }

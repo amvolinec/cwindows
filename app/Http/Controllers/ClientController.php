@@ -46,12 +46,13 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Client  $client
-     * @return RedirectResponse
+     * @param  $id
+     * @return View
      */
-    public function show(Client $client)
+    public function show($id)
     {
-        return redirect()->route('client.index');
+        $clients = Client::where('id', $id)->get();
+        return view('client.index', ['clients' => $clients]);
     }
 
     /**
@@ -102,6 +103,22 @@ class ClientController extends Controller
             $companies = [];
         }
         return $companies;
+    }
+
+    public function find(Request $request, $search = false)
+    {
+        $string = $search ? $search : $request->get('string');
+
+        $data = Client::where('name', 'like', '%' . $string . '%')
+            ->orWhere('email', 'like', '%' . $string . '%')
+            ->orWhere('phone', 'like', '%' . $string . '%')
+            ->take(10)->get();
+
+        if ($search !== false && !empty($search)) {
+            return view('client.index', ['clients' => $data, 'search' => $string]);
+        } else {
+            return $data;
+        }
     }
 
 }

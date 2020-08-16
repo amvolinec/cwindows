@@ -16,7 +16,7 @@ class SiteController extends Controller
      */
     public function index()
     {
-        $sites = Site::all();
+        $sites = Site::paginate(20);
         return view('site.index', ['sites' => $sites]);
     }
 
@@ -45,12 +45,12 @@ class SiteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Site  $site
-     * @return RedirectResponse
+     * @param  $id
+     * @return View
      */
-    public function show(Site $site)
+    public function show($id)
     {
-        return redirect()->route('site.index');
+        return view('site.index', ['sites' => Site::where('id', $id)->paginate()]);
     }
 
     /**
@@ -87,5 +87,20 @@ class SiteController extends Controller
     {
         $site->delete();
         return redirect()->route('site.index');
+    }
+
+    public function find(Request $request, $search = false)
+    {
+        $string = $search ? $search : $request->get('string');
+
+        $data = Site::where('name', 'like', '%' . $string . '%')
+            // ->orWhere('title', 'like', '%' . $string . '%')
+            ;
+
+        if ($search !== false && !empty($search)) {
+            return view('site.index', ['sites' => $data->paginate(20), 'search' => $string]);
+        } else {
+            return $data->take(10)->get();
+        }
     }
 }

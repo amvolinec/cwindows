@@ -16,8 +16,8 @@
                         <div class="d-inline-block" style="vertical-align: top; padding: 6px;">
                             <h4 >{{ __('Clients') }}</h4>
                         </div>
+                        <find route="client" fields="name,phone,email" search="{{ $search ?? '' }}"></find>
                     </div>
-
                     <div class="card-body">
                         <table class="table table-sm table-striped">
                             <thead class="thead">

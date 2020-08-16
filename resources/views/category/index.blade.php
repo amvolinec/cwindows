@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-md-offset-10">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <div class="d-inline-block" style="vertical-align: top;">
@@ -16,6 +16,7 @@
                         <div class="d-inline-block" style="vertical-align: top; padding: 6px;">
                             <h4 >{{ __('Categories') }}</h4>
                         </div>
+                        <find route="category" fields="code,name" search="{{ $search ?? '' }}"></find>
                     </div>
                     <div class="card-body">
                         <table class="table table-sm table-striped">
@@ -49,7 +50,6 @@
                             @endforeach
                             </tbody>
                         </table>
-
                         {{ $categories->links() }}
                     </div>
                 </div>

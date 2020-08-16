@@ -16,6 +16,7 @@
                         <div class="d-inline-block" style="vertical-align: top; padding: 6px;">
                             <h4 >{{ __('Companies') }}</h4>
                         </div>
+                        <find route="company" fields="name,phone,code,email" search="{{ $search ?? '' }}"></find>
                     </div>
                     <div class="card-body">
                         <table class="table table-sm table-striped">

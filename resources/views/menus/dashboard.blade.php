@@ -10,7 +10,7 @@
                     <li class="active"><a href="{{ route('forms.index') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                     </li>
                     <hr>
-                    <li><a href="{{ route('state.index') }}"><i class="far fa-chart-bar"></i> States</a></li>
+
                     <li><a href="{{ route('company.index') }}"><i class="fas fa-building"></i> Companies</a></li>
                     <li><a href="{{ route('client.index') }}"><i class="far fa-address-book"></i> Clients</a></li>
                     <li><a href="{{ route('architect.index') }}"><i class="far fa-building"></i> Architects</a></li>
@@ -31,6 +31,7 @@
                                     <li><a href="{{ route('site.index') }}"><i class="fas fa-sitemap"></i> Sites</a></li>
                                     <li><a href="{{ route('warehouse.index') }}"><i class="fas fa-warehouse"></i> Warehouses</a></li>
                                     <li><a href="{{ route('category.index') }}"><i class="fas fa-warehouse"></i> Categories</a></li>
+                                    <li><a href="{{ route('state.index') }}"><i class="far fa-chart-bar"></i> States</a></li>
                                 </ul>
                             </div>
                         </div>
