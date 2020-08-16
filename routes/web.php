@@ -19,6 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::resource('category', 'CategoryController');
+    Route::resource('warehouse', 'WarehouseController');
+    Route::resource('site', 'SiteController');
     Route::resource('state', 'StateController');
     Route::resource('company', 'CompanyController');
     Route::resource('offer', 'OfferController');

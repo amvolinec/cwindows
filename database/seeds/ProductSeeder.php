@@ -20,6 +20,7 @@ class ProductSeeder extends Seeder
         $faker->addProvider(new Faker\Provider\en_US\Company($faker));
         $faker->addProvider(new Faker\Provider\Lorem($faker));
         $faker->addProvider(new Faker\Provider\Internet($faker));
+        $faker->addProvider(new Faker\Provider\Color($faker));
 
         $data = [];
         for ($i = 1; $i <= 10; $i++) {
@@ -49,11 +50,12 @@ class ProductSeeder extends Seeder
         }
         DB::table('brands')->insert($data);
 
-        $data = [];
-        for ($i = 1; $i <= 20; $i++) {
-            $item = ['code' => Str::random(8), 'name' => $faker->word];
-            array_push($data, $item);
-        }
+        $data = [
+            ['code' => 'windows', 'name' => 'windows'],
+            ['code' => 'doors', 'name' => 'doors'],
+            ['code' => 'windows', 'name' => 'doors'],
+            ];
+
         DB::table('categories')->insert($data);
 
         $data = [];
