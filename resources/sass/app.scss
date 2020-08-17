@@ -1,5 +1,6 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+//@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&display=swap');
 
 // Variables
 @import 'variables';
@@ -69,5 +70,32 @@
 
 .popup-window.full {
     width: calc(100% - 40px);
-
+    max-height: calc(100% - 60px);
+    overflow: auto;
 }
+
+.item-sm {
+    height: calc(1.5em + .5rem + 8px);
+    padding: 0.1rem;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    border: none;
+    border-radius: 0;
+}
+
+.item-sm div {
+    padding-top: 10px;
+}
+
+.table-sm.table-condensed th, .table-sm.table-condensed td {
+    padding: 0.1rem;
+}
+
+.table-sm.table-condensed .thead {
+    font-size: 0.75rem;
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+

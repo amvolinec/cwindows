@@ -6,9 +6,11 @@ use App\Architect;
 use App\Client;
 use App\Company;
 use App\Offer;
+use App\Position;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class OfferController extends Controller
@@ -152,12 +154,58 @@ class OfferController extends Controller
             $offer->info = $request->has('info') ? $request->get('info') : '';
             $offer->user_id = $request->get('user_id');
             $offer->delivery_address = $request->has('delivery_address') ? $request->get('delivery_address') : '';
-            $offer->delivery_date = $request->has('delivery_date') ? substr($request->get('delivery_date'),0,10) : null;
-            $offer->number = $request->has('number') ? $request->get('number') : '';
-            $offer->order_number = $request->has('order_number') ? $request->get('order_number') : '';
+            $offer->delivery_date = $request->has('delivery_date') ? substr($request->get('delivery_date'), 0, 10) : null;
 
+            if ($request->has('number')) {
+                $offer->number = $request->get('number');
+            }
+            if ($request->has('order_number')) {
+                $offer->order_number = $request->get('order_number');
+            }
+            if ($request->has('total')) {
+                $offer->total = $request->get('total');
+            }
+            if ($request->has('total_with_vat')) {
+                $offer->total_with_vat = $request->get('total_with_vat');
+            }
+            if ($request->has('sales_profit')) {
+                $offer->sales_profit = $request->get('sales_profit');
+            }
 
             $offer->save();
+
+            if ($request->has('positions')) {
+
+                $positions = $request->get('positions');
+
+                foreach ($positions as $position) {
+
+                    if (is_array($position)) {
+
+                        if (!isset($position['id'])) {
+                            $item = new Position();
+                        } else {
+                            $item = Position::find($position['id']);
+                        }
+
+                        $item->title = $position['title'];
+                        $item->quantity = $position['quantity'];
+                        $item->cost = $position['cost'];
+                        $item->price = $position['price'];
+                        $item->discount = $position['discount'];
+                        $item->discount_next = $position['discount_next'];
+                        $item->final_price = $position['final_price'];
+                        $item->subtotal = $position['subtotal'];
+                        $item->total = $position['total'];
+                        $item->vat = $position['vat'];
+                        $item->offer_id = $offer->id;
+
+                        $item->save();
+                    } else {
+                        Log::info("Position is not an Array ");
+                    }
+                }
+            }
 
         } catch (\Exception $exception) {
             return ['status' => 'error', 'message' => $exception->getMessage()];
@@ -178,7 +226,8 @@ class OfferController extends Controller
         }
     }
 
-    public function getData($id) {
+    public function getData($id)
+    {
         return Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user'])->findOrFail($id);
     }
 }

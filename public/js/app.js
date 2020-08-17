@@ -2619,9 +2619,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     id: String
@@ -2642,7 +2639,7 @@ __webpack_require__.r(__webpack_exports__);
       var url = '/offer/get/' + this.id;
       axios.get(url).then(function (response) {
         _this.item = response.data;
-        _this.positions = typeof response.data.positions === 'undefined' ? response.data.positions : [];
+        _this.positions = typeof response.data.positions !== 'undefined' ? response.data.positions : [];
       })["catch"](function (error) {
         _this.$root.fetchError(error);
       });
@@ -2656,6 +2653,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     positionsLoad: function positionsLoad(item) {
       this.$root.$emit('editPositions', item);
+      this.$root.$data.offer = item;
       this.$root.$data.positions = true;
     },
     itemDelete: function itemDelete(item) {
@@ -2676,10 +2674,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PositionsComponent.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PositionsComponent.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OfferItemsComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/OfferItemsComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2742,6 +2740,188 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      items: [],
+      total: {
+        total: 0,
+        total_with_vat: 0,
+        sales_profit: 0
+      },
+      index: 0
+    };
+  },
+  created: function created() {
+    if (this.isEmpty(this.items)) {
+      this.addRow();
+    }
+
+    this.items = this.$root.$data.offer.positions;
+    this.onLoad();
+  },
+  mounted: function mounted() {// this.$root.$on('editOfferItems', (items) => {
+    //     this.items = items;
+    //     console.log(items);
+    // });
+  },
+  methods: {
+    saveOfferItems: function saveOfferItems() {
+      var _this = this;
+
+      this.message = '';
+      axios.post('/set-offer-items', this.items).then(function (response) {
+        if (response.data.status === 'error') {
+          _this.message = response.data.message;
+          return;
+        }
+
+        _this.clearPopup();
+
+        _this.$root.$emit('offerEdited');
+      })["catch"](function (error) {
+        _this.$root.fetchError(error);
+      });
+    },
+    itemAdd: function itemAdd() {
+      this.index++;
+      return {
+        index: this.index,
+        product: '',
+        title: '',
+        quantity: '',
+        unit: 'psc.',
+        warehouse_id: 0,
+        cost: '',
+        price: '',
+        discount: '',
+        discount_next: '',
+        final_price: '',
+        vat: 21,
+        subtotal: 0,
+        total: 0,
+        vat_amount: 0,
+        total_cost: 0,
+        margin: 0
+      };
+    },
+    isEmpty: function isEmpty(fineArray) {
+      return !(typeof fineArray != "undefined" && fineArray != null && fineArray.length != null && fineArray.length > 0);
+    },
+    removeItem: function removeItem(item) {
+      this.items.remove(item);
+    },
+    addRow: function addRow() {
+      this.items.push(this.itemAdd());
+    },
+    calcSum: function calcSum(item) {
+      item.final_price = item.price - item.discount - item.discount_next;
+      item.subtotal = item.final_price * item.quantity;
+      item.total_cost = item.cost * item.quantity;
+      item.vat_amount = item.subtotal * item.vat / 100;
+      item.total = item.vat_amount + item.subtotal;
+      item.margin = item.subtotal - item.total_cost;
+      this.calcTotal();
+      this.$root.$emit('updateOfferSum', this.total);
+    },
+    calcTotal: function calcTotal() {
+      var _this2 = this;
+
+      this.total = {
+        total: 0,
+        total_with_vat: 0,
+        sales_profit: 0
+      };
+      this.items.forEach(function (item, index) {
+        _this2.total.total += item.subtotal;
+        _this2.total.total_with_vat += item.total;
+        _this2.total.sales_profit += item.margin;
+      });
+    },
+    saveOffer: function saveOffer() {
+      this.$root.$emit('saveOfferNow', this.items);
+    },
+    closePopup: function closePopup() {
+      this.$root.$emit('closePopupNow');
+    },
+    onLoad: function onLoad() {
+      var _this3 = this;
+
+      this.items.forEach(function (item, index) {
+        item.index = index + 1;
+        index++;
+
+        _this3.calcSum(item);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PositionsComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PositionsComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 //
 //
 //
@@ -2870,7 +3050,7 @@ __webpack_require__.r(__webpack_exports__);
       positions: []
     };
   },
-  created: function created() {//
+  created: function created() {// this.$root.$emit('editOfferItems');
   },
   mounted: function mounted() {
     var _this = this;
@@ -2881,6 +3061,19 @@ __webpack_require__.r(__webpack_exports__);
       _this.offer.company_name = item.company !== null && typeof item.company !== 'undefined' ? item.company.name : '';
       _this.offer.client_id = item.client !== null && typeof item.client !== 'undefined' ? item.client.id : 0;
       _this.offer.client_name = item.client !== null && typeof item.client !== 'undefined' ? item.client.name : '';
+    });
+    this.$root.$on('updateOfferSum', function (total) {
+      _this.offer.total = total.total;
+      _this.offer.total_with_vat = total.total_with_vat;
+      _this.offer.sales_profit = total.sales_profit;
+    });
+    this.$root.$on('saveOfferNow', function (items) {
+      _this.offer.positions = items;
+
+      _this.saveOffer();
+    });
+    this.$root.$on('closePopupNow', function () {
+      _this.closePopup();
     });
   },
   methods: {
@@ -49642,67 +49835,58 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card mt-2" }, [
-          _c(
-            "div",
-            { staticClass: "card-body" },
-            [
-              _c("div", { staticClass: "panel-info" }, [
-                _vm._m(1),
-                _vm._v(" "),
-                _c("div", { staticClass: "d-inline-flex" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-sm btn-outline-secondary",
-                      on: {
-                        click: function($event) {
-                          return _vm.positionsLoad(_vm.item)
-                        }
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "panel-info" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-inline-flex" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-outline-secondary",
+                    on: {
+                      click: function($event) {
+                        return _vm.positionsLoad(_vm.item)
                       }
-                    },
-                    [_c("i", { staticClass: "far fa-edit" })]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._l(_vm.positions, function(position) {
-                return _c("div")
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "text-right small" }, [
-                _vm._v("Total amount: " + _vm._s(_vm.item.total) + " €")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "text-right small" }, [
-                _vm._v(
-                  "VAT: " +
-                    _vm._s(_vm.item.total - _vm.item.total_with_vat) +
-                    " €"
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "text-right" }, [
-                _c("strong", [
-                  _vm._v("TOTAL: " + _vm._s(_vm.item.total_with_vat) + " €")
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "text-right small" }, [
-                _vm._v(
-                  "Margin with expenses: " +
-                    _vm._s(_vm.item.sales_profit) +
-                    " € (" +
-                    _vm._s(
-                      _vm.item.total > 0
-                        ? (_vm.item.sales_profit / _vm.item.total) * 100
-                        : 0
-                    ) +
-                    "%) "
+                    }
+                  },
+                  [_c("i", { staticClass: "far fa-edit" })]
                 )
               ])
-            ],
-            2
-          )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-right small" }, [
+              _vm._v("Total amount: " + _vm._s(_vm.item.total) + " €")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-right small" }, [
+              _vm._v(
+                "VAT: " +
+                  _vm._s(_vm.item.total_with_vat - _vm.item.total) +
+                  " €"
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-right" }, [
+              _c("strong", [
+                _vm._v("TOTAL: " + _vm._s(_vm.item.total_with_vat) + " €")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-right small" }, [
+              _vm._v(
+                "Margin with expenses: " +
+                  _vm._s(_vm.item.sales_profit) +
+                  " € (" +
+                  _vm._s(
+                    _vm.item.total > 0
+                      ? (_vm.item.sales_profit / _vm.item.total) * 100
+                      : 0
+                  ) +
+                  "%) "
+              )
+            ])
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -49741,6 +49925,453 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OfferItemsComponent.vue?vue&type=template&id=005f0bfe&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/OfferItemsComponent.vue?vue&type=template&id=005f0bfe& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "col-md-12" }, [
+    _c("div", { staticClass: "table-responsive" }, [
+      _c("table", { staticClass: "table table-sm table-condensed" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.items, function(item) {
+            return _c("tr", [
+              _c(
+                "th",
+                { staticClass: "item-sm text-right", attrs: { scope: "row" } },
+                [_c("div", [_vm._v(_vm._s(item.index))])]
+              ),
+              _vm._v(" "),
+              _c("td", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: item.product,
+                      expression: "item.product"
+                    }
+                  ],
+                  staticClass: "form-control item-sm",
+                  attrs: { type: "text" },
+                  domProps: { value: item.product },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(item, "product", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: item.title,
+                      expression: "item.title"
+                    }
+                  ],
+                  staticClass: "form-control item-sm",
+                  attrs: { type: "text" },
+                  domProps: { value: item.title },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(item, "title", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: item.quantity,
+                      expression: "item.quantity"
+                    }
+                  ],
+                  staticClass: "form-control item-sm text-right",
+                  attrs: { type: "text" },
+                  domProps: { value: item.quantity },
+                  on: {
+                    change: function($event) {
+                      return _vm.calcSum(item)
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(item, "quantity", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("td", { staticClass: "item-sm text-right" }, [
+                _vm._v(_vm._s(item.unit))
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: item.cost,
+                      expression: "item.cost"
+                    }
+                  ],
+                  staticClass: "form-control item-sm text-right",
+                  attrs: { type: "text" },
+                  domProps: { value: item.cost },
+                  on: {
+                    change: function($event) {
+                      return _vm.calcSum(item)
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(item, "cost", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: item.price,
+                      expression: "item.price"
+                    }
+                  ],
+                  staticClass: "form-control item-sm text-right",
+                  attrs: { type: "text" },
+                  domProps: { value: item.price },
+                  on: {
+                    change: function($event) {
+                      return _vm.calcSum(item)
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(item, "price", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: item.discount,
+                      expression: "item.discount"
+                    }
+                  ],
+                  staticClass: "form-control item-sm text-right",
+                  attrs: { type: "text" },
+                  domProps: { value: item.discount },
+                  on: {
+                    change: function($event) {
+                      return _vm.calcSum(item)
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(item, "discount", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: item.discount_next,
+                      expression: "item.discount_next"
+                    }
+                  ],
+                  staticClass: "form-control item-sm text-right",
+                  attrs: { type: "text" },
+                  domProps: { value: item.discount_next },
+                  on: {
+                    change: function($event) {
+                      return _vm.calcSum(item)
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(item, "discount_next", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("td", { staticClass: "item-sm text-right" }, [
+                item.final_price > 0
+                  ? _c("div", [_vm._v(_vm._s(item.final_price))])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: item.vat,
+                        expression: "item.vat"
+                      }
+                    ],
+                    staticClass: "form-control item-sm",
+                    attrs: { type: "text" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            item,
+                            "vat",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        },
+                        function($event) {
+                          return _vm.calcSum(item)
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "21" } }, [_vm._v("21%")]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "9" } }, [_vm._v("9%")]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "5" } }, [_vm._v("5%")]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "0" } }, [_vm._v("0%")])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("td", { staticClass: "item-sm text-right" }, [
+                item.vat_amount > 0
+                  ? _c("div", [_vm._v(_vm._s(item.vat_amount))])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("td", { staticClass: "item-sm text-right" }, [
+                item.margin > 0
+                  ? _c("div", [_vm._v(_vm._s(item.margin))])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("td", { staticClass: "item-sm text-right" }, [
+                item.total_cost > 0
+                  ? _c("div", [_vm._v(_vm._s(item.total_cost))])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("td", { staticClass: "item-sm text-right" }, [
+                item.total > 0
+                  ? _c("div", [_vm._v(_vm._s(item.total))])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-outline-danger",
+                    on: {
+                      click: function($event) {
+                        return _vm.removeItem(item)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fas fa-trash" })]
+                )
+              ])
+            ])
+          }),
+          0
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group mb-1 text-left" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-sm btn-info", on: { click: _vm.addRow } },
+        [_vm._v(" Add row")]
+      ),
+      _vm._v(" "),
+      _c("button", { staticClass: "btn btn-sm" }, [_vm._v(" Add group")])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group mb-1 row" }, [
+      _c("div", { staticClass: "col-md-10 text-right" }, [
+        _vm._v("Amount without VAT:")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-2 text-right" }, [
+        _vm._v(_vm._s(_vm.total.total))
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group mb-0 row" }, [
+      _c("div", { staticClass: "col-md-10 text-right" }, [
+        _vm._v("VAT amount:")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-2 text-right" }, [
+        _vm._v(_vm._s(_vm.total.total_with_vat - _vm.total.total))
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group mb-0 row" }, [
+      _c("div", { staticClass: "col-md-10 text-right" }, [
+        _vm._v("Amount with VAT:")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-2 text-right" }, [
+        _vm._v(_vm._s(_vm.total.total_with_vat))
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group mb-0 row" }, [
+      _c("div", { staticClass: "col-md-10 text-right" }, [
+        _vm._v("Margin with expenses:")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-2 text-right" }, [
+        _vm._v(_vm._s(_vm.total.sales_profit))
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group mb-0 text-right" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-outline-info",
+          attrs: { type: "button" },
+          on: { click: _vm.closePopup }
+        },
+        [
+          _c("i", { staticClass: "fas fa-times" }),
+          _vm._v("\n            Cancel\n        ")
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-outline-success",
+          attrs: { type: "button" },
+          on: { click: _vm.saveOffer }
+        },
+        [
+          _c("i", { staticClass: "fas fa-save" }, [
+            _vm._v("\n            Save")
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead" }, [
+      _c("tr", [
+        _c("th", { attrs: { width: "30" } }, [_vm._v("No.")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "200" } }, [_vm._v("Product")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "auto" } }, [_vm._v("Title")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "70" } }, [_vm._v("Quantity")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "40" } }, [_vm._v("Unit")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "70" } }, [_vm._v("Prime cost")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "70" } }, [_vm._v("Price")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "70" } }, [_vm._v("Discount")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "70" } }, [_vm._v("Discount")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "70" } }, [_vm._v("Price after discount")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "70" } }, [_vm._v("VAT")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "70" } }, [_vm._v("VAT amount")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "80" } }, [_vm._v("Margin")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "80" } }, [_vm._v("Prime total cost")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "80" } }, [_vm._v("Total")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "40" } })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PositionsComponent.vue?vue&type=template&id=326c4044&":
 /*!*********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PositionsComponent.vue?vue&type=template&id=326c4044& ***!
@@ -49767,729 +50398,460 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "popup-inner" }, [
-            this.message.length > 0
-              ? _c(
-                  "div",
-                  {
-                    staticClass: "alert alert-danger",
-                    attrs: { role: "alert" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(this.message) +
-                        "\n            "
-                    )
-                  ]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-3" }),
+          _c(
+            "div",
+            { staticClass: "popup-inner" },
+            [
+              this.message.length > 0
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-danger",
+                      attrs: { role: "alert" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(this.message) +
+                          "\n            "
+                      )
+                    ]
+                  )
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.offer.id,
-                      expression: "offer.id"
-                    }
-                  ],
-                  attrs: { type: "hidden" },
-                  domProps: { value: _vm.offer.id },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.offer, "id", $event.target.value)
-                    }
-                  }
-                }),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-3" }),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-group mb-1 row" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-md-4 text-right col-form-label",
-                      attrs: { for: "company" }
-                    },
-                    [_vm._v("Company")]
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-8 p-0" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.offer.company_id,
-                          expression: "offer.company_id"
-                        }
-                      ],
-                      attrs: { type: "hidden" },
-                      domProps: { value: _vm.offer.company_id },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.offer, "company_id", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.offer.company_name,
-                          expression: "offer.company_name"
-                        }
-                      ],
-                      staticClass: "form-control form-control-sm",
-                      attrs: { id: "company", type: "text", name: "company" },
-                      domProps: { value: _vm.offer.company_name },
-                      on: {
-                        keyup: _vm.getCompany,
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.offer,
-                            "company_name",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _vm.offer.company_id === 0 &&
-                    _vm.offer.company_name.length > 2
-                      ? _c("div", { staticClass: "float-right drop-new" }, [
-                          _vm._v("New\n                            ")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.showDropCompany
-                      ? _c(
-                          "div",
-                          { staticClass: "dropdown-select" },
-                          _vm._l(_vm.companies, function(company) {
-                            return _c("ul", [
-                              _c(
-                                "li",
-                                {
-                                  attrs: { "data-id": company.id },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.setCompany(company)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("div", { staticClass: "drop-name" }, [
-                                    _vm._v(_vm._s(company.name))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "drop-phone" }, [
-                                    _vm._v(_vm._s(company.phone))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "drop-email" }, [
-                                    _vm._v(_vm._s(company.email))
-                                  ])
-                                ]
-                              )
-                            ])
-                          }),
-                          0
-                        )
-                      : _vm._e()
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group mb-1 row" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-md-4 text-right col-form-label",
-                      attrs: { for: "client" }
-                    },
-                    [_vm._v("Contact")]
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-8 p-0" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.offer.client_id,
-                          expression: "offer.client_id"
-                        }
-                      ],
-                      attrs: { type: "hidden" },
-                      domProps: { value: _vm.offer.client_id },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.offer, "client_id", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.offer.client_name,
-                          expression: "offer.client_name"
-                        }
-                      ],
-                      staticClass: "form-control form-control-sm",
-                      attrs: { id: "client", type: "text", name: "client" },
-                      domProps: { value: _vm.offer.client_name },
-                      on: {
-                        keyup: _vm.getContact,
-                        focusin: _vm.hideCompany,
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.offer,
-                            "client_name",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _vm.offer.client_id === 0 &&
-                    _vm.offer.client_name.length > 2
-                      ? _c("div", { staticClass: "float-right drop-new" }, [
-                          _vm._v("New\n                            ")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.showDropContact
-                      ? _c(
-                          "div",
-                          { staticClass: "dropdown-select" },
-                          _vm._l(_vm.clients, function(client) {
-                            return _c("ul", [
-                              _c(
-                                "li",
-                                {
-                                  attrs: { "data-id": client.id },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.setContact(client)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("div", { staticClass: "drop-name" }, [
-                                    _vm._v(_vm._s(client.name))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "drop-name" }, [
-                                    _vm._v(_vm._s(client.phone))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "drop-name" }, [
-                                    _vm._v(_vm._s(client.email))
-                                  ])
-                                ]
-                              )
-                            ])
-                          }),
-                          0
-                        )
-                      : _vm._e()
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group mb-1 row" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-md-4 text-right col-form-label",
-                      attrs: { for: "title" }
-                    },
-                    [_vm._v("Title")]
-                  ),
-                  _vm._v(" "),
+                _c("div", { staticClass: "col-md-6" }, [
                   _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.offer.title,
-                        expression: "offer.title"
+                        value: _vm.offer.id,
+                        expression: "offer.id"
                       }
                     ],
-                    staticClass: "form-control form-control-sm col-md-8",
-                    attrs: { id: "title", type: "text", name: "title" },
-                    domProps: { value: _vm.offer.title },
+                    attrs: { type: "hidden" },
+                    domProps: { value: _vm.offer.id },
                     on: {
-                      focusin: _vm.hideClient,
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.offer, "title", $event.target.value)
+                        _vm.$set(_vm.offer, "id", $event.target.value)
                       }
                     }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group mb-1 row" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-md-4 text-right col-form-label",
-                      attrs: { for: "delivery_address" }
-                    },
-                    [_vm._v("Delivery\n                            address")]
-                  ),
+                  }),
                   _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.offer.delivery_address,
-                        expression: "offer.delivery_address"
-                      }
-                    ],
-                    staticClass: "form-control form-control-sm col-md-8",
-                    attrs: {
-                      id: "delivery_address",
-                      type: "text",
-                      name: "delivery_address"
-                    },
-                    domProps: { value: _vm.offer.delivery_address },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.offer,
-                          "delivery_address",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form-group mb-1 row" },
-                  [
+                  _c("div", { staticClass: "form-group mb-1 row" }, [
                     _c(
                       "label",
                       {
                         staticClass: "col-md-4 text-right col-form-label",
-                        attrs: { for: "delivery_date" }
+                        attrs: { for: "company" }
                       },
-                      [_vm._v("Delivery date")]
+                      [_vm._v("Company")]
                     ),
                     _vm._v(" "),
-                    _c("datetime", {
-                      attrs: {
-                        id: "delivery_date",
-                        type: "date",
-                        "input-class": "form-control form-control-sm col-md-8"
+                    _c("div", { staticClass: "col-md-8 p-0" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.offer.company_id,
+                            expression: "offer.company_id"
+                          }
+                        ],
+                        attrs: { type: "hidden" },
+                        domProps: { value: _vm.offer.company_id },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.offer,
+                              "company_id",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.offer.company_name,
+                            expression: "offer.company_name"
+                          }
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        attrs: { id: "company", type: "text", name: "company" },
+                        domProps: { value: _vm.offer.company_name },
+                        on: {
+                          keyup: _vm.getCompany,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.offer,
+                              "company_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.offer.company_id === 0 &&
+                      _vm.offer.company_name.length > 2
+                        ? _c("div", { staticClass: "float-right drop-new" }, [
+                            _vm._v("New\n                            ")
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.showDropCompany
+                        ? _c(
+                            "div",
+                            { staticClass: "dropdown-select" },
+                            _vm._l(_vm.companies, function(company) {
+                              return _c("ul", [
+                                _c(
+                                  "li",
+                                  {
+                                    attrs: { "data-id": company.id },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.setCompany(company)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("div", { staticClass: "drop-name" }, [
+                                      _vm._v(_vm._s(company.name))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "drop-phone" }, [
+                                      _vm._v(_vm._s(company.phone))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "drop-email" }, [
+                                      _vm._v(_vm._s(company.email))
+                                    ])
+                                  ]
+                                )
+                              ])
+                            }),
+                            0
+                          )
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group mb-1 row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-md-4 text-right col-form-label",
+                        attrs: { for: "client" }
                       },
-                      model: {
-                        value: _vm.offer.delivery_date,
-                        callback: function($$v) {
-                          _vm.$set(_vm.offer, "delivery_date", $$v)
-                        },
-                        expression: "offer.delivery_date"
+                      [_vm._v("Contact")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-8 p-0" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.offer.client_id,
+                            expression: "offer.client_id"
+                          }
+                        ],
+                        attrs: { type: "hidden" },
+                        domProps: { value: _vm.offer.client_id },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.offer,
+                              "client_id",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.offer.client_name,
+                            expression: "offer.client_name"
+                          }
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        attrs: { id: "client", type: "text", name: "client" },
+                        domProps: { value: _vm.offer.client_name },
+                        on: {
+                          keyup: _vm.getContact,
+                          focusin: _vm.hideCompany,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.offer,
+                              "client_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.offer.client_id === 0 &&
+                      _vm.offer.client_name.length > 2
+                        ? _c("div", { staticClass: "float-right drop-new" }, [
+                            _vm._v("New\n                            ")
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.showDropContact
+                        ? _c(
+                            "div",
+                            { staticClass: "dropdown-select" },
+                            _vm._l(_vm.clients, function(client) {
+                              return _c("ul", [
+                                _c(
+                                  "li",
+                                  {
+                                    attrs: { "data-id": client.id },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.setContact(client)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("div", { staticClass: "drop-name" }, [
+                                      _vm._v(_vm._s(client.name))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "drop-name" }, [
+                                      _vm._v(_vm._s(client.phone))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "drop-name" }, [
+                                      _vm._v(_vm._s(client.email))
+                                    ])
+                                  ]
+                                )
+                              ])
+                            }),
+                            0
+                          )
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group mb-1 row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-md-4 text-right col-form-label",
+                        attrs: { for: "title" }
+                      },
+                      [_vm._v("Title")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.offer.title,
+                          expression: "offer.title"
+                        }
+                      ],
+                      staticClass: "form-control form-control-sm col-md-8",
+                      attrs: { id: "title", type: "text", name: "title" },
+                      domProps: { value: _vm.offer.title },
+                      on: {
+                        focusin: _vm.hideClient,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.offer, "title", $event.target.value)
+                        }
                       }
                     })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group mb-1 row" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-md-4 text-right col-form-label",
-                      attrs: { for: "number" }
-                    },
-                    [_vm._v("Offer No.")]
-                  ),
+                  ]),
                   _vm._v(" "),
-                  _c("input", {
-                    directives: [
+                  _c("div", { staticClass: "form-group mb-1 row" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.offer.number,
-                        expression: "offer.number"
-                      }
-                    ],
-                    staticClass: "form-control form-control-sm col-md-8",
-                    attrs: { id: "number", type: "text", name: "info" },
-                    domProps: { value: _vm.offer.number },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.offer, "number", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group mb-1 row" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-md-4 text-right col-form-label",
-                      attrs: { for: "order_number" }
-                    },
-                    [_vm._v("Order No.")]
-                  ),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.offer.order_number,
-                        expression: "offer.order_number"
-                      }
-                    ],
-                    staticClass: "form-control form-control-sm col-md-8",
-                    attrs: {
-                      id: "order_number",
-                      type: "text",
-                      name: "order_number"
-                    },
-                    domProps: { value: _vm.offer.order_number },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.offer, "order_number", $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("table", { staticClass: "table table-sm table-striped" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.positions, function(item) {
-                  return _c("tr", { staticClass: "group-line" }, [
-                    _c("th", { attrs: { scope: "row" } }, [
-                      _vm._v(_vm._s(item.index))
-                    ]),
+                        staticClass: "col-md-4 text-right col-form-label",
+                        attrs: { for: "delivery_address" }
+                      },
+                      [_vm._v("Delivery\n                            address")]
+                    ),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.product))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.title))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.quantity))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.unit))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: item.warehouse_id,
-                            expression: "item.warehouse_id"
-                          }
-                        ],
-                        attrs: { type: "text" },
-                        domProps: { value: item.warehouse_id },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(item, "warehouse_id", $event.target.value)
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: item.cost,
-                            expression: "item.cost"
-                          }
-                        ],
-                        attrs: { type: "text" },
-                        domProps: { value: item.cost },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(item, "cost", $event.target.value)
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: item.price,
-                            expression: "item.price"
-                          }
-                        ],
-                        attrs: { type: "text" },
-                        domProps: { value: item.price },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(item, "price", $event.target.value)
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: item.discount,
-                            expression: "item.discount"
-                          }
-                        ],
-                        attrs: { type: "text" },
-                        domProps: { value: item.discount },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(item, "discount", $event.target.value)
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: item.discount_next,
-                            expression: "item.discount_next"
-                          }
-                        ],
-                        attrs: { type: "text" },
-                        domProps: { value: item.discount_next },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(item, "discount_next", $event.target.value)
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: item.final_price,
-                            expression: "item.final_price"
-                          }
-                        ],
-                        attrs: { type: "text" },
-                        domProps: { value: item.final_price },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(item, "final_price", $event.target.value)
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: item.vat,
-                            expression: "item.vat"
-                          }
-                        ],
-                        attrs: { type: "text" },
-                        domProps: { value: item.vat },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(item, "vat", $event.target.value)
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td"),
-                    _vm._v(" "),
-                    _c("td"),
-                    _vm._v(" "),
-                    _c("td"),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "button",
+                    _c("input", {
+                      directives: [
                         {
-                          staticClass: "btn btn-sm btn-outline-danger",
-                          on: { click: _vm.itemAdd }
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.offer.delivery_address,
+                          expression: "offer.delivery_address"
+                        }
+                      ],
+                      staticClass: "form-control form-control-sm col-md-8",
+                      attrs: {
+                        id: "delivery_address",
+                        type: "text",
+                        name: "delivery_address"
+                      },
+                      domProps: { value: _vm.offer.delivery_address },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.offer,
+                            "delivery_address",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-group mb-1 row" },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-4 text-right col-form-label",
+                          attrs: { for: "delivery_date" }
                         },
-                        [_c("i", { staticClass: "fas fa-trash" })]
-                      )
-                    ])
+                        [_vm._v("Delivery date")]
+                      ),
+                      _vm._v(" "),
+                      _c("datetime", {
+                        attrs: {
+                          id: "delivery_date",
+                          type: "date",
+                          "input-class": "form-control form-control-sm col-md-8"
+                        },
+                        model: {
+                          value: _vm.offer.delivery_date,
+                          callback: function($$v) {
+                            _vm.$set(_vm.offer, "delivery_date", $$v)
+                          },
+                          expression: "offer.delivery_date"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group mb-1 row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-md-4 text-right col-form-label",
+                        attrs: { for: "number" }
+                      },
+                      [_vm._v("Offer No.")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.offer.number,
+                          expression: "offer.number"
+                        }
+                      ],
+                      staticClass: "form-control form-control-sm col-md-8",
+                      attrs: { id: "number", type: "text", name: "info" },
+                      domProps: { value: _vm.offer.number },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.offer, "number", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group mb-1 row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-md-4 text-right col-form-label",
+                        attrs: { for: "order_number" }
+                      },
+                      [_vm._v("Order No.")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.offer.order_number,
+                          expression: "offer.order_number"
+                        }
+                      ],
+                      staticClass: "form-control form-control-sm col-md-8",
+                      attrs: {
+                        id: "order_number",
+                        type: "text",
+                        name: "order_number"
+                      },
+                      domProps: { value: _vm.offer.order_number },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.offer,
+                            "order_number",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
                   ])
-                }),
-                0
-              )
-            ]),
-            _vm._v(" "),
-            _vm._m(1),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group mb-1 text-right" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-info",
-                  attrs: { type: "button" },
-                  on: { click: _vm.closePopup }
-                },
-                [
-                  _c("i", { staticClass: "fas fa-times" }),
-                  _vm._v("\n                    Cancel\n                ")
-                ]
-              ),
+                ])
+              ]),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-success",
-                  attrs: { type: "button" },
-                  on: { click: _vm.saveOffer }
-                },
-                [
-                  _c("i", { staticClass: "fas fa-save" }, [
-                    _vm._v("\n                    Save")
-                  ])
-                ]
-              )
-            ])
-          ])
+              _c("offer-items")
+            ],
+            1
+          )
         ])
       ])
     : _vm._e()
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", { staticClass: "thead" }, [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("No.")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Product")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Title")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Quantity")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Unit")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Warehouse")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Prime cost")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Price")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Discount")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Discount")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Price after discount")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("VAT")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("VAT amount")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Margin")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Prime total cost")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Total")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group mb-1 text-left" }, [
-      _c("button", { staticClass: "btn btn-sm btn-info" }, [
-        _vm._v(" Add row")
-      ]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-sm" }, [_vm._v(" Add group")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -63130,6 +63492,7 @@ Vue.component('positions-popup', __webpack_require__(/*! ./components/PositionsC
 Vue.component('nope-popup', __webpack_require__(/*! ./components/NopePopupComponent.vue */ "./resources/js/components/NopePopupComponent.vue")["default"]);
 Vue.component('find', __webpack_require__(/*! ./components/FindComponent.vue */ "./resources/js/components/FindComponent.vue")["default"]);
 Vue.component('offer', __webpack_require__(/*! ./components/OfferComponent.vue */ "./resources/js/components/OfferComponent.vue")["default"]);
+Vue.component('offer-items', __webpack_require__(/*! ./components/OfferItemsComponent.vue */ "./resources/js/components/OfferItemsComponent.vue")["default"]);
 Vue.component('datetime', vue_datetime__WEBPACK_IMPORTED_MODULE_0__["Datetime"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -63146,7 +63509,8 @@ var app = new Vue({
     errorMessage: '',
     popup: false,
     nope: false,
-    positions: false
+    positions: false,
+    offer: []
   },
   methods: {
     fetchError: function fetchError(error) {
@@ -63702,6 +64066,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OfferComponent_vue_vue_type_template_id_03588cac_ref_offer___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OfferComponent_vue_vue_type_template_id_03588cac_ref_offer___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/OfferItemsComponent.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/OfferItemsComponent.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _OfferItemsComponent_vue_vue_type_template_id_005f0bfe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OfferItemsComponent.vue?vue&type=template&id=005f0bfe& */ "./resources/js/components/OfferItemsComponent.vue?vue&type=template&id=005f0bfe&");
+/* harmony import */ var _OfferItemsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OfferItemsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/OfferItemsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _OfferItemsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _OfferItemsComponent_vue_vue_type_template_id_005f0bfe___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _OfferItemsComponent_vue_vue_type_template_id_005f0bfe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/OfferItemsComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/OfferItemsComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/OfferItemsComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OfferItemsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./OfferItemsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OfferItemsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OfferItemsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/OfferItemsComponent.vue?vue&type=template&id=005f0bfe&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/OfferItemsComponent.vue?vue&type=template&id=005f0bfe& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OfferItemsComponent_vue_vue_type_template_id_005f0bfe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./OfferItemsComponent.vue?vue&type=template&id=005f0bfe& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OfferItemsComponent.vue?vue&type=template&id=005f0bfe&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OfferItemsComponent_vue_vue_type_template_id_005f0bfe___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OfferItemsComponent_vue_vue_type_template_id_005f0bfe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

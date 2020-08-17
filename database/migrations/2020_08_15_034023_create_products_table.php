@@ -215,8 +215,8 @@ class CreateProductsTable extends Migration
                 $table->unsignedDecimal('quantity', 11, 3);
                 $table->unsignedDecimal('cost', 11, 2);
                 $table->unsignedDecimal('price', 11, 2);
-                $table->unsignedDecimal('discount', 11, 2);
-                $table->unsignedDecimal('discount_next', 11, 2);
+                $table->unsignedDecimal('discount', 11, 2)->nullable();
+                $table->unsignedDecimal('discount_next', 11, 2)->nullable();
                 $table->unsignedDecimal('final_price', 11, 2);
                 $table->unsignedDecimal('subtotal', 11, 2);
                 $table->unsignedDecimal('total', 11, 2);

@@ -79,11 +79,8 @@
                         </div>
                     </div>
 
-                    <div v-for="position in positions">
-
-                    </div>
                     <div class="text-right small">Total amount: {{ item.total }} €</div>
-                    <div class="text-right small">VAT: {{ (item.total - item.total_with_vat) }} €</div>
+                    <div class="text-right small">VAT: {{ ( item.total_with_vat - item.total) }} €</div>
                     <div class="text-right"><strong>TOTAL: {{ item.total_with_vat }} €</strong></div>
                     <div class="text-right small">Margin with expenses: {{ item.sales_profit }} € ({{ item.total > 0 ? item.sales_profit / item.total * 100 : 0 }}%) </div>
                 </div>
@@ -115,7 +112,7 @@ export default {
             let url = '/offer/get/' + this.id;
             axios.get(url).then(response => {
                 this.item = response.data;
-                this.positions = typeof response.data.positions === 'undefined' ? response.data.positions : [];
+                this.positions = typeof response.data.positions !== 'undefined' ? response.data.positions : [];
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -129,6 +126,7 @@ export default {
         },
         positionsLoad(item) {
             this.$root.$emit('editPositions', item);
+            this.$root.$data.offer = item;
             this.$root.$data.positions = true;
         },
         itemDelete(item) {

@@ -95,64 +95,7 @@
                         </div>
                     </div>
                 </div>
-
-                <table class="table table-sm table-striped">
-                    <thead class="thead">
-                    <tr>
-                        <th scope="col">No.</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Unit</th>
-                        <th scope="col">Warehouse</th>
-                        <th scope="col">Prime cost</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Discount</th>
-                        <th scope="col">Discount</th>
-                        <th scope="col">Price after discount</th>
-                        <th scope="col">VAT</th>
-                        <th scope="col">VAT amount</th>
-                        <th scope="col">Margin</th>
-                        <th scope="col">Prime total cost</th>
-                        <th scope="col">Total</th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="group-line" v-for="item in positions">
-                        <th scope="row">{{ item.index }}</th>
-                        <td>{{ item.product }}</td>
-                        <td>{{ item.title }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>{{ item.unit }}</td>
-                        <td><input type="text" v-model="item.warehouse_id"></td>
-                        <td><input type="text" v-model="item.cost"></td>
-                        <td><input type="text" v-model="item.price"></td>
-                        <td><input type="text" v-model="item.discount"></td>
-                        <td><input type="text" v-model="item.discount_next"></td>
-                        <td><input type="text" v-model="item.final_price"></td>
-                        <td><input type="text" v-model="item.vat"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-danger" @click="itemAdd"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="form-group mb-1 text-left">
-                    <button class="btn btn-sm btn-info"> Add row</button>
-                    <button class="btn btn-sm"> Add group</button>
-                </div>
-                <div class="form-group mb-1 text-right">
-                    <button class="btn btn-outline-info" type="button" @click="closePopup"><i class="fas fa-times"></i>
-                        Cancel
-                    </button>
-                    <button class="btn btn-outline-success" type="button" @click="saveOffer"><i class="fas fa-save">
-                        Save</i>
-                    </button>
-                </div>
+                <offer-items></offer-items>
             </div>
         </div>
     </div>
@@ -177,7 +120,7 @@ export default {
         }
     },
     created() {
-        //
+        // this.$root.$emit('editOfferItems');
     },
     mounted() {
         this.$root.$on('editPositions', (item) => {
@@ -186,6 +129,20 @@ export default {
             this.offer.company_name = item.company !== null && (typeof item.company !== 'undefined') ? item.company.name : '';
             this.offer.client_id = item.client !== null && (typeof item.client !== 'undefined') ? item.client.id : 0;
             this.offer.client_name = item.client !== null && (typeof item.client !== 'undefined') ? item.client.name : '';
+
+        });
+        this.$root.$on('updateOfferSum', (total) => {
+            this.offer.total = total.total;
+            this.offer.total_with_vat = total.total_with_vat;
+            this.offer.sales_profit = total.sales_profit;
+
+        });
+        this.$root.$on('saveOfferNow', (items) => {
+            this.offer.positions = items;
+            this.saveOffer();
+        });
+        this.$root.$on('closePopupNow', () => {
+            this.closePopup();
         });
     },
     methods: {
