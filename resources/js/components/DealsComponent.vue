@@ -37,6 +37,7 @@
                             <td><div class="stage " v-bind:class="item.state.class">{{ item.state !== null && (typeof item.state.name !== undefined) ? item.state.name : ''}}</div></td>
                             <td>{{ item.info }}</td>
                             <td>
+                                <button class="btn btn-sm btn-outline-dark" @click="itemShow(item.id)"><i class="fas fa-search-dollar"></i></button>
                                 <button class="btn btn-sm btn-outline-secondary" @click="itemLoad(item)"><i class="far fa-edit"></i></button>
                                 <button class="btn btn-sm btn-outline-danger" @click="itemDelete(item)"><i class="fas fa-trash"></i></button>
                             </td>
@@ -87,6 +88,9 @@ export default {
             this.$root.$emit('nopeItem', data);
             this.$root.$data.nope = true;
             this.fetchItems();
+        },
+        itemShow(id){
+            document.location.href = '/offer/' + id;
         }
     }
 }

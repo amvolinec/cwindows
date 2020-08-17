@@ -6,7 +6,41 @@ use Illuminate\Database\Eloquent\Model;
 
 class Offer extends Model
 {
-    protected $fillable = ["title", "client_id", "architect_id", "enquiry_date", "pv", "area", "positions", "profile", "state_id", "state_comment", "info", "enquiry_channel", "klaes", "contract_date", "contract_nr", "price_1_date", "price_1", "price_2_date", "price_2", "price_3_date", "price_3", "total", "total_with_vat", "balance", "other_services", "sales_profit", "project_amount", "project_amount_with_vat", "user_id"];
+    protected $fillable = [
+        "company_id",
+        "client_id",
+        "architect_id",
+        "enquiry_date",
+        "number",
+        "order_number",
+        "title",
+        "pv",
+        "area",
+        "positions",
+        "profile",
+        "state_id",
+        "state_comment",
+        "info",
+        "pipeline",
+        "enquiry_channel",
+        "klaes",
+        "contract_date",
+        "contract_nr",
+        "price_1_date",
+        "price_1",
+        "price_2_date",
+        "price_2",
+        "price_3_date",
+        "price_3",
+        "total",
+        "total_with_vat",
+        "balance",
+        "other_services",
+        "sales_profit",
+        "planned_amount_percents",
+        "project_amount",
+        "project_amount_with_vat",
+        "user_id"];
 
     public function client()
     {
@@ -31,5 +65,10 @@ class Offer extends Model
     public function state()
     {
         return $this->belongsTo('App\State');
+    }
+
+    public function positions()
+    {
+        return $this->hasMany('App\Position');
     }
 }

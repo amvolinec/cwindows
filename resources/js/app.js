@@ -26,8 +26,10 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('errors', require('./components/ErrorsComponent.vue').default);
 Vue.component('deals', require('./components/DealsComponent.vue').default);
 Vue.component('deals-popup', require('./components/DealsPopupComponent.vue').default);
+Vue.component('positions-popup', require('./components/PositionsComponent.vue').default);
 Vue.component('nope-popup', require('./components/NopePopupComponent.vue').default);
 Vue.component('find', require('./components/FindComponent.vue').default);
+Vue.component('offer', require('./components/OfferComponent.vue').default);
 Vue.component('datetime', Datetime);
 
 /**
@@ -45,6 +47,7 @@ const app = new Vue({
         errorMessage: '',
         popup: false,
         nope: false,
+        positions: false
     },
     methods: {
         fetchError(error){

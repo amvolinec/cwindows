@@ -51,9 +51,9 @@ class ProductSeeder extends Seeder
         DB::table('brands')->insert($data);
 
         $data = [
-            ['code' => 'windows', 'name' => 'windows'],
-            ['code' => 'doors', 'name' => 'doors'],
-            ['code' => 'windows', 'name' => 'doors'],
+            ['code' => 'WINDS', 'name' => 'windows'],
+            ['code' => 'DOORS', 'name' => 'doors'],
+            ['code' => 'INST', 'name' => 'installation'],
             ];
 
         DB::table('categories')->insert($data);

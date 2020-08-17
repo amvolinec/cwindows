@@ -41,6 +41,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('set-offer', 'OfferController@setOffer')->name('set.offer');
 
     Route::delete('offers', 'OfferController@deleteMany');
+    Route::get('offer/get/{id}', 'OfferController@getData')->name('offer.get.data');
 
     Route::post('company/find/', 'CompanyController@find')->name('company.find');
     Route::get('company/find/{string}', 'CompanyController@find')->name('company.find.get');

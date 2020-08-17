@@ -66,3 +66,8 @@
 .stage.completed { background: #6dacaa;};
 .stage.lost { background: #ff82a9;};
 .stage.canceled { background: #ffc0be;};
+
+.popup-window.full {
+    width: calc(100% - 40px);
+
+}

@@ -55,12 +55,12 @@ class OfferController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Offer $offer
-     * @return RedirectResponse
+     * @param $id
+     * @return View
      */
-    public function show(Offer $offer)
+    public function show($id)
     {
-        return redirect()->route('offer.index');
+        return view('offer.show', ['id' => $id]);
     }
 
     /**
@@ -151,6 +151,11 @@ class OfferController extends Controller
             $offer->planned_amount_percents = $request->has('planned_amount_percents') ? (float)$request->get('planned_amount_percents') : 0;
             $offer->info = $request->has('info') ? $request->get('info') : '';
             $offer->user_id = $request->get('user_id');
+            $offer->delivery_address = $request->has('delivery_address') ? $request->get('delivery_address') : '';
+            $offer->delivery_date = $request->has('delivery_date') ? substr($request->get('delivery_date'),0,10) : null;
+            $offer->number = $request->has('number') ? $request->get('number') : '';
+            $offer->order_number = $request->has('order_number') ? $request->get('order_number') : '';
+
 
             $offer->save();
 
@@ -171,5 +176,9 @@ class OfferController extends Controller
         } catch (Exception $e) {
             return ['status' => 'error', 'message' => $e->getMessage()];
         }
+    }
+
+    public function getData($id) {
+        return Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user'])->findOrFail($id);
     }
 }

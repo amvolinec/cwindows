@@ -17198,3 +17198,7 @@ readers do not read off random characters that represent icons */
   background: #ffc0be;
 }
 
+.popup-window.full {
+  width: calc(100% - 40px);
+}
+
