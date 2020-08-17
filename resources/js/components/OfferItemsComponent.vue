@@ -5,8 +5,8 @@
                 <thead class="thead">
                 <tr>
                     <th width="30">No.</th>
-                    <th width="200">Product</th>
-                    <th width="auto">Title</th>
+                    <th width="150">Product</th>
+                    <th width="250">Title</th>
                     <th width="70">Quantity</th>
                     <th width="40">Unit</th>
                     <th width="70">Prime cost</th>

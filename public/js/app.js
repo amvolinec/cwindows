@@ -50336,9 +50336,9 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", { attrs: { width: "30" } }, [_vm._v("No.")]),
         _vm._v(" "),
-        _c("th", { attrs: { width: "200" } }, [_vm._v("Product")]),
+        _c("th", { attrs: { width: "150" } }, [_vm._v("Product")]),
         _vm._v(" "),
-        _c("th", { attrs: { width: "auto" } }, [_vm._v("Title")]),
+        _c("th", { attrs: { width: "250" } }, [_vm._v("Title")]),
         _vm._v(" "),
         _c("th", { attrs: { width: "70" } }, [_vm._v("Quantity")]),
         _vm._v(" "),
