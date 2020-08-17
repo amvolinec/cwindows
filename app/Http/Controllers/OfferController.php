@@ -154,7 +154,10 @@ class OfferController extends Controller
             $offer->info = $request->has('info') ? $request->get('info') : '';
             $offer->user_id = $request->get('user_id');
             $offer->delivery_address = $request->has('delivery_address') ? $request->get('delivery_address') : '';
-            $offer->delivery_date = $request->has('delivery_date') ? substr($request->get('delivery_date'), 0, 10) : null;
+
+            if ($request->has('delivery_date')) {
+                $offer->delivery_date = empty($request->get('delivery_date')) ? null : substr($request->get('delivery_date'),0,10);
+            }
 
             if ($request->has('number')) {
                 $offer->number = $request->get('number');

@@ -64,7 +64,7 @@
                         <div v-if="item.total > 0">{{ item.total }}</div>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-outline-danger" @click="removeItem(item)"><i
+                        <button class="btn btn-sm btn-outline-info" @click="removeItem(item)"><i
                             class="fas fa-trash"></i>
                         </button>
                     </td>
@@ -73,8 +73,8 @@
             </table>
         </div>
         <div class="form-group mb-1 text-left">
-            <button class="btn btn-sm btn-info" @click="addRow"> Add row</button>
-            <button class="btn btn-sm"> Add group</button>
+            <button class="btn btn-sm btn-outline-success" @click="addRow"><i class="fas fa-cart-plus"></i> Add row</button>
+            <button class="btn btn-sm btn-outline-dark"><i class="fas fa-plus"></i> Add group</button>
         </div>
 
         <div class="form-group mb-1 row">
@@ -98,7 +98,7 @@
         </div>
 
         <div class="form-group mb-0 text-right">
-            <button class="btn btn-outline-info" type="button" @click="closePopup"><i class="fas fa-times"></i>
+            <button class="btn btn-outline-dark" type="button" @click="closePopup"><i class="fas fa-times"></i>
                 Cancel
             </button>
             <button class="btn btn-outline-success" type="button" @click="saveOffer"><i class="fas fa-save">

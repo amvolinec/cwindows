@@ -107,7 +107,7 @@
                 </div>
 
                 <div class="form-group text-right">
-                    <button class="btn btn-outline-info" type="button" @click="closePopup"><i class="fas fa-times"></i>
+                    <button class="btn btn-outline-secondary" type="button" @click="closePopup"><i class="fas fa-times"></i>
                         Cancel
                     </button>
                     <button class="btn btn-outline-success" type="button" @click="saveOffer"><i class="fas fa-save">

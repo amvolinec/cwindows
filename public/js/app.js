@@ -48690,7 +48690,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-sm btn-outline-dark",
+                          staticClass: "btn btn-sm btn-outline-secondary",
                           on: {
                             click: function($event) {
                               return _vm.itemShow(item.id)
@@ -48716,7 +48716,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-sm btn-outline-danger",
+                          staticClass: "btn btn-sm btn-outline-info",
                           on: {
                             click: function($event) {
                               return _vm.itemDelete(item)
@@ -49370,7 +49370,7 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "btn btn-outline-info",
+                  staticClass: "btn btn-outline-secondary",
                   attrs: { type: "button" },
                   on: { click: _vm.closePopup }
                 },
@@ -50227,7 +50227,7 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-sm btn-outline-danger",
+                    staticClass: "btn btn-sm btn-outline-info",
                     on: {
                       click: function($event) {
                         return _vm.removeItem(item)
@@ -50247,11 +50247,14 @@ var render = function() {
     _c("div", { staticClass: "form-group mb-1 text-left" }, [
       _c(
         "button",
-        { staticClass: "btn btn-sm btn-info", on: { click: _vm.addRow } },
-        [_vm._v(" Add row")]
+        {
+          staticClass: "btn btn-sm btn-outline-success",
+          on: { click: _vm.addRow }
+        },
+        [_c("i", { staticClass: "fas fa-cart-plus" }), _vm._v(" Add row")]
       ),
       _vm._v(" "),
-      _c("button", { staticClass: "btn btn-sm" }, [_vm._v(" Add group")])
+      _vm._m(1)
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group mb-1 row" }, [
@@ -50298,7 +50301,7 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn btn-outline-info",
+          staticClass: "btn btn-outline-dark",
           attrs: { type: "button" },
           on: { click: _vm.closePopup }
         },
@@ -50363,6 +50366,15 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { width: "40" } })
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "btn btn-sm btn-outline-dark" }, [
+      _c("i", { staticClass: "fas fa-plus" }),
+      _vm._v(" Add group")
     ])
   }
 ]
