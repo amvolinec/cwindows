@@ -8,16 +8,16 @@
                     <th width="150">Product</th>
                     <th width="250">Title</th>
                     <th width="70">Quantity</th>
-                    <th width="40">Unit</th>
                     <th width="70">Prime cost</th>
                     <th width="70">Price</th>
-                    <th width="70">Discount</th>
-                    <th width="70">Discount</th>
+                    <th width="80">Discount (%)</th>
+                    <th width="80">Discount (€)</th>
                     <th width="70">Price after discount</th>
                     <th width="70">VAT</th>
                     <th width="70">VAT amount</th>
                     <th width="80">Margin</th>
                     <th width="80">Prime total cost</th>
+                    <th width="80">Sum</th>
                     <th width="80">Total</th>
                     <th width="40"></th>
                 </tr>
@@ -31,17 +31,16 @@
                     <td><textarea class="form-control item-sm" type="text" v-model="item.title"></textarea></td>
                     <td><input class="form-control item-sm text-right" type="text" v-model="item.quantity"
                                @change="calcSum(item)"></td>
-                    <td class="item-sm text-right">{{ item.unit }}</td>
                     <td><input class="form-control item-sm text-right" type="text" v-model="item.cost"
                                @change="calcSum(item)"></td>
                     <td><input class="form-control item-sm text-right" type="text" v-model="item.price"
                                @change="calcSum(item)"></td>
-                    <td><input class="form-control item-sm text-right" type="text" v-model="item.discount"
-                               @change="calcSum(item)"></td>
                     <td><input class="form-control item-sm text-right" type="text" v-model="item.discount_next"
-                               @change="calcSum(item)"></td>
+                               @change="calcDiscount(item, true)"></td>
+                    <td><input class="form-control item-sm text-right" type="text" v-model="item.discount"
+                               @change="calcDiscount(item, false)"></td>
                     <td class="item-sm text-right">
-                        <div v-if="item.final_price > 0">{{ item.final_price }}</div>
+                        <div v-if="item.final_price > 0">{{ (item.final_price).toFixed(2) }}</div>
                     </td>
                     <td>
                         <select class="form-control item-sm" type="text" v-model="item.vat" @change="calcSum(item)">
@@ -52,16 +51,19 @@
                         </select>
                     </td>
                     <td class="item-sm text-right">
-                        <div v-if="item.vat_amount > 0">{{ item.vat_amount }}</div>
+                        <div v-if="item.vat_amount > 0">{{ (item.vat_amount).toFixed(2) }}</div>
                     </td>
                     <td class="item-sm text-right">
-                        <div v-if="item.margin > 0">{{ item.margin }}</div>
+                        <div v-if="item.margin > 0">{{ (item.margin).toFixed(2) }}</div>
                     </td>
                     <td class="item-sm text-right">
-                        <div v-if="item.total_cost > 0">{{ item.total_cost }}</div>
+                        <div v-if="item.total_cost > 0">{{ (item.total_cost).toFixed(2) }}</div>
                     </td>
                     <td class="item-sm text-right">
-                        <div v-if="item.total > 0">{{ item.total }}</div>
+                        <div v-if="item.subtotal > 0">{{ (item.subtotal).toFixed(2) }}</div>
+                    </td>
+                    <td class="item-sm text-right">
+                        <div v-if="item.total > 0">{{ (item.total).toFixed(2) }}</div>
                     </td>
                     <td>
                         <button class="btn btn-sm btn-outline-info" @click="removeItem(item)"><i
@@ -72,40 +74,46 @@
                 </tbody>
             </table>
         </div>
-        <div class="form-group mb-1 text-left">
-            <button class="btn btn-sm btn-outline-success" @click="addRow"><i class="fas fa-cart-plus"></i> Add row
-            </button>
-        </div>
-
         <div class="form-group mb-1 row">
-            <div class="col-md-10 text-right">Amount without VAT:</div>
-            <div class="col-md-2 text-right">{{ total.total }} €</div>
-        </div>
+            <div class="col-md-6">
+                <div class="form-group mb-1 text-left">
+                    <button class="btn btn-sm btn-outline-success" @click="addRow"><i class="fas fa-cart-plus"></i> Add
+                        row
+                    </button>
+                </div>
+            </div>
 
-        <div class="form-group mb-0 row">
-            <div class="col-md-10 text-right">VAT amount:</div>
-            <div class="col-md-2 text-right">{{ total.total_with_vat - total.total }} €</div>
-        </div>
+            <div class="col-md-6">
+                <div class="form-group mb-1 row">
+                    <div class="col-md-10 text-right">Amount without VAT:</div>
+                    <div class="col-md-2 text-right">{{ $root.format(total.total) }}</div>
+                </div>
 
-        <div class="form-group mb-0 row">
-            <div class="col-md-10 text-right">Amount with VAT:</div>
-            <div class="col-md-2 text-right">{{ total.total_with_vat }} €</div>
-        </div>
+                <div class="form-group mb-0 row">
+                    <div class="col-md-10 text-right">VAT amount:</div>
+                    <div class="col-md-2 text-right">{{ $root.format(total.total_with_vat - total.total) }}</div>
+                </div>
 
-        <div class="form-group mb-0 row">
-            <div class="col-md-10 text-right">Margin with expenses:</div>
-            <div class="col-md-2 text-right">{{ total.sales_profit }} €</div>
-        </div>
+                <div class="form-group mb-0 row">
+                    <div class="col-md-10 text-right">Amount with VAT:</div>
+                    <div class="col-md-2 text-right">{{ $root.format(total.total_with_vat) }}</div>
+                </div>
 
-        <div class="form-group mb-0 text-right">
-            <button class="btn btn-outline-dark" type="button" @click="closePopup"><i class="fas fa-times"></i>
-                Cancel
-            </button>
-            <button class="btn btn-outline-success" type="button" @click="saveOffer"><i class="fas fa-save">
-                Save</i>
-            </button>
-        </div>
+                <div class="form-group mb-0 row">
+                    <div class="col-md-10 text-right">Margin with expenses:</div>
+                    <div class="col-md-2 text-right">{{ $root.format(total.sales_profit) }}</div>
+                </div>
 
+                <div class="form-group mb-0 text-right">
+                    <button class="btn btn-outline-dark" type="button" @click="closePopup"><i class="fas fa-times"></i>
+                        Cancel
+                    </button>
+                    <button class="btn btn-outline-success" type="button" @click="saveOffer"><i class="fas fa-save">
+                        Save</i>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -119,6 +127,12 @@ export default {
             total: {total: 0, total_with_vat: 0, sales_profit: 0},
             index: 0
         }
+    },
+    mounted() {
+        this.$root.$on('offerItemsSaved', () => {
+            this.items = this.$root.$data.offer.positions;
+            this.onLoad();
+        });
     },
     created() {
         this.items = this.$root.$data.offer.positions;
@@ -179,9 +193,18 @@ export default {
             this.onLoad();
         }, addRow() {
             this.items.push(this.itemAdd());
+        }, calcDiscount(item, percents) {
+            if (percents) {
+                item.discount = item.price * item.quantity / 100 * item.discount_next;
+            } else {
+                item.discount_next = item.price * item.quantity > 0 ? item.discount / item.price * item.quantity : 0 ;
+            }
+            this.calcSum(item);
         }, calcSum(item) {
-            item.final_price = item.price - item.discount - item.discount_next;
-            item.subtotal = item.final_price * item.quantity;
+
+            item.subtotal = item.price * item.quantity - item.discount;
+            item.final_price = item.quantity > 0 ? item.subtotal / item.quantity : 0;
+
             item.total_cost = item.cost * item.quantity;
             item.vat_amount = item.subtotal * item.vat / 100;
             item.total = item.vat_amount + item.subtotal;
@@ -212,7 +235,7 @@ export default {
                 this.index++;
                 this.calcSum(item);
             });
-        }, nopeDeleted(){
+        }, nopeDeleted() {
             this.deleted.forEach((item, index) => {
                 axios.delete('/position/', {params: {'ids': this.deleted}}).then((r) => {
                     console.log(r);

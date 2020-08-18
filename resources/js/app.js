@@ -75,6 +75,10 @@ const app = new Vue({
                 console.log('Error', error.message);
             }
             console.log(error.config);
+        }, format(n) {
+            return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(n);
+        }, percents(n) {
+            return new Intl.NumberFormat('de-DE', { style: 'percent', signDisplay: "exceptZero" }).format(n);
         }
     }
 });

@@ -22,8 +22,8 @@
                     <table class="table table-sm">
                         <tbody>
                         <tr>
-                            <th scope="row">Planned date of sale</th>
-                            <td>{{ item.planed_date }}</td>
+                            <th width="50%" scope="row">Planned date of sale</th>
+                            <td width="50%">{{ item.planed_date }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Company</th>
@@ -79,10 +79,26 @@
                         </div>
                     </div>
 
-                    <div class="text-right small">Total amount: {{ item.total }} €</div>
-                    <div class="text-right small">VAT: {{ ( item.total_with_vat - item.total) }} €</div>
-                    <div class="text-right"><strong>TOTAL: {{ item.total_with_vat }} €</strong></div>
-                    <div class="text-right small">Margin with expenses: {{ item.sales_profit }} € ({{ item.total > 0 ? item.sales_profit / item.total * 100 : 0 }}%) </div>
+                    <ul class="i-list mb-2" v-for="position in positions">
+                        <li>
+                            <div class="i-title">{{ position.title }}</div>
+                            <div class="i-line">
+                                <div class="float-left">
+                                    {{ position.quantity }} x {{ position.price }} €
+                                </div>
+                                <div class="float-right">
+                                    {{ $root.format(position.subtotal) }}˚
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="text-right small">Total amount: {{ this.$root.format(item.total) }}</div>
+                    <div class="text-right small">VAT: {{ this.$root.format((item.total_with_vat - item.total)) }}</div>
+                    <div class="text-right"><strong>TOTAL: {{ this.$root.format(item.total_with_vat) }}</strong></div>
+                    <div class="text-right small">Margin with expenses: {{ this.$root.format(item.sales_profit) }}
+                        ({{ this.$root.percents(item.total > 0 ? item.sales_profit / item.total * 100 : 0) }})
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,6 +119,12 @@ export default {
             item: [],
             positions: [],
         }
+    },
+    mounted() {
+        this.$root.$on('updateOffer', (offer) => {
+            // this.positions = offer.positions;
+            this.fetchItems();
+        });
     },
     created() {
         this.fetchItems();

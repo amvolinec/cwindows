@@ -217,7 +217,11 @@ class OfferController extends Controller
             return ['status' => 'error', 'message' => $exception->getMessage()];
         }
 
-        return ['status' => 'success', 'message' => json_encode($company)];
+        return [
+            'status' => 'success',
+            'message' => json_encode($company),
+            'offer' => $this->getData($offer->id)
+        ];
     }
 
     public function deleteMany(Request $request)

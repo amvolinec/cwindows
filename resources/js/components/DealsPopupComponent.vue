@@ -58,7 +58,8 @@
 
                 <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="title">Title</label>
-                    <input id="title" type="text" class="form-control col-md-8" name="title" @focusin="hideClient"  v-model="offer.title">
+                    <input id="title" type="text" class="form-control col-md-8" name="title" @focusin="hideClient"
+                           v-model="offer.title">
                 </div>
 
                 <div class="form-group row">
@@ -77,17 +78,21 @@
 
                 <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="planed_date">Planned date of sale</label>
-                    <datetime id="planed_date" v-model="offer.planed_date" type="date" input-class="form-control col-md-8"></datetime>
+                    <datetime id="planed_date" v-model="offer.planed_date" type="date"
+                              input-class="form-control col-md-8"></datetime>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="project_amount">Planned amount</label>
-                    <input id="project_amount" type="text" class="form-control col-md-8" name="project_amount" v-model="offer.project_amount">
+                    <input id="project_amount" type="text" class="form-control col-md-8" name="project_amount"
+                           v-model="offer.project_amount">
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="planned_amount_percents">Probability %</label>
-                    <input id="planned_amount_percents" type="text" class="form-control col-md-8" name="planned_amount_percents"
+                    <label class="col-md-4 text-right col-form-label" for="planned_amount_percents">Probability
+                        %</label>
+                    <input id="planned_amount_percents" type="text" class="form-control col-md-8"
+                           name="planned_amount_percents"
                            v-model="offer.planned_amount_percents">
                 </div>
 
@@ -107,7 +112,8 @@
                 </div>
 
                 <div class="form-group text-right">
-                    <button class="btn btn-outline-secondary" type="button" @click="closePopup"><i class="fas fa-times"></i>
+                    <button class="btn btn-outline-secondary" type="button" @click="closePopup"><i
+                        class="fas fa-times"></i>
                         Cancel
                     </button>
                     <button class="btn btn-outline-success" type="button" @click="saveOffer"><i class="fas fa-save">
@@ -135,6 +141,19 @@ export default {
     },
     created() {
         this.fetchStates();
+
+        $(document).ready(function () {
+            console.log('Loaded!');
+
+            $('#clients').select2({
+                minimumInputLength: 3,
+                ajax: {
+                    url: '/clients',
+                    dataType: 'json',
+                },
+            });
+        });
+
     },
     mounted() {
         this.$root.$on('editOffer', (item) => {

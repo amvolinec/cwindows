@@ -205,8 +205,11 @@ export default {
                     this.message = response.data.message;
                     return;
                 }
+                this.offer = response.data.offer;
+                this.$root.$data.offer.positions = response.data.offer.positions;
                 this.clearPopup();
-                this.$root.$emit('offerAdded');
+                this.$root.$emit('offerItemsSaved');
+                this.$root.$emit('updateOffer', this.offer);
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
