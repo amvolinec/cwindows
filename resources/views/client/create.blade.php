@@ -145,3 +145,12 @@
         </div>
     </div>
 @endsection
+
+@section('scripts')
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#company_id').select2();
+        });
+    </script>
+@endsection
