@@ -51,4 +51,6 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::post('category/find/', 'CategoryController@find')->name('category.find');
     Route::get('category/find/{string}', 'CategoryController@find')->name('category.find.get');
+
+    Route::delete('position', 'PositionController@delete');
 });

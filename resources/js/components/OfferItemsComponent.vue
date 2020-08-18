@@ -73,28 +73,28 @@
             </table>
         </div>
         <div class="form-group mb-1 text-left">
-            <button class="btn btn-sm btn-outline-success" @click="addRow"><i class="fas fa-cart-plus"></i> Add row</button>
-            <button class="btn btn-sm btn-outline-dark"><i class="fas fa-plus"></i> Add group</button>
+            <button class="btn btn-sm btn-outline-success" @click="addRow"><i class="fas fa-cart-plus"></i> Add row
+            </button>
         </div>
 
         <div class="form-group mb-1 row">
             <div class="col-md-10 text-right">Amount without VAT:</div>
-            <div class="col-md-2 text-right">{{ total.total }}</div>
+            <div class="col-md-2 text-right">{{ total.total }} €</div>
         </div>
 
         <div class="form-group mb-0 row">
             <div class="col-md-10 text-right">VAT amount:</div>
-            <div class="col-md-2 text-right">{{ total.total_with_vat - total.total }}</div>
+            <div class="col-md-2 text-right">{{ total.total_with_vat - total.total }} €</div>
         </div>
 
         <div class="form-group mb-0 row">
             <div class="col-md-10 text-right">Amount with VAT:</div>
-            <div class="col-md-2 text-right">{{ total.total_with_vat }}</div>
+            <div class="col-md-2 text-right">{{ total.total_with_vat }} €</div>
         </div>
 
         <div class="form-group mb-0 row">
             <div class="col-md-10 text-right">Margin with expenses:</div>
-            <div class="col-md-2 text-right">{{ total.sales_profit }}</div>
+            <div class="col-md-2 text-right">{{ total.sales_profit }} €</div>
         </div>
 
         <div class="form-group mb-0 text-right">
@@ -114,22 +114,18 @@ export default {
     data() {
         return {
             items: [],
+            deleted: [],
+            trash: [],
             total: {total: 0, total_with_vat: 0, sales_profit: 0},
             index: 0
         }
     },
     created() {
+        this.items = this.$root.$data.offer.positions;
         if (this.isEmpty(this.items)) {
             this.addRow();
         }
-        this.items = this.$root.$data.offer.positions;
         this.onLoad();
-    },
-    mounted() {
-        // this.$root.$on('editOfferItems', (items) => {
-        //     this.items = items;
-        //     console.log(items);
-        // });
     },
     methods: {
         saveOfferItems() {
@@ -147,6 +143,7 @@ export default {
         }, itemAdd() {
             this.index++;
             return {
+                id: null,
                 index: this.index,
                 product: '',
                 title: '',
@@ -172,7 +169,14 @@ export default {
                 && fineArray.length != null
                 && fineArray.length > 0);
         }, removeItem(item) {
-            this.items.remove(item);
+            if (item.id !== null) {
+                this.deleted.push(item.id);
+            }
+            const index = this.items.indexOf(item);
+            if (index > -1) {
+                this.items.splice(index, 1);
+            }
+            this.onLoad();
         }, addRow() {
             this.items.push(this.itemAdd());
         }, calcSum(item) {
@@ -194,16 +198,29 @@ export default {
                 this.total.sales_profit += item.margin;
             });
         }, saveOffer() {
+
+            this.nopeDeleted();
             this.$root.$emit('saveOfferNow', this.items);
+
         }, closePopup() {
+
             this.$root.$emit('closePopupNow');
+
         }, onLoad() {
             this.items.forEach((item, index) => {
                 item.index = index + 1;
-                index++;
+                this.index++;
                 this.calcSum(item);
             });
-        }
+        }, nopeDeleted(){
+            this.deleted.forEach((item, index) => {
+                axios.delete('/position/', {params: {'ids': this.deleted}}).then((r) => {
+                    console.log(r);
+                }).catch((error) => {
+                    this.$root.fetchError(error);
+                });
+            });
+        },
     }
 }
 </script>

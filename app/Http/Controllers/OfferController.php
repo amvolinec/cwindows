@@ -181,33 +181,36 @@ class OfferController extends Controller
 
                 $positions = $request->get('positions');
 
-                foreach ($positions as $position) {
+                if (!empty($positions)) {
+                    foreach ($positions as $position) {
 
-                    if (is_array($position)) {
+                        if (is_array($position)) {
 
-                        if (!isset($position['id'])) {
-                            $item = new Position();
+                            if (!isset($position['id'])) {
+                                $item = new Position();
+                            } else {
+                                $item = Position::find($position['id']);
+                            }
+
+                            $item->title = $position['title'];
+                            $item->quantity = $position['quantity'];
+                            $item->cost = $position['cost'];
+                            $item->price = $position['price'];
+                            $item->discount = $position['discount'];
+                            $item->discount_next = $position['discount_next'];
+                            $item->final_price = $position['final_price'];
+                            $item->subtotal = $position['subtotal'];
+                            $item->total = $position['total'];
+                            $item->vat = $position['vat'];
+                            $item->offer_id = $offer->id;
+
+                            $item->save();
                         } else {
-                            $item = Position::find($position['id']);
+                            Log::info("Position is not an Array ");
                         }
-
-                        $item->title = $position['title'];
-                        $item->quantity = $position['quantity'];
-                        $item->cost = $position['cost'];
-                        $item->price = $position['price'];
-                        $item->discount = $position['discount'];
-                        $item->discount_next = $position['discount_next'];
-                        $item->final_price = $position['final_price'];
-                        $item->subtotal = $position['subtotal'];
-                        $item->total = $position['total'];
-                        $item->vat = $position['vat'];
-                        $item->offer_id = $offer->id;
-
-                        $item->save();
-                    } else {
-                        Log::info("Position is not an Array ");
                     }
                 }
+
             }
 
         } catch (\Exception $exception) {

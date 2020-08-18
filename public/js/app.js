@@ -2798,6 +2798,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       items: [],
+      deleted: [],
+      trash: [],
       total: {
         total: 0,
         total_with_vat: 0,
@@ -2807,17 +2809,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    this.items = this.$root.$data.offer.positions;
+
     if (this.isEmpty(this.items)) {
       this.addRow();
     }
 
-    this.items = this.$root.$data.offer.positions;
     this.onLoad();
-  },
-  mounted: function mounted() {// this.$root.$on('editOfferItems', (items) => {
-    //     this.items = items;
-    //     console.log(items);
-    // });
   },
   methods: {
     saveOfferItems: function saveOfferItems() {
@@ -2840,6 +2838,7 @@ __webpack_require__.r(__webpack_exports__);
     itemAdd: function itemAdd() {
       this.index++;
       return {
+        id: null,
         index: this.index,
         product: '',
         title: '',
@@ -2863,7 +2862,17 @@ __webpack_require__.r(__webpack_exports__);
       return !(typeof fineArray != "undefined" && fineArray != null && fineArray.length != null && fineArray.length > 0);
     },
     removeItem: function removeItem(item) {
-      this.items.remove(item);
+      if (item.id !== null) {
+        this.deleted.push(item.id);
+      }
+
+      var index = this.items.indexOf(item);
+
+      if (index > -1) {
+        this.items.splice(index, 1);
+      }
+
+      this.onLoad();
     },
     addRow: function addRow() {
       this.items.push(this.itemAdd());
@@ -2893,6 +2902,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     saveOffer: function saveOffer() {
+      this.nopeDeleted();
       this.$root.$emit('saveOfferNow', this.items);
     },
     closePopup: function closePopup() {
@@ -2903,9 +2913,24 @@ __webpack_require__.r(__webpack_exports__);
 
       this.items.forEach(function (item, index) {
         item.index = index + 1;
-        index++;
+        _this3.index++;
 
         _this3.calcSum(item);
+      });
+    },
+    nopeDeleted: function nopeDeleted() {
+      var _this4 = this;
+
+      this.deleted.forEach(function (item, index) {
+        axios["delete"]('/position/', {
+          params: {
+            'ids': _this4.deleted
+          }
+        }).then(function (r) {
+          console.log(r);
+        })["catch"](function (error) {
+          _this4.$root.fetchError(error);
+        });
       });
     }
   }
@@ -3073,6 +3098,8 @@ __webpack_require__.r(__webpack_exports__);
       _this.saveOffer();
     });
     this.$root.$on('closePopupNow', function () {
+      document.location.reload();
+
       _this.closePopup();
     });
   },
@@ -50251,10 +50278,11 @@ var render = function() {
           staticClass: "btn btn-sm btn-outline-success",
           on: { click: _vm.addRow }
         },
-        [_c("i", { staticClass: "fas fa-cart-plus" }), _vm._v(" Add row")]
-      ),
-      _vm._v(" "),
-      _vm._m(1)
+        [
+          _c("i", { staticClass: "fas fa-cart-plus" }),
+          _vm._v(" Add row\n        ")
+        ]
+      )
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group mb-1 row" }, [
@@ -50263,7 +50291,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-2 text-right" }, [
-        _vm._v(_vm._s(_vm.total.total))
+        _vm._v(_vm._s(_vm.total.total) + " €")
       ])
     ]),
     _vm._v(" "),
@@ -50273,7 +50301,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-2 text-right" }, [
-        _vm._v(_vm._s(_vm.total.total_with_vat - _vm.total.total))
+        _vm._v(_vm._s(_vm.total.total_with_vat - _vm.total.total) + " €")
       ])
     ]),
     _vm._v(" "),
@@ -50283,7 +50311,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-2 text-right" }, [
-        _vm._v(_vm._s(_vm.total.total_with_vat))
+        _vm._v(_vm._s(_vm.total.total_with_vat) + " €")
       ])
     ]),
     _vm._v(" "),
@@ -50293,7 +50321,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-2 text-right" }, [
-        _vm._v(_vm._s(_vm.total.sales_profit))
+        _vm._v(_vm._s(_vm.total.sales_profit) + " €")
       ])
     ]),
     _vm._v(" "),
@@ -50366,15 +50394,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { width: "40" } })
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "btn btn-sm btn-outline-dark" }, [
-      _c("i", { staticClass: "fas fa-plus" }),
-      _vm._v(" Add group")
     ])
   }
 ]

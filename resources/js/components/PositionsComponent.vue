@@ -142,6 +142,7 @@ export default {
             this.saveOffer();
         });
         this.$root.$on('closePopupNow', () => {
+            document.location.reload();
             this.closePopup();
         });
     },
