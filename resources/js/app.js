@@ -31,6 +31,7 @@ Vue.component('nope-popup', require('./components/NopePopupComponent.vue').defau
 Vue.component('find', require('./components/FindComponent.vue').default);
 Vue.component('offer', require('./components/OfferComponent.vue').default);
 Vue.component('offer-items', require('./components/OfferItemsComponent.vue').default);
+Vue.component('configurator', require('./components/СonfiguratorComponent.vue').default);
 Vue.component('datetime', Datetime);
 
 /**
@@ -49,6 +50,7 @@ const app = new Vue({
         popup: false,
         nope: false,
         positions: false,
+        configurator: false,
         offer: []
     },
     methods: {

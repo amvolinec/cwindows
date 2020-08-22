@@ -5,7 +5,7 @@
                 <thead class="thead">
                 <tr>
                     <th width="30">No.</th>
-                    <th width="150">Product</th>
+                    <th width="100">2d</th>
                     <th width="250">Title</th>
                     <th width="70">Quantity</th>
                     <th width="70">Prime cost</th>
@@ -27,7 +27,10 @@
                     <th scope="row" class="item-sm text-right">
                         <div>{{ item.index }}</div>
                     </th>
-                    <td><input class="form-control item-sm" type="text" v-model="item.product"></td>
+                    <td>
+                        <input class="form-control item-sm" type="hidden" v-model="item.good_id">
+                        <button class="btn btn-sm btn-outline-dark" @click="generateGood(item)"><i class="fas fa-building"></i></button>
+                    </td>
                     <td><textarea class="form-control item-sm" type="text" v-model="item.title"></textarea></td>
                     <td><input class="form-control item-sm text-right" type="text" v-model="item.quantity"
                                @change="calcSum(item)"></td>
@@ -114,6 +117,7 @@
                 </div>
             </div>
         </div>
+        <configurator></configurator>
     </div>
 </template>
 
@@ -197,7 +201,7 @@ export default {
             if (percents) {
                 item.discount = item.price * item.quantity / 100 * item.discount_next;
             } else {
-                item.discount_next = item.price * item.quantity > 0 ? item.discount / item.price * item.quantity : 0 ;
+                item.discount_next = item.price * item.quantity > 0 ? item.discount / item.price * item.quantity : 0;
             }
             this.calcSum(item);
         }, calcSum(item) {
@@ -243,7 +247,9 @@ export default {
                     this.$root.fetchError(error);
                 });
             });
-        },
+        }, generateGood(item) {
+            this.$root.$data.configurator = true;
+        }
     }
 }
 </script>
