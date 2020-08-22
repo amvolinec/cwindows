@@ -12,12 +12,12 @@
                     <div>
                         <label>aWidth</label>
                         <input class="w-input" type="number" v-model="window.aWidth" @change="createCanvas">
-                        <label>aHeight</label>
-                        <input class="w-input" type="number" v-model="window.aHeight" @change="createCanvas">
-                    </div>
-                    <div>
                         <label>bWidth</label>
                         <input class="w-input" type="number" v-model="window.bWidth" @change="createCanvas">
+                    </div>
+                    <div>
+                        <label>aHeight</label>
+                        <input class="w-input" type="number" v-model="window.aHeight" @change="createCanvas">
                         <label>bHeight</label>
                         <input class="w-input" type="number" v-model="window.bHeight" @change="createCanvas">
                     </div>
@@ -26,9 +26,8 @@
                         <input class="w-input" type="number" v-model="window.cWidth" @change="createCanvas">
                         <label>cHeight</label>
                         <input class="w-input" type="number" v-model="window.cHeight" @change="createCanvas">
-                        <button class="btn btn-outline-success" type="button" @click="createCanvas"><i
-                            class="fas fa-calculator"></i>
-                            Show
+                        <button class="btn btn-outline-success" type="button" @click="createCanvas">
+                            <i class="far fa-image"></i>Show
                         </button>
                     </div>
 
@@ -38,8 +37,8 @@
                     <button class="btn btn-outline-info" type="button" @click="closePopup"><i class="fas fa-times"></i>
                         Cancel
                     </button>
-                    <button class="btn btn-outline-success" type="button" @click="saveCanvas"><i class="fas fa-trash">
-                        Create</i>
+                    <button class="btn btn-outline-success" type="button" @click="saveCanvas"><i class="far fa-plus-square"></i>
+                        Create
                     </button>
                 </div>
 
@@ -66,8 +65,8 @@ export default {
         //     this.item = item;
         // });
     },
-    created() {
-        // ctx.fillRect(0,0,150,75);
+    ready() {
+        this.createCanvas();
     },
     methods: {
         closePopup() {

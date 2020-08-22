@@ -5,7 +5,7 @@
                 <thead class="thead">
                 <tr>
                     <th width="30">No.</th>
-                    <th width="100">2d</th>
+                    <th width="100">2d Configurator</th>
                     <th width="250">Title</th>
                     <th width="70">Quantity</th>
                     <th width="70">Prime cost</th>
@@ -29,7 +29,14 @@
                     </th>
                     <td>
                         <input class="form-control item-sm" type="hidden" v-model="item.good_id">
-                        <button class="btn btn-sm btn-outline-dark" @click="generateGood(item)"><i class="fas fa-building"></i></button>
+                        <select class="form-control form-control-sm" @change="generateGood">
+                            <option disabled selected>Select</option>
+                            <option value="wx1">Window x1</option>
+                            <option value="wx2">Window x2</option>
+                            <option value="wx3">Window x3</option>
+                        </select>
+<!--                        <button class="btn btn-sm btn-outline-dark" @click="generateGood(goods)"><i-->
+<!--                            class="fas fa-building"></i></button>-->
                     </td>
                     <td><textarea class="form-control item-sm" type="text" v-model="item.title"></textarea></td>
                     <td><input class="form-control item-sm text-right" type="text" v-model="item.quantity"
@@ -129,7 +136,8 @@ export default {
             deleted: [],
             trash: [],
             total: {total: 0, total_with_vat: 0, sales_profit: 0},
-            index: 0
+            index: 0,
+            goods: 0
         }
     },
     mounted() {
@@ -247,8 +255,11 @@ export default {
                     this.$root.fetchError(error);
                 });
             });
-        }, generateGood(item) {
-            this.$root.$data.configurator = true;
+        }, generateGood(e) {
+            let val =e.target.value;
+            console.log(val);
+            if (val === 'wx2')
+                this.$root.$data.configurator = true;
         }
     }
 }

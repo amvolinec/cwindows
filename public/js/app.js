@@ -2846,6 +2846,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2857,7 +2864,8 @@ __webpack_require__.r(__webpack_exports__);
         total_with_vat: 0,
         sales_profit: 0
       },
-      index: 0
+      index: 0,
+      goods: 0
     };
   },
   mounted: function mounted() {
@@ -3003,8 +3011,10 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     },
-    generateGood: function generateGood(item) {
-      this.$root.$data.configurator = true;
+    generateGood: function generateGood(e) {
+      var val = e.target.value;
+      console.log(val);
+      if (val === 'wx2') this.$root.$data.configurator = true;
     }
   }
 });
@@ -3344,7 +3354,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3366,7 +3375,8 @@ __webpack_require__.r(__webpack_exports__);
     //     this.item = item;
     // });
   },
-  created: function created() {// ctx.fillRect(0,0,150,75);
+  ready: function ready() {
+    this.createCanvas();
   },
   methods: {
     closePopup: function closePopup() {
@@ -50265,16 +50275,28 @@ var render = function() {
                   }),
                   _vm._v(" "),
                   _c(
-                    "button",
+                    "select",
                     {
-                      staticClass: "btn btn-sm btn-outline-dark",
-                      on: {
-                        click: function($event) {
-                          return _vm.generateGood(item)
-                        }
-                      }
+                      staticClass: "form-control form-control-sm",
+                      on: { change: _vm.generateGood }
                     },
-                    [_c("i", { staticClass: "fas fa-building" })]
+                    [
+                      _c("option", { attrs: { disabled: "", selected: "" } }, [
+                        _vm._v("Select")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "wx1" } }, [
+                        _vm._v("Window x1")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "wx2" } }, [
+                        _vm._v("Window x2")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "wx3" } }, [
+                        _vm._v("Window x3")
+                      ])
+                    ]
                   )
                 ]),
                 _vm._v(" "),
@@ -50556,7 +50578,9 @@ var render = function() {
               },
               [
                 _c("i", { staticClass: "fas fa-cart-plus" }),
-                _vm._v(" Add\n                    row\n                ")
+                _vm._v(
+                  " Add\n                        row\n                    "
+                )
               ]
             )
           ])
@@ -50617,7 +50641,7 @@ var render = function() {
               },
               [
                 _c("i", { staticClass: "fas fa-times" }),
-                _vm._v("\n                    Cancel\n                ")
+                _vm._v("\n                        Cancel\n                    ")
               ]
             ),
             _vm._v(" "),
@@ -50630,7 +50654,7 @@ var render = function() {
               },
               [
                 _c("i", { staticClass: "fas fa-save" }, [
-                  _vm._v("\n                    Save")
+                  _vm._v("\n                        Save")
                 ])
               ]
             )
@@ -50652,7 +50676,7 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", { attrs: { width: "30" } }, [_vm._v("No.")]),
         _vm._v(" "),
-        _c("th", { attrs: { width: "100" } }, [_vm._v("2d")]),
+        _c("th", { attrs: { width: "100" } }, [_vm._v("2d Configurator")]),
         _vm._v(" "),
         _c("th", { attrs: { width: "250" } }, [_vm._v("Title")]),
         _vm._v(" "),
@@ -51241,33 +51265,6 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("label", [_vm._v("aHeight")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.window.aHeight,
-                      expression: "window.aHeight"
-                    }
-                  ],
-                  staticClass: "w-input",
-                  attrs: { type: "number" },
-                  domProps: { value: _vm.window.aHeight },
-                  on: {
-                    change: _vm.createCanvas,
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.window, "aHeight", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", [
                 _c("label", [_vm._v("bWidth")]),
                 _vm._v(" "),
                 _c("input", {
@@ -51289,6 +51286,33 @@ var render = function() {
                         return
                       }
                       _vm.$set(_vm.window, "bWidth", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("label", [_vm._v("aHeight")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.window.aHeight,
+                      expression: "window.aHeight"
+                    }
+                  ],
+                  staticClass: "w-input",
+                  attrs: { type: "number" },
+                  domProps: { value: _vm.window.aHeight },
+                  on: {
+                    change: _vm.createCanvas,
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.window, "aHeight", $event.target.value)
                     }
                   }
                 }),
@@ -51378,10 +51402,8 @@ var render = function() {
                     on: { click: _vm.createCanvas }
                   },
                   [
-                    _c("i", { staticClass: "fas fa-calculator" }),
-                    _vm._v(
-                      "\n                        Show\n                    "
-                    )
+                    _c("i", { staticClass: "far fa-image" }),
+                    _vm._v("Show\n                    ")
                   ]
                 )
               ])
@@ -51409,9 +51431,8 @@ var render = function() {
                   on: { click: _vm.saveCanvas }
                 },
                 [
-                  _c("i", { staticClass: "fas fa-trash" }, [
-                    _vm._v("\n                    Create")
-                  ])
+                  _c("i", { staticClass: "far fa-plus-square" }),
+                  _vm._v("\n                    Create\n                ")
                 ]
               )
             ])
