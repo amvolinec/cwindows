@@ -10,24 +10,24 @@
                 </canvas>
                 <div class="form-group text-left">
                     <div>
-                        <label>aWidth</label>
+                        <label>A Width</label>
                         <input class="w-input" type="number" v-model="window.aWidth" @change="createCanvas">
-                        <label>bWidth</label>
+                        <label>B Width</label>
                         <input class="w-input" type="number" v-model="window.bWidth" @change="createCanvas">
                     </div>
                     <div>
-                        <label>aHeight</label>
+                        <label>A Height</label>
                         <input class="w-input" type="number" v-model="window.aHeight" @change="createCanvas">
-                        <label>bHeight</label>
+                        <label>B Height</label>
                         <input class="w-input" type="number" v-model="window.bHeight" @change="createCanvas">
                     </div>
                     <div>
-                        <label>cWidth</label>
+                        <label>C Width</label>
                         <input class="w-input" type="number" v-model="window.cWidth" @change="createCanvas">
-                        <label>cHeight</label>
+                        <label>C Height</label>
                         <input class="w-input" type="number" v-model="window.cHeight" @change="createCanvas">
                         <button class="btn btn-outline-success" type="button" @click="createCanvas">
-                            <i class="far fa-image"></i>Show
+                            <i class="far fa-image"></i> Show
                         </button>
                     </div>
 
@@ -35,10 +35,10 @@
 
                 <div class="form-group text-right">
                     <button class="btn btn-outline-info" type="button" @click="closePopup"><i class="fas fa-times"></i>
-                        Cancel
+                         Cancel
                     </button>
                     <button class="btn btn-outline-success" type="button" @click="saveCanvas"><i class="far fa-plus-square"></i>
-                        Create
+                         Create
                     </button>
                 </div>
 

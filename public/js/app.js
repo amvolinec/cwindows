@@ -51240,7 +51240,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "form-group text-left" }, [
               _c("div", [
-                _c("label", [_vm._v("aWidth")]),
+                _c("label", [_vm._v("A Width")]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -51265,7 +51265,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("label", [_vm._v("bWidth")]),
+                _c("label", [_vm._v("B Width")]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -51292,7 +51292,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", [
-                _c("label", [_vm._v("aHeight")]),
+                _c("label", [_vm._v("A Height")]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -51317,7 +51317,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("label", [_vm._v("bHeight")]),
+                _c("label", [_vm._v("B Height")]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -51344,7 +51344,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", [
-                _c("label", [_vm._v("cWidth")]),
+                _c("label", [_vm._v("C Width")]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -51369,7 +51369,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("label", [_vm._v("cHeight")]),
+                _c("label", [_vm._v("C Height")]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -51403,7 +51403,7 @@ var render = function() {
                   },
                   [
                     _c("i", { staticClass: "far fa-image" }),
-                    _vm._v("Show\n                    ")
+                    _vm._v(" Show\n                    ")
                   ]
                 )
               ])
@@ -51419,7 +51419,7 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "fas fa-times" }),
-                  _vm._v("\n                    Cancel\n                ")
+                  _vm._v("\n                     Cancel\n                ")
                 ]
               ),
               _vm._v(" "),
@@ -51432,7 +51432,7 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "far fa-plus-square" }),
-                  _vm._v("\n                    Create\n                ")
+                  _vm._v("\n                     Create\n                ")
                 ]
               )
             ])
