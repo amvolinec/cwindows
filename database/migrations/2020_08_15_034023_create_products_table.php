@@ -200,6 +200,9 @@ class CreateProductsTable extends Migration
             Schema::create('goods', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string('title')->nullable();
+                $table->string('code')->nullable();
+                $table->text('config')->nullable();
+                $table->unsignedSmallInteger('version')->default(1);
             });
         }
 
