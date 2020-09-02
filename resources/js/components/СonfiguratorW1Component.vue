@@ -1,7 +1,7 @@
 <template>
-    <div class="wrapper" v-if="this.$root.$data.configurator2">
+    <div class="wrapper" v-if="this.$root.$data.configurator1">
         <div class="popup-window" v-bind:style="style">
-            <div class="popup-head">Window 2d Configurator 2<i @click="closePopup"
+            <div class="popup-head">Window Configurator<i @click="closePopup"
                                                                class="far fa-times-circle float-right"></i>
             </div>
             <div class="popup-inner">
@@ -12,14 +12,10 @@
                     <div>
                         <label>A Width</label>
                         <input class="w-input" type="number" v-model="window.aWidth" @change="createCanvas">
-                        <label>B Width</label>
-                        <input class="w-input" type="number" v-model="window.bWidth" @change="createCanvas">
                     </div>
                     <div>
                         <label>A Height</label>
                         <input class="w-input" type="number" v-model="window.aHeight" @change="createCanvas">
-                        <label>B Height</label>
-                        <input class="w-input" type="number" v-model="window.bHeight" @change="createCanvas">
                     </div>
                     <div>
                         <label>C Width</label>
@@ -57,7 +53,7 @@ export default {
             width: '600px',
             height: '240px',
             style: 'width: 660px; z-index: 10;',
-            window: {aWidth: 100, aHeight: 180, bWidth: 100, bHeight: 180, cWidth: 10, cHeight: 10}
+            window: {aWidth: 100, aHeight: 180, cWidth: 10, cHeight: 10}
         }
     },
     mounted() {
@@ -70,7 +66,7 @@ export default {
     },
     methods: {
         closePopup() {
-            this.$root.$data.configurator2 = false;
+            this.$root.$data.configurator1 = false;
         }, deleteItem() {
             axios.delete(this.item.route, {params: {'id': this.item.id}})
                 .then((r) => {
@@ -96,11 +92,6 @@ export default {
             let aHeightOuter = parseInt(this.window.aHeight) + parseInt(this.window.cHeight) * 2;
             let aHeightInner = parseInt(this.window.aHeight);
 
-            let bWidthOuter = parseInt(this.window.bWidth) + parseInt(this.window.cWidth) * 2;
-            let bWidthInner = parseInt(this.window.bWidth);
-
-            let bHeightOuter = parseInt(this.window.bHeight) + parseInt(this.window.cHeight) * 2;
-            let bHeightInner = parseInt(this.window.bHeight);
 
             let cWidth = parseInt(this.window.cWidth);
             let cHeight = parseInt(this.window.cHeight);
@@ -108,8 +99,6 @@ export default {
             ctx.strokeRect(0, 0, aWidthOuter, aHeightOuter);
             ctx.strokeRect(cWidth, cHeight, aWidthInner, aHeightInner);
 
-            ctx.strokeRect(aWidthOuter, 0, bWidthOuter, bHeightOuter);
-            ctx.strokeRect(aWidthOuter + cWidth, cHeight, bWidthInner, bHeightInner);
         }
     }
 }

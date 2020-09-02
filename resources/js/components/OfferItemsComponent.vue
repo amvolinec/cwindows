@@ -125,6 +125,7 @@
             </div>
         </div>
         <configurator></configurator>
+        <configurator-w1></configurator-w1>
     </div>
 </template>
 
@@ -258,8 +259,10 @@ export default {
         }, generateGood(e) {
             let val =e.target.value;
             console.log(val);
+            if (val === 'wx1')
+                this.$root.$data.configurator1 = true;
             if (val === 'wx2')
-                this.$root.$data.configurator = true;
+                this.$root.$data.configurator2 = true;
         }
     }
 }

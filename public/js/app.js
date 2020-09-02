@@ -2853,6 +2853,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3014,7 +3015,8 @@ __webpack_require__.r(__webpack_exports__);
     generateGood: function generateGood(e) {
       var val = e.target.value;
       console.log(val);
-      if (val === 'wx2') this.$root.$data.configurator = true;
+      if (val === 'wx1') this.$root.$data.configurator1 = true;
+      if (val === 'wx2') this.$root.$data.configurator2 = true;
     }
   }
 });
@@ -3380,7 +3382,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     closePopup: function closePopup() {
-      this.$root.$data.configurator = false;
+      this.$root.$data.configurator2 = false;
     },
     deleteItem: function deleteItem() {
       var _this = this;
@@ -3416,6 +3418,122 @@ __webpack_require__.r(__webpack_exports__);
       ctx.strokeRect(cWidth, cHeight, aWidthInner, aHeightInner);
       ctx.strokeRect(aWidthOuter, 0, bWidthOuter, bHeightOuter);
       ctx.strokeRect(aWidthOuter + cWidth, cHeight, bWidthInner, bHeightInner);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/СonfiguratorW1Component.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/СonfiguratorW1Component.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      id: 'canvas2d',
+      width: '600px',
+      height: '240px',
+      style: 'width: 660px; z-index: 10;',
+      window: {
+        aWidth: 100,
+        aHeight: 180,
+        cWidth: 10,
+        cHeight: 10
+      }
+    };
+  },
+  mounted: function mounted() {// this.$root.$on('nopeItem', (item) => {
+    //     this.item = item;
+    // });
+  },
+  ready: function ready() {
+    this.createCanvas();
+  },
+  methods: {
+    closePopup: function closePopup() {
+      this.$root.$data.configurator1 = false;
+    },
+    deleteItem: function deleteItem() {
+      var _this = this;
+
+      axios["delete"](this.item.route, {
+        params: {
+          'id': this.item.id
+        }
+      }).then(function (r) {
+        _this.closePopup();
+      }); // console.log(this.item.id + ' ' + this.item.model);
+    },
+    saveCanvas: function saveCanvas() {// axios.post('/good/set/', {params: {'id': this.item.id}})
+      //     .then((r) => {
+      //         this.closePopup();
+      //     });
+    },
+    createCanvas: function createCanvas() {
+      var canvas = document.getElementById("canvas2d");
+      var ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      var aWidthOuter = parseInt(this.window.aWidth) + parseInt(this.window.cWidth) * 2;
+      var aWidthInner = parseInt(this.window.aWidth);
+      var aHeightOuter = parseInt(this.window.aHeight) + parseInt(this.window.cHeight) * 2;
+      var aHeightInner = parseInt(this.window.aHeight);
+      var cWidth = parseInt(this.window.cWidth);
+      var cHeight = parseInt(this.window.cHeight);
+      ctx.strokeRect(0, 0, aWidthOuter, aHeightOuter);
+      ctx.strokeRect(cWidth, cHeight, aWidthInner, aHeightInner);
     }
   }
 });
@@ -50662,7 +50780,9 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("configurator")
+      _c("configurator"),
+      _vm._v(" "),
+      _c("configurator-w1")
     ],
     1
   )
@@ -51216,7 +51336,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return this.$root.$data.configurator
+  return this.$root.$data.configurator2
     ? _c("div", { staticClass: "wrapper" }, [
         _c("div", { staticClass: "popup-window", style: _vm.style }, [
           _c("div", { staticClass: "popup-head" }, [
@@ -51338,6 +51458,203 @@ var render = function() {
                         return
                       }
                       _vm.$set(_vm.window, "bHeight", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("label", [_vm._v("C Width")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.window.cWidth,
+                      expression: "window.cWidth"
+                    }
+                  ],
+                  staticClass: "w-input",
+                  attrs: { type: "number" },
+                  domProps: { value: _vm.window.cWidth },
+                  on: {
+                    change: _vm.createCanvas,
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.window, "cWidth", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("label", [_vm._v("C Height")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.window.cHeight,
+                      expression: "window.cHeight"
+                    }
+                  ],
+                  staticClass: "w-input",
+                  attrs: { type: "number" },
+                  domProps: { value: _vm.window.cHeight },
+                  on: {
+                    change: _vm.createCanvas,
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.window, "cHeight", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-success",
+                    attrs: { type: "button" },
+                    on: { click: _vm.createCanvas }
+                  },
+                  [
+                    _c("i", { staticClass: "far fa-image" }),
+                    _vm._v(" Show\n                    ")
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group text-right" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-info",
+                  attrs: { type: "button" },
+                  on: { click: _vm.closePopup }
+                },
+                [
+                  _c("i", { staticClass: "fas fa-times" }),
+                  _vm._v("\n                     Cancel\n                ")
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-success",
+                  attrs: { type: "button" },
+                  on: { click: _vm.saveCanvas }
+                },
+                [
+                  _c("i", { staticClass: "far fa-plus-square" }),
+                  _vm._v("\n                     Create\n                ")
+                ]
+              )
+            ])
+          ])
+        ])
+      ])
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/СonfiguratorW1Component.vue?vue&type=template&id=1deab05e&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/СonfiguratorW1Component.vue?vue&type=template&id=1deab05e& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return this.$root.$data.configurator1
+    ? _c("div", { staticClass: "wrapper" }, [
+        _c("div", { staticClass: "popup-window", style: _vm.style }, [
+          _c("div", { staticClass: "popup-head" }, [
+            _vm._v("Window Configurator"),
+            _c("i", {
+              staticClass: "far fa-times-circle float-right",
+              on: { click: _vm.closePopup }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "popup-inner" }, [
+            _c(
+              "canvas",
+              { attrs: { id: _vm.id, width: _vm.width, height: _vm.height } },
+              [
+                _vm._v(
+                  "\n                Your browser does not support the canvas element.\n            "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group text-left" }, [
+              _c("div", [
+                _c("label", [_vm._v("A Width")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.window.aWidth,
+                      expression: "window.aWidth"
+                    }
+                  ],
+                  staticClass: "w-input",
+                  attrs: { type: "number" },
+                  domProps: { value: _vm.window.aWidth },
+                  on: {
+                    change: _vm.createCanvas,
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.window, "aWidth", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("label", [_vm._v("A Height")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.window.aHeight,
+                      expression: "window.aHeight"
+                    }
+                  ],
+                  staticClass: "w-input",
+                  attrs: { type: "number" },
+                  domProps: { value: _vm.window.aHeight },
+                  on: {
+                    change: _vm.createCanvas,
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.window, "aHeight", $event.target.value)
                     }
                   }
                 })
@@ -64084,6 +64401,7 @@ Vue.component('find', __webpack_require__(/*! ./components/FindComponent.vue */ 
 Vue.component('offer', __webpack_require__(/*! ./components/OfferComponent.vue */ "./resources/js/components/OfferComponent.vue")["default"]);
 Vue.component('offer-items', __webpack_require__(/*! ./components/OfferItemsComponent.vue */ "./resources/js/components/OfferItemsComponent.vue")["default"]);
 Vue.component('configurator', __webpack_require__(/*! ./components/СonfiguratorComponent.vue */ "./resources/js/components/СonfiguratorComponent.vue")["default"]);
+Vue.component('configurator-w1', __webpack_require__(/*! ./components/СonfiguratorW1Component.vue */ "./resources/js/components/СonfiguratorW1Component.vue")["default"]);
 Vue.component('datetime', vue_datetime__WEBPACK_IMPORTED_MODULE_0__["Datetime"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -64101,7 +64419,8 @@ var app = new Vue({
     popup: false,
     nope: false,
     positions: false,
-    configurator: false,
+    configurator1: false,
+    configurator2: false,
     offer: []
   },
   methods: {
@@ -64877,6 +65196,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_onfiguratorComponent_vue_vue_type_template_id_7ac8d1cb___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_onfiguratorComponent_vue_vue_type_template_id_7ac8d1cb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/СonfiguratorW1Component.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/СonfiguratorW1Component.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _onfiguratorW1Component_vue_vue_type_template_id_1deab05e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./СonfiguratorW1Component.vue?vue&type=template&id=1deab05e& */ "./resources/js/components/СonfiguratorW1Component.vue?vue&type=template&id=1deab05e&");
+/* harmony import */ var _onfiguratorW1Component_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./СonfiguratorW1Component.vue?vue&type=script&lang=js& */ "./resources/js/components/СonfiguratorW1Component.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _onfiguratorW1Component_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _onfiguratorW1Component_vue_vue_type_template_id_1deab05e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _onfiguratorW1Component_vue_vue_type_template_id_1deab05e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/СonfiguratorW1Component.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/СonfiguratorW1Component.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/СonfiguratorW1Component.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_onfiguratorW1Component_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./СonfiguratorW1Component.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/СonfiguratorW1Component.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_onfiguratorW1Component_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/СonfiguratorW1Component.vue?vue&type=template&id=1deab05e&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/СonfiguratorW1Component.vue?vue&type=template&id=1deab05e& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_onfiguratorW1Component_vue_vue_type_template_id_1deab05e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./СonfiguratorW1Component.vue?vue&type=template&id=1deab05e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/СonfiguratorW1Component.vue?vue&type=template&id=1deab05e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_onfiguratorW1Component_vue_vue_type_template_id_1deab05e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_onfiguratorW1Component_vue_vue_type_template_id_1deab05e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

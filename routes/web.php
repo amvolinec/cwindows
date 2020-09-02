@@ -19,6 +19,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['web', 'auth']], function () {
+
+    Route::resource('user', 'UserController');
+    Route::post('user/find/', 'UserController@find')->name('user.find');
+    Route::get('user/find/{string}', 'UserController@find')->name('user.find.get');
+
     Route::resource('site', 'SiteController');
     Route::post('site/find/', 'SiteController@find')->name('site.find');
     Route::get('site/find/{string}', 'SiteController@find')->name('site.find.get');

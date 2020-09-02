@@ -28,6 +28,7 @@
                         <div id="dropdown-lvl1" class="panel-collapse collapse">
                             <div class="panel-body">
                                 <ul class="nav navbar-nav">
+                                    <li><a href="{{ route('user.index') }}"><i class="fas fa-user"></i> Users</a></li>
                                     <li><a href="{{ route('site.index') }}"><i class="fas fa-sitemap"></i> Sites</a></li>
                                     <li><a href="{{ route('warehouse.index') }}"><i class="fas fa-warehouse"></i> Warehouses</a></li>
                                     <li><a href="{{ route('category.index') }}"><i class="fas fa-warehouse"></i> Categories</a></li>
