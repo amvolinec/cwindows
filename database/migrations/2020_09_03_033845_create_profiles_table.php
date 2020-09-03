@@ -20,7 +20,6 @@ class CreateProfilesTable extends Migration
 			$table->decimal('index',3,1)->nullable();
 			$table->string('file_name')->nullable();
 			$table->string('file_uri')->nullable();
-
             $table->timestamps();
         });
     }

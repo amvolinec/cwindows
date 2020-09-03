@@ -70,14 +70,19 @@
                                     @enderror
                                 </div>
                             </div>
-                           <div class="input-group">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input"
-                                           id="fileUpload" value="{{ $profile->file_uri ?? old('file_uri') }}"
-                                           aria-describedby="inputGroupFileAddon01" name="file_uri" >
-                                    <label class="custom-file-label" for="fileUpload">{{ __('File_uri') }}</label>
+
+                            <div class="form-group row">
+                                <div class="col-md-4"></div>
+                                <div class="input-group col-md-6">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input"
+                                               id="fileUpload" value="{{ $profile->file_uri ?? old('file_uri') }}"
+                                               aria-describedby="inputGroupFileAddon01" name="file_uri" >
+                                        <label class="custom-file-label" for="fileUpload">{{ __('Choose file') }}</label>
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label for="code" class="col-md-4 col-form-label text-md-right">{{ __('Code') }}</label>
 
