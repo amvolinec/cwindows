@@ -3480,13 +3480,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       id: 'canvas2d',
       width: '600px',
       height: '240px',
-      style: 'width: 660px; z-index: 10;',
+      style: 'width: 1260px; z-index: 10;',
       window: {
         aWidth: 100,
         aHeight: 180,
@@ -51595,170 +51608,199 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "popup-inner" }, [
-            _c(
-              "canvas",
-              { attrs: { id: _vm.id, width: _vm.width, height: _vm.height } },
-              [
-                _vm._v(
-                  "\n                Your browser does not support the canvas element.\n            "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group text-left" }, [
-              _c("div", [
-                _c("label", [_vm._v("A Width")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
+            _c("div", { staticClass: "container" }, [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c(
+                    "canvas",
                     {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.window.aWidth,
-                      expression: "window.aWidth"
-                    }
-                  ],
-                  staticClass: "w-input",
-                  attrs: { type: "number" },
-                  domProps: { value: _vm.window.aWidth },
-                  on: {
-                    change: _vm.createCanvas,
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                      attrs: {
+                        id: _vm.id,
+                        width: _vm.width,
+                        height: _vm.height
                       }
-                      _vm.$set(_vm.window, "aWidth", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", [
-                _c("label", [_vm._v("A Height")]),
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Your browser does not support the canvas element.\n                        "
+                      )
+                    ]
+                  )
+                ]),
                 _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.window.aHeight,
-                      expression: "window.aHeight"
-                    }
-                  ],
-                  staticClass: "w-input",
-                  attrs: { type: "number" },
-                  domProps: { value: _vm.window.aHeight },
-                  on: {
-                    change: _vm.createCanvas,
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.window, "aHeight", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", [
-                _c("label", [_vm._v("C Width")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.window.cWidth,
-                      expression: "window.cWidth"
-                    }
-                  ],
-                  staticClass: "w-input",
-                  attrs: { type: "number" },
-                  domProps: { value: _vm.window.cWidth },
-                  on: {
-                    change: _vm.createCanvas,
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.window, "cWidth", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("label", [_vm._v("C Height")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.window.cHeight,
-                      expression: "window.cHeight"
-                    }
-                  ],
-                  staticClass: "w-input",
-                  attrs: { type: "number" },
-                  domProps: { value: _vm.window.cHeight },
-                  on: {
-                    change: _vm.createCanvas,
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.window, "cHeight", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-outline-success",
-                    attrs: { type: "button" },
-                    on: { click: _vm.createCanvas }
-                  },
-                  [
-                    _c("i", { staticClass: "far fa-image" }),
-                    _vm._v(" Show\n                    ")
-                  ]
-                )
+                _c("div", { staticClass: "col-md-6" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group text-left" }, [
+                    _c("div", [
+                      _c("label", [_vm._v("A Width")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.window.aWidth,
+                            expression: "window.aWidth"
+                          }
+                        ],
+                        staticClass: "w-input",
+                        attrs: { type: "number" },
+                        domProps: { value: _vm.window.aWidth },
+                        on: {
+                          change: _vm.createCanvas,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.window, "aWidth", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("label", [_vm._v("A Height")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.window.aHeight,
+                            expression: "window.aHeight"
+                          }
+                        ],
+                        staticClass: "w-input",
+                        attrs: { type: "number" },
+                        domProps: { value: _vm.window.aHeight },
+                        on: {
+                          change: _vm.createCanvas,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.window, "aHeight", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("label", [_vm._v("C Width")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.window.cWidth,
+                            expression: "window.cWidth"
+                          }
+                        ],
+                        staticClass: "w-input",
+                        attrs: { type: "number" },
+                        domProps: { value: _vm.window.cWidth },
+                        on: {
+                          change: _vm.createCanvas,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.window, "cWidth", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("C Height")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.window.cHeight,
+                            expression: "window.cHeight"
+                          }
+                        ],
+                        staticClass: "w-input",
+                        attrs: { type: "number" },
+                        domProps: { value: _vm.window.cHeight },
+                        on: {
+                          change: _vm.createCanvas,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.window, "cHeight", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-success",
+                          attrs: { type: "button" },
+                          on: { click: _vm.createCanvas }
+                        },
+                        [
+                          _c("i", { staticClass: "far fa-image" }),
+                          _vm._v(" Show\n                                ")
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group text-right" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-outline-info",
+                        attrs: { type: "button" },
+                        on: { click: _vm.closePopup }
+                      },
+                      [
+                        _c("i", { staticClass: "fas fa-times" }),
+                        _vm._v(
+                          "\n                                Cancel\n                            "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-outline-success",
+                        attrs: { type: "button" },
+                        on: { click: _vm.saveCanvas }
+                      },
+                      [
+                        _c("i", { staticClass: "far fa-plus-square" }),
+                        _vm._v(
+                          "\n                                Create\n                            "
+                        )
+                      ]
+                    )
+                  ])
+                ])
               ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group text-right" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-info",
-                  attrs: { type: "button" },
-                  on: { click: _vm.closePopup }
-                },
-                [
-                  _c("i", { staticClass: "fas fa-times" }),
-                  _vm._v("\n                     Cancel\n                ")
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-success",
-                  attrs: { type: "button" },
-                  on: { click: _vm.saveCanvas }
-                },
-                [
-                  _c("i", { staticClass: "far fa-plus-square" }),
-                  _vm._v("\n                     Create\n                ")
-                ]
-              )
             ])
           ])
         ])
       ])
     : _vm._e()
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Windows, Inward Opening, Material type")])
+    ])
+  }
+]
 render._withStripped = true
 
 

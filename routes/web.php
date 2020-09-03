@@ -19,6 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::resource('profile', 'ProfileController');
+    Route::post('profile/find/', 'ProfileController@find')->name('profile.find');
+    Route::get('profile/find/{string}', 'ProfileController@find')->name('profile.find.get');
 
     Route::resource('user', 'UserController');
     Route::post('user/find/', 'UserController@find')->name('user.find');

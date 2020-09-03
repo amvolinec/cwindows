@@ -2,44 +2,57 @@
     <div class="wrapper" v-if="this.$root.$data.configurator1">
         <div class="popup-window" v-bind:style="style">
             <div class="popup-head">Window Configurator<i @click="closePopup"
-                                                               class="far fa-times-circle float-right"></i>
+                                                          class="far fa-times-circle float-right"></i>
             </div>
             <div class="popup-inner">
-                <canvas v-bind:id="id" v-bind:width="width" v-bind:height="height">
-                    Your browser does not support the canvas element.
-                </canvas>
-                <div class="form-group text-left">
-                    <div>
-                        <label>A Width</label>
-                        <input class="w-input" type="number" v-model="window.aWidth" @change="createCanvas">
-                    </div>
-                    <div>
-                        <label>A Height</label>
-                        <input class="w-input" type="number" v-model="window.aHeight" @change="createCanvas">
-                    </div>
-                    <div>
-                        <label>C Width</label>
-                        <input class="w-input" type="number" v-model="window.cWidth" @change="createCanvas">
-                        <label>C Height</label>
-                        <input class="w-input" type="number" v-model="window.cHeight" @change="createCanvas">
-                        <button class="btn btn-outline-success" type="button" @click="createCanvas">
-                            <i class="far fa-image"></i> Show
-                        </button>
-                    </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <canvas v-bind:id="id" v-bind:width="width" v-bind:height="height">
+                                Your browser does not support the canvas element.
+                            </canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Windows, Inward Opening, Material type</label>
+                            </div>
+                            <div class="form-group text-left">
+                                <div>
+                                    <label>A Width</label>
+                                    <input class="w-input" type="number" v-model="window.aWidth" @change="createCanvas">
+                                </div>
+                                <div>
+                                    <label>A Height</label>
+                                    <input class="w-input" type="number" v-model="window.aHeight"
+                                           @change="createCanvas">
+                                </div>
+                                <div>
+                                    <label>C Width</label>
+                                    <input class="w-input" type="number" v-model="window.cWidth" @change="createCanvas">
+                                    <label>C Height</label>
+                                    <input class="w-input" type="number" v-model="window.cHeight"
+                                           @change="createCanvas">
+                                    <button class="btn btn-outline-success" type="button" @click="createCanvas">
+                                        <i class="far fa-image"></i> Show
+                                    </button>
+                                </div>
 
+                            </div>
+
+                            <div class="form-group text-right">
+                                <button class="btn btn-outline-info" type="button" @click="closePopup"><i
+                                    class="fas fa-times"></i>
+                                    Cancel
+                                </button>
+                                <button class="btn btn-outline-success" type="button" @click="saveCanvas"><i
+                                    class="far fa-plus-square"></i>
+                                    Create
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="form-group text-right">
-                    <button class="btn btn-outline-info" type="button" @click="closePopup"><i class="fas fa-times"></i>
-                         Cancel
-                    </button>
-                    <button class="btn btn-outline-success" type="button" @click="saveCanvas"><i class="far fa-plus-square"></i>
-                         Create
-                    </button>
-                </div>
-
             </div>
-
 
         </div>
     </div>
@@ -52,7 +65,7 @@ export default {
             id: 'canvas2d',
             width: '600px',
             height: '240px',
-            style: 'width: 660px; z-index: 10;',
+            style: 'width: 1260px; z-index: 10;',
             window: {aWidth: 100, aHeight: 180, cWidth: 10, cHeight: 10}
         }
     },
