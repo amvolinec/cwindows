@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
 {
-    protected $fillable = ["name", "file_name"];
+    protected $fillable = ["name", "price", "index", "file_name"];
 
 	//
 }

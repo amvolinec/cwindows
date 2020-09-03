@@ -32,6 +32,32 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label for="price" class="col-md-4 col-form-label text-md-right">{{ __('Price') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ $profile->price ?? old('price') }}" autocomplete="price" >
+
+                                    @error('price')
+                                    <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="index" class="col-md-4 col-form-label text-md-right">{{ __('Index') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="index" type="number" class="form-control @error('index') is-invalid @enderror" name="index" value="{{ $profile->index ?? old('index') }}" autocomplete="index" >
+
+                                    @error('index')
+                                    <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label for="file_name" class="col-md-4 col-form-label text-md-right">{{ __('File name') }}</label>
 
                                 <div class="col-md-6">

@@ -24,6 +24,8 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">{{ __("Name") }}</th>
+								<th scope="col">{{ __("Price") }}</th>
+								<th scope="col">{{ __("Index") }}</th>
 								<th scope="col">{{ __("File name") }}</th>
 								<th scope="col">{{ __("File_uri") }}</th>
 
@@ -35,6 +37,8 @@
                                 <tr>
                                     <th scope="row">{{ $profile->id  }}</th>
                                     <td>{{ $profile->name }}</td>
+									<td>{{ $profile->price }}</td>
+									<td>{{ $profile->index }}</td>
 									<td>{{ $profile->file_name }}</td>
 									<td>{{ $profile->file_uri }}</td>
 
