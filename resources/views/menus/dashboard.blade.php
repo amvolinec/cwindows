@@ -31,7 +31,7 @@
                                     <li><a href="{{ route('user.index') }}"><i class="fas fa-user"></i> Users</a></li>
                                     <li><a href="{{ route('site.index') }}"><i class="fas fa-sitemap"></i> Sites</a></li>
                                     <li><a href="{{ route('warehouse.index') }}"><i class="fas fa-warehouse"></i> Warehouses</a></li>
-                                    <li><a href="{{ route('category.index') }}"><i class="fas fa-warehouse"></i> Categories</a></li>
+                                    <li><a href="{{ route('category.index') }}"><i class="fas fa-stream"></i> Categories</a></li>
                                     <li><a href="{{ route('state.index') }}"><i class="far fa-chart-bar"></i> States</a></li>
                                 </ul>
                             </div>
