@@ -33,6 +33,10 @@
                                     <li><a href="{{ route('warehouse.index') }}"><i class="fas fa-warehouse"></i> Warehouses</a></li>
                                     <li><a href="{{ route('category.index') }}"><i class="fas fa-stream"></i> Categories</a></li>
                                     <li><a href="{{ route('state.index') }}"><i class="far fa-chart-bar"></i> States</a></li>
+                                    @if(Auth::user()->hasRole('super-admin'))
+                                        <br />
+                                        <li><a href="{{ route('profile.index') }}"><i class="fas fa-stethoscope"></i> Profile</a></li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>

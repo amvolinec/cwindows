@@ -133,7 +133,9 @@ class ProfileController extends Controller
     {
         $string = $search ?? $request->get('string');
 
-        $data = Profile::where('name', 'like', '%' . $string . '%')// ->orWhere('title', 'like', '%' . $string . '%')
+        $data = Profile::where('name', 'like', '%' . $string . '%')
+             ->orWhere('file_name', 'like', '%' . $string . '%')
+              ->orWhere('price', '=', $string)
         ;
 
         if ($search !== false && !empty($search)) {

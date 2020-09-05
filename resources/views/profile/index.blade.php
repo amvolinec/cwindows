@@ -14,9 +14,9 @@
                             </form>
                         </div>
                         <div class="d-inline-block" style="vertical-align: top; padding: 6px;">
-                            <h4 >{{ __('Profiles') }}</h4>
+                            <h4>{{ __('Profiles') }}</h4>
                         </div>
-                        <find route="profile" fields="" search="{{ $search ?? '' }}"></find>
+                        <find route="profile" fields="name,file_name,price" search="{{ $search ?? '' }}"></find>
                     </div>
                     <div class="card-body">
                         <table class="table table-sm table-striped">
@@ -24,10 +24,10 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">{{ __("Name") }}</th>
-								<th scope="col">{{ __("Price") }}</th>
-								<th scope="col">{{ __("Index") }}</th>
-								<th scope="col">{{ __("File name") }}</th>
-								<th scope="col">{{ __("File") }}</th>
+                                <th scope="col">{{ __("Price") }}</th>
+                                <th scope="col">{{ __("Index") }}</th>
+                                <th scope="col">{{ __("File name") }}</th>
+                                <th scope="col">{{ __("File") }}</th>
 
                                 <th scope="col">{{ __('Actions') }}</th>
                             </tr>
@@ -37,11 +37,12 @@
                                 <tr>
                                     <th scope="row">{{ $profile->id  }}</th>
                                     <td>{{ $profile->name }}</td>
-									<td>{{ $profile->price }}</td>
-									<td>{{ $profile->index }}</td>
-									<td>{{ $profile->file_name }}</td>
-									<td>
-                                        <img src="{{ asset($profile->file_uri)}}" alt="{{ $profile->file_name }}" class="img-rounded">
+                                    <td>{{ $profile->price }}</td>
+                                    <td>{{ $profile->index }}</td>
+                                    <td>{{ $profile->file_name }}</td>
+                                    <td>
+                                        <img src="{{ !empty($profile->file_uri) ? asset($profile->file_uri) : ''}}"
+                                             alt="{{ $profile->file_name ?? '' }}" class="img-rounded">
                                     </td>
 
                                     <td>
@@ -49,7 +50,8 @@
                                               method="post" onsubmit="return confirm('Do you really want to delete?');">
                                             @method('delete')
                                             @csrf
-                                            <button class="btn btn-sm btn-outline-danger" type="submit"><i class="fas fa-trash"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger" type="submit"><i
+                                                    class="fas fa-trash"></i></button>
                                         </form>
                                         <a class="btn btn-sm btn-outline-success float-right" style="margin: 0 8px;"
                                            href="{{ route('profile.edit', $profile->id) }}"><i class="fas fa-edit"></i></a>
