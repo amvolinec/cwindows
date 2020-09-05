@@ -49889,7 +49889,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "d-inline-block mt-2 ml-2" }, [
+  return _c("div", { staticClass: "d-inline-block mt-1 ml-2" }, [
     _c("div", { staticClass: "d-inline-block drop-find" }, [
       _c("input", {
         directives: [
@@ -49900,7 +49900,7 @@ var render = function() {
             expression: "string"
           }
         ],
-        staticClass: "d-inline-block",
+        staticClass: "d-inline-block form-control form-control-sm",
         attrs: { id: "find", type: "text" },
         domProps: { value: _vm.string },
         on: {
