@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -69,7 +70,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view ('user.create' , ['user' => $user]);
+        return view ('user.create' , ['user' => $user, 'roles' => Role::all()]);
     }
 
     /**

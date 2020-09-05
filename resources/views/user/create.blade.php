@@ -83,6 +83,19 @@
                                 </div>
                             </div>
 
+                            <div class="form-group row">
+                                <label for="role"
+                                       class="col-md-4 col-form-label text-md-right">{{ __('Assign Role') }}</label>
+
+                                <div class="col-md-6">
+                                    <select name="role[]" id="role" class="form-control">
+                                        @foreach($roles as $role)
+                                            <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="form-group row mt-3">
                                 <div class="col-md-4"></div>
                                 <div class="col-md-6">
@@ -101,4 +114,12 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#role').select2({multiple: true});
+        });
+    </script>
 @endsection

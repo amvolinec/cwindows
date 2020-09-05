@@ -34,7 +34,7 @@ class ProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return RedirectResponse
      */
     public function store(Request $request)
@@ -45,7 +45,7 @@ class ProfileController extends Controller
 
         if ($request->hasFile('file')) {
 
-            if(!$request->hasFile('file_name')){
+            if (!$request->has('file_name')) {
                 $file_name = $request->file('file')->getClientOriginalName();
             }
 
@@ -78,19 +78,19 @@ class ProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Profile  $profile
+     * @param Profile $profile
      * @return View
      */
     public function edit(Profile $profile)
     {
-        return view ('profile.create' , ['profile' => $profile]);
+        return view('profile.create', ['profile' => $profile]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  Profile  $profile
+     * @param Request $request
+     * @param Profile $profile
      * @return RedirectResponse
      */
     public function update(Request $request, Profile $profile)
@@ -101,7 +101,7 @@ class ProfileController extends Controller
         $file_name = '';
 
         if ($request->hasFile('file')) {
-            if(!$request->hasFile('file_name')){
+            if (!$request->has('file_name')) {
                 $file_name = $request->file('file')->getClientOriginalName();
             }
             $path = Storage::disk('uploads')->putFile('images', $request->file('file'));
@@ -120,7 +120,7 @@ class ProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Profile  $profile
+     * @param Profile $profile
      * @return RedirectResponse
      */
     public function destroy(Profile $profile)
@@ -133,9 +133,8 @@ class ProfileController extends Controller
     {
         $string = $search ?? $request->get('string');
 
-        $data = Profile::where('name', 'like', '%' . $string . '%')
-            // ->orWhere('title', 'like', '%' . $string . '%')
-            ;
+        $data = Profile::where('name', 'like', '%' . $string . '%')// ->orWhere('title', 'like', '%' . $string . '%')
+        ;
 
         if ($search !== false && !empty($search)) {
             return view('profile.index', ['profiles' => $data->paginate(20), 'search' => $string]);
