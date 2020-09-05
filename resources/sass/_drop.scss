@@ -13,7 +13,8 @@
     width: 520px;
     height: auto;
     background: #fafafa;
-
+    max-height: calc(100% - 60px);
+    overflow: auto;
     margin: 50px auto;
     -webkit-box-shadow: 6px 6px 15px -3px rgba(0,0,0,0.42);
     -moz-box-shadow: 6px 6px 15px -3px rgba(0,0,0,0.42);

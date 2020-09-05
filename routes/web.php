@@ -43,6 +43,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('dump', 'DumpController@run')->name('dump');
     Route::get('deals', 'OfferController@get')->name('deals');
     Route::get('states', 'StateController@getStates')->name('states');
+    Route::get('create-offer', 'OfferController@createOffer')->name('offer.create.new');
 
     Route::post('get-companies', 'CompanyController@getCompany')->name('get.company');
     Route::post('get-clients', 'ClientController@getContact')->name('get.clients');

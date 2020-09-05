@@ -9,11 +9,44 @@
                 <div class="alert alert-danger" role="alert" v-if="this.message.length > 0">
                     {{ this.message }}
                 </div>
-                <input type="hidden" v-model="offer.id">
+<!--                <input type="hidden" v-model="offer.id">-->
+
                 <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="planed_date">Inquiry date</label>
+                    <div class="col-md-8 p-0">
+                        <datetime id="inquiry_date" v-model="offer.inquiry_date" type="datetime"
+                                  input-class="form-control" format="yyyy-MM-dd HH:mm:ss"></datetime>
+                    </div>
+                </div>
 
+                <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="planed_date">Inquiry ID</label>
+                    <div class="col-md-8 p-0">
+                        <input class="form-control" v-model="offer.id" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="received_id">Request received</label>
+                    <select id="received_id" type="text" class="form-control col-md-8" name="received_id"
+                            v-model="offer.received_id">
+                        <option value="1">www</option>
+                        <option value="2">email</option>
+                        <option value="3">other</option>
+                    </select>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="private">Private/Company</label>
+                    <select id="private" type="text" class="form-control col-md-8" name="private"
+                            v-model="offer.private">
+                        <option value="1">Private</option>
+                        <option value="0">Company</option>
+                    </select>
+                </div>
+
+                <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="company">Company</label>
-
                     <div class="col-md-8 p-0">
                         <input type="hidden" v-model="offer.company_id">
                         <input id="company" type="text" class="form-control" name="company" @keyup="getCompany"
@@ -57,19 +90,45 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="title">Title</label>
+                    <label class="col-md-4 text-right col-form-label" for="title">Inquiry Name</label>
                     <input id="title" type="text" class="form-control col-md-8" name="title" @focusin="hideClient"
                            v-model="offer.title">
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="pipeline">Sales Pipeline</label>
-                    <input id="pipeline" type="text" class="form-control col-md-8" name="pipeline"
-                           v-model="offer.pipeline">
+                    <label class="col-md-4 text-right col-form-label" for="delivery_address">Delivery Address</label>
+                    <input id="delivery_address" type="text" class="form-control col-md-8" name="delivery_address" @focusin="hideClient"
+                           v-model="offer.delivery_address">
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="state_id">Stage</label>
+                    <label class="col-md-4 text-right col-form-label" for="description">Description</label>
+                    <textarea id="description" type="text" class="form-control col-md-8" name="description" rows="3"
+                              v-model="offer.description"></textarea>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="type_id">Inquiry type</label>
+                    <select id="type_id" type="text" class="form-control col-md-8" name="type_id"
+                            v-model="offer.type_id">
+                        <option value="1">Private</option>
+                        <option value="2">Apartments</option>
+                        <option value="3">Commercial</option>
+                    </select>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="profile_id">Inquiry type</label>
+                    <select id="profile_id" type="text" class="form-control col-md-8" name="profile_id"
+                            v-model="offer.profile_id">
+                        <option value="1">Wood</option>
+                        <option value="2">Wood + Al</option>
+                        <option value="3">Aluminium</option>
+                    </select>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="state_id">Status</label>
                     <select id="state_id" type="text" class="form-control col-md-8" name="state_id"
                             v-model="offer.state_id">
                         <option v-for="state in states" v-bind:value="state.id">{{ state.name }}</option>
@@ -97,18 +156,21 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="info">Comment</label>
-                    <input id="info" type="text" class="form-control col-md-8" name="info"
-                           v-model="offer.info">
+                    <label class="col-md-4 text-right col-form-label" for="comment">Description</label>
+                    <textarea id="comment" type="text" class="form-control col-md-8" name="comment" rows="3"
+                              v-model="offer.comment"></textarea>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="user_id">Person</label>
+                    <label class="col-md-4 text-right col-form-label" for="user_id">Created by</label>
 
                     <select id="user_id" type="text" class="form-control col-md-8" name="user_id"
                             v-model="offer.user_id">
                         <option v-for="user in users" v-bind:value="user.id">{{ user.name }}</option>
                     </select>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-6"><span>{{ offer.created_at }}</span></div>
+
                 </div>
 
                 <div class="form-group text-right">
@@ -133,7 +195,23 @@ export default {
             clients: [],
             states: [],
             users: [],
-            offer: {id: 0, company_name: '', company_id: 0, client_id: 0, client_name: '', user_id: 0, state_id: 1},
+            offer: {
+                inquiry_date: this.dateNow(),
+                id: 0,
+                company_name: '',
+                company_id: 0,
+                client_id: 0,
+                client_name: '',
+                user_id: 0,
+                state_id: 1,
+                received_id: 1,
+                private: 1,
+                delivery_address: '',
+                description: '',
+                type_id: 1,
+                profile_id: 1,
+                comment: '',
+            },
             showDropCompany: false,
             showDropContact: false,
             message: '',
@@ -143,7 +221,6 @@ export default {
         this.fetchStates();
 
         $(document).ready(function () {
-            console.log('Loaded!');
 
             $('#clients').select2({
                 minimumInputLength: 3,
@@ -164,6 +241,9 @@ export default {
             this.offer.client_id = item.client !== null && (typeof item.client.id !== undefined) ? item.client.id : 0;
             this.offer.client_name = item.client !== null && (typeof item.client.name !== undefined) ? item.client.name : '';
         });
+        this.$root.$on('newOffer', () => {
+            this.createOffer();
+        });
     },
     methods: {
         fetchStates() {
@@ -171,6 +251,15 @@ export default {
                 this.states = response.data.states;
                 this.users = response.data.users;
                 this.offer.user_id = response.data.user_id;
+            }).catch((error) => {
+                this.$root.fetchError(error);
+            });
+        },
+        createOffer() {
+            axios.get('/create-offer').then(response => {
+                this.offer.id = response.data.offer.id;
+                this.offer.user_id = response.data.offer.user_id;
+                this.offer.created_at = response.data.offer.created_at;
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -249,6 +338,9 @@ export default {
             this.showDropContact = false;
             this.message = '';
             this.closePopup();
+        },
+        dateNow() {
+            return new Date().toISOString();
         }
     }
 }

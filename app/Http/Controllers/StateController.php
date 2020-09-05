@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Offer;
 use App\State;
 use App\User;
 use Illuminate\Http\RedirectResponse;

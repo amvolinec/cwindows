@@ -29,17 +29,28 @@
                         <tbody>
                         <tr class="group-line" v-for="item in items">
                             <th scope="row">{{ item.planed_date }}</th>
-                            <td>{{ item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : ''}}</td>
-                            <td>{{ item.client !== null && (typeof item.client.name !== undefined) ? item.client.name : ''}}</td>
+                            <td>
+                                {{ item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : '' }}
+                            </td>
+                            <td>
+                                {{ item.client !== null && (typeof item.client.name !== undefined) ? item.client.name : '' }}
+                            </td>
                             <td>{{ item.title }}</td>
                             <td>{{ item.project_amount }}</td>
                             <td>{{ item.planned_amount_percents }}</td>
-                            <td><div class="stage " v-bind:class="item.state.class">{{ item.state !== null && (typeof item.state.name !== undefined) ? item.state.name : ''}}</div></td>
+                            <td>
+                                <div class="stage " v-bind:class="item.state.class">
+                                    {{ item.state !== null && (typeof item.state.name !== undefined) ? item.state.name : '' }}
+                                </div>
+                            </td>
                             <td>{{ item.info }}</td>
                             <td>
-                                <button class="btn btn-sm btn-outline-secondary" @click="itemShow(item.id)"><i class="fas fa-search-dollar"></i></button>
-                                <button class="btn btn-sm btn-outline-secondary" @click="itemLoad(item)"><i class="far fa-edit"></i></button>
-                                <button class="btn btn-sm btn-outline-info" @click="itemDelete(item)"><i class="fas fa-trash"></i></button>
+                                <button class="btn btn-sm btn-outline-secondary" @click="itemShow(item.id)"><i
+                                    class="fas fa-search-dollar"></i></button>
+                                <button class="btn btn-sm btn-outline-secondary" @click="itemLoad(item)"><i
+                                    class="far fa-edit"></i></button>
+                                <button class="btn btn-sm btn-outline-info" @click="itemDelete(item)"><i
+                                    class="fas fa-trash"></i></button>
                             </td>
                         </tr>
                         </tbody>
@@ -71,12 +82,15 @@ export default {
     methods: {
         fetchItems() {
             axios.get('/deals').then(response => {
-                this.items = response.data;
+                if (response.data.length > 0)
+                    this.items = response.data;
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
         },
         addDeal() {
+            //newOffer
+            this.$root.$emit('newOffer');
             this.$root.$data.popup = true;
         },
         itemLoad(item) {
@@ -89,7 +103,7 @@ export default {
             this.$root.$data.nope = true;
             this.fetchItems();
         },
-        itemShow(id){
+        itemShow(id) {
             document.location.href = '/offer/' + id;
         }
     }

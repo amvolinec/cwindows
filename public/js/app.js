@@ -1963,6 +1963,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1984,12 +1995,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/deals').then(function (response) {
-        _this2.items = response.data;
+        if (response.data.length > 0) _this2.items = response.data;
       })["catch"](function (error) {
         _this2.$root.fetchError(error);
       });
     },
     addDeal: function addDeal() {
+      //newOffer
+      this.$root.$emit('newOffer');
       this.$root.$data.popup = true;
     },
     itemLoad: function itemLoad(item) {
@@ -2152,6 +2165,68 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2160,13 +2235,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       states: [],
       users: [],
       offer: {
+        inquiry_date: this.dateNow(),
         id: 0,
         company_name: '',
         company_id: 0,
         client_id: 0,
         client_name: '',
         user_id: 0,
-        state_id: 1
+        state_id: 1,
+        received_id: 1,
+        "private": 1,
+        delivery_address: '',
+        description: '',
+        type_id: 1,
+        profile_id: 1,
+        comment: ''
       },
       showDropCompany: false,
       showDropContact: false,
@@ -2176,7 +2259,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   created: function created() {
     this.fetchStates();
     $(document).ready(function () {
-      console.log('Loaded!');
       $('#clients').select2({
         minimumInputLength: 3,
         ajax: {
@@ -2198,6 +2280,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       _this.offer.client_id = item.client !== null && _typeof(item.client.id) !== undefined ? item.client.id : 0;
       _this.offer.client_name = item.client !== null && _typeof(item.client.name) !== undefined ? item.client.name : '';
     });
+    this.$root.$on('newOffer', function () {
+      _this.createOffer();
+    });
   },
   methods: {
     fetchStates: function fetchStates() {
@@ -2211,11 +2296,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         _this2.$root.fetchError(error);
       });
     },
+    createOffer: function createOffer() {
+      var _this3 = this;
+
+      axios.get('/create-offer').then(function (response) {
+        _this3.offer.id = response.data.offer.id;
+        _this3.offer.user_id = response.data.offer.user_id;
+        _this3.offer.created_at = response.data.offer.created_at;
+      })["catch"](function (error) {
+        _this3.$root.fetchError(error);
+      });
+    },
     closePopup: function closePopup() {
       this.$root.$data.popup = false;
     },
     getCompany: function getCompany(e) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.offer.company_id = 0;
 
@@ -2227,14 +2323,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       axios.post('/get-companies', {
         name: this.offer.company_name
       }).then(function (response) {
-        _this3.companies = response.data;
-        _this3.showDropCompany = true;
+        _this4.companies = response.data;
+        _this4.showDropCompany = true;
       })["catch"](function (error) {
-        _this3.$root.fetchError(error);
+        _this4.$root.fetchError(error);
       });
     },
     getContact: function getContact(e) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.offer.client_id = 0;
 
@@ -2247,10 +2343,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         name: this.offer.client_name,
         companyId: this.offer.company_id
       }).then(function (response) {
-        _this4.clients = response.data;
-        _this4.showDropContact = true;
+        _this5.clients = response.data;
+        _this5.showDropContact = true;
       })["catch"](function (error) {
-        _this4.$root.fetchError(error);
+        _this5.$root.fetchError(error);
       });
     },
     getPerson: function getPerson() {},
@@ -2271,20 +2367,20 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       this.showDropContact = false;
     },
     saveOffer: function saveOffer() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.message = '';
       axios.post('/set-offer', this.offer).then(function (response) {
         if (response.data.status === 'error') {
-          _this5.message = response.data.message;
+          _this6.message = response.data.message;
           return;
         }
 
-        _this5.clearPopup();
+        _this6.clearPopup();
 
-        _this5.$root.$emit('offerAdded');
+        _this6.$root.$emit('offerAdded');
       })["catch"](function (error) {
-        _this5.$root.fetchError(error);
+        _this6.$root.fetchError(error);
       });
     },
     clearPopup: function clearPopup() {
@@ -2304,6 +2400,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       this.showDropContact = false;
       this.message = '';
       this.closePopup();
+    },
+    dateNow: function dateNow() {
+      return new Date().toISOString();
     }
   }
 });
@@ -49015,23 +49114,27 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(
-                        _vm._s(
-                          item.company !== null &&
-                            typeof item.company.name !== undefined
-                            ? item.company.name
-                            : ""
-                        )
+                        "\n                            " +
+                          _vm._s(
+                            item.company !== null &&
+                              typeof item.company.name !== undefined
+                              ? item.company.name
+                              : ""
+                          ) +
+                          "\n                        "
                       )
                     ]),
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(
-                        _vm._s(
-                          item.client !== null &&
-                            typeof item.client.name !== undefined
-                            ? item.client.name
-                            : ""
-                        )
+                        "\n                            " +
+                          _vm._s(
+                            item.client !== null &&
+                              typeof item.client.name !== undefined
+                              ? item.client.name
+                              : ""
+                          ) +
+                          "\n                        "
                       )
                     ]),
                     _vm._v(" "),
@@ -49047,12 +49150,14 @@ var render = function() {
                         { staticClass: "stage ", class: item.state.class },
                         [
                           _vm._v(
-                            _vm._s(
-                              item.state !== null &&
-                                typeof item.state.name !== undefined
-                                ? item.state.name
-                                : ""
-                            )
+                            "\n                                " +
+                              _vm._s(
+                                item.state !== null &&
+                                  typeof item.state.name !== undefined
+                                  ? item.state.name
+                                  : ""
+                              ) +
+                              "\n                            "
                           )
                         ]
                       )
@@ -49199,34 +49304,190 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                " +
+                      "\n                    " +
                         _vm._s(this.message) +
-                        "\n            "
+                        "\n                "
                     )
                   ]
                 )
               : _vm._e(),
             _vm._v(" "),
-            _c("input", {
-              directives: [
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
                 {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.offer.id,
-                  expression: "offer.id"
-                }
-              ],
-              attrs: { type: "hidden" },
-              domProps: { value: _vm.offer.id },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+                  staticClass: "col-md-4 text-right col-form-label",
+                  attrs: { for: "planed_date" }
+                },
+                [_vm._v("Inquiry date")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-8 p-0" },
+                [
+                  _c("datetime", {
+                    attrs: {
+                      id: "inquiry_date",
+                      type: "datetime",
+                      "input-class": "form-control",
+                      format: "yyyy-MM-dd HH:mm:ss"
+                    },
+                    model: {
+                      value: _vm.offer.inquiry_date,
+                      callback: function($$v) {
+                        _vm.$set(_vm.offer, "inquiry_date", $$v)
+                      },
+                      expression: "offer.inquiry_date"
+                    }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 text-right col-form-label",
+                  attrs: { for: "planed_date" }
+                },
+                [_vm._v("Inquiry ID")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-8 p-0" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.offer.id,
+                      expression: "offer.id"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { readonly: "" },
+                  domProps: { value: _vm.offer.id },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.offer, "id", $event.target.value)
+                    }
                   }
-                  _vm.$set(_vm.offer, "id", $event.target.value)
-                }
-              }
-            }),
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 text-right col-form-label",
+                  attrs: { for: "received_id" }
+                },
+                [_vm._v("Request received")]
+              ),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.offer.received_id,
+                      expression: "offer.received_id"
+                    }
+                  ],
+                  staticClass: "form-control col-md-8",
+                  attrs: {
+                    id: "received_id",
+                    type: "text",
+                    name: "received_id"
+                  },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.offer,
+                        "received_id",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "1" } }, [_vm._v("www")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "2" } }, [_vm._v("email")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "3" } }, [_vm._v("other")])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 text-right col-form-label",
+                  attrs: { for: "private" }
+                },
+                [_vm._v("Private/Company")]
+              ),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.offer.private,
+                      expression: "offer.private"
+                    }
+                  ],
+                  staticClass: "form-control col-md-8",
+                  attrs: { id: "private", type: "text", name: "private" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.offer,
+                        "private",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "1" } }, [_vm._v("Private")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "0" } }, [_vm._v("Company")])
+                ]
+              )
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group row" }, [
               _c(
@@ -49285,7 +49546,7 @@ var render = function() {
                 _vm._v(" "),
                 _vm.offer.company_id === 0 && _vm.offer.company_name.length > 2
                   ? _c("div", { staticClass: "float-right drop-new" }, [
-                      _vm._v("New\n                    ")
+                      _vm._v("New\n                        ")
                     ])
                   : _vm._e(),
                 _vm._v(" "),
@@ -49385,7 +49646,7 @@ var render = function() {
                 _vm._v(" "),
                 _vm.offer.client_id === 0 && _vm.offer.client_name.length > 2
                   ? _c("div", { staticClass: "float-right drop-new" }, [
-                      _vm._v("New\n                    ")
+                      _vm._v("New\n                        ")
                     ])
                   : _vm._e(),
                 _vm._v(" "),
@@ -49434,7 +49695,7 @@ var render = function() {
                   staticClass: "col-md-4 text-right col-form-label",
                   attrs: { for: "title" }
                 },
-                [_vm._v("Title")]
+                [_vm._v("Inquiry Name")]
               ),
               _vm._v(" "),
               _c("input", {
@@ -49466,9 +49727,9 @@ var render = function() {
                 "label",
                 {
                   staticClass: "col-md-4 text-right col-form-label",
-                  attrs: { for: "pipeline" }
+                  attrs: { for: "delivery_address" }
                 },
-                [_vm._v("Sales Pipeline")]
+                [_vm._v("Delivery Address")]
               ),
               _vm._v(" "),
               _c("input", {
@@ -49476,19 +49737,24 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.offer.pipeline,
-                    expression: "offer.pipeline"
+                    value: _vm.offer.delivery_address,
+                    expression: "offer.delivery_address"
                   }
                 ],
                 staticClass: "form-control col-md-8",
-                attrs: { id: "pipeline", type: "text", name: "pipeline" },
-                domProps: { value: _vm.offer.pipeline },
+                attrs: {
+                  id: "delivery_address",
+                  type: "text",
+                  name: "delivery_address"
+                },
+                domProps: { value: _vm.offer.delivery_address },
                 on: {
+                  focusin: _vm.hideClient,
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.offer, "pipeline", $event.target.value)
+                    _vm.$set(_vm.offer, "delivery_address", $event.target.value)
                   }
                 }
               })
@@ -49499,9 +49765,159 @@ var render = function() {
                 "label",
                 {
                   staticClass: "col-md-4 text-right col-form-label",
+                  attrs: { for: "description" }
+                },
+                [_vm._v("Description")]
+              ),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.offer.description,
+                    expression: "offer.description"
+                  }
+                ],
+                staticClass: "form-control col-md-8",
+                attrs: {
+                  id: "description",
+                  type: "text",
+                  name: "description",
+                  rows: "3"
+                },
+                domProps: { value: _vm.offer.description },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.offer, "description", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 text-right col-form-label",
+                  attrs: { for: "type_id" }
+                },
+                [_vm._v("Inquiry type")]
+              ),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.offer.type_id,
+                      expression: "offer.type_id"
+                    }
+                  ],
+                  staticClass: "form-control col-md-8",
+                  attrs: { id: "type_id", type: "text", name: "type_id" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.offer,
+                        "type_id",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "1" } }, [_vm._v("Private")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "2" } }, [
+                    _vm._v("Apartments")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "3" } }, [
+                    _vm._v("Commercial")
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 text-right col-form-label",
+                  attrs: { for: "profile_id" }
+                },
+                [_vm._v("Inquiry type")]
+              ),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.offer.profile_id,
+                      expression: "offer.profile_id"
+                    }
+                  ],
+                  staticClass: "form-control col-md-8",
+                  attrs: { id: "profile_id", type: "text", name: "profile_id" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.offer,
+                        "profile_id",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "1" } }, [_vm._v("Wood")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "2" } }, [
+                    _vm._v("Wood + Al")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "3" } }, [_vm._v("Aluminium")])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 text-right col-form-label",
                   attrs: { for: "state_id" }
                 },
-                [_vm._v("Stage")]
+                [_vm._v("Status")]
               ),
               _vm._v(" "),
               _c(
@@ -49621,7 +50037,7 @@ var render = function() {
                   staticClass: "col-md-4 text-right col-form-label",
                   attrs: { for: "planned_amount_percents" }
                 },
-                [_vm._v("Probability\n                    %")]
+                [_vm._v("Probability\n                        %")]
               ),
               _vm._v(" "),
               _c("input", {
@@ -49660,29 +50076,34 @@ var render = function() {
                 "label",
                 {
                   staticClass: "col-md-4 text-right col-form-label",
-                  attrs: { for: "info" }
+                  attrs: { for: "comment" }
                 },
-                [_vm._v("Comment")]
+                [_vm._v("Description")]
               ),
               _vm._v(" "),
-              _c("input", {
+              _c("textarea", {
                 directives: [
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.offer.info,
-                    expression: "offer.info"
+                    value: _vm.offer.comment,
+                    expression: "offer.comment"
                   }
                 ],
                 staticClass: "form-control col-md-8",
-                attrs: { id: "info", type: "text", name: "info" },
-                domProps: { value: _vm.offer.info },
+                attrs: {
+                  id: "comment",
+                  type: "text",
+                  name: "comment",
+                  rows: "3"
+                },
+                domProps: { value: _vm.offer.comment },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.offer, "info", $event.target.value)
+                    _vm.$set(_vm.offer, "comment", $event.target.value)
                   }
                 }
               })
@@ -49695,7 +50116,7 @@ var render = function() {
                   staticClass: "col-md-4 text-right col-form-label",
                   attrs: { for: "user_id" }
                 },
-                [_vm._v("Person")]
+                [_vm._v("Created by")]
               ),
               _vm._v(" "),
               _c(
@@ -49737,7 +50158,13 @@ var render = function() {
                   ])
                 }),
                 0
-              )
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("span", [_vm._v(_vm._s(_vm.offer.created_at))])
+              ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group text-right" }, [
@@ -49750,7 +50177,9 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "fas fa-times" }),
-                  _vm._v("\n                    Cancel\n                ")
+                  _vm._v(
+                    "\n                        Cancel\n                    "
+                  )
                 ]
               ),
               _vm._v(" "),
@@ -49763,7 +50192,7 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "fas fa-save" }, [
-                    _vm._v("\n                    Save")
+                    _vm._v("\n                        Save")
                   ])
                 ]
               )

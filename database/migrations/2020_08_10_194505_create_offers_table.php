@@ -18,7 +18,7 @@ class CreateOffersTable extends Migration
 			$table->unsignedBigInteger('company_id')->nullable()->index();
 			$table->unsignedBigInteger('client_id')->nullable()->index();
 			$table->unsignedBigInteger('architect_id')->nullable()->index();
-			$table->date('enquiry_date')->nullable();
+			$table->date('inquiry_date')->nullable();
 			$table->date('planed_date')->nullable();
 			$table->string('number')->nullable();
 			$table->string('order_number')->nullable();
@@ -26,7 +26,6 @@ class CreateOffersTable extends Migration
 			$table->string('pv')->nullable();
 			$table->string('area')->nullable();
 			$table->integer('positions')->nullable();
-			$table->string('profile')->nullable();
 			$table->unsignedSmallInteger('state_id')->nullable()->index();
 			$table->string('state_comment')->nullable();
 			$table->string('info')->nullable();
@@ -49,10 +48,25 @@ class CreateOffersTable extends Migration
             $table->decimal('planned_amount_percents',11,2)->default(0);
 			$table->decimal('project_amount', 11, 2)->default(0);
 			$table->decimal('project_amount_with_vat', 11, 2)->default(0);
-            $table->unsignedSmallInteger('user_id')->nullable()->index();
+            $table->unsignedBigInteger('user_id')->nullable()->index();
             $table->string('delivery_address')->nullable();
             $table->date('delivery_date')->nullable();
+            $table->string('comment')->nullable();
+            $table->unsignedBigInteger('manager_id')->nullable();
+            $table->unsignedTinyInteger('received_id')->default(1);
+            $table->boolean('private')->default(0);
+            $table->string('description', 2000)->nullable();
+            $table->unsignedTinyInteger('type_id')->default(1);
+            $table->unsignedTinyInteger('profile_id')->default(1);
+            $table->unsignedBigInteger('maintenance_id')->nullable();
+            $table->string('partner')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('set null');
+
+            $table->foreign('manager_id')->references('id')->on('users')
+                ->onDelete('set null');
         });
     }
 

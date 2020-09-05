@@ -10,6 +10,7 @@ use App\Position;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
@@ -22,13 +23,13 @@ class OfferController extends Controller
      */
     public function index()
     {
-        $offers = Offer::all();
+        $offers = Offer::whereNotNull('inquiry_date')->get();
         return view('offer.index', ['offers' => $offers]);
     }
 
     public function get()
     {
-        return Offer::with(['client', 'architect', 'company', 'state'])->get();
+        return Offer::with(['client', 'architect', 'company', 'state'])->whereNotNull('inquiry_date')->get();
 
     }
 
@@ -239,5 +240,16 @@ class OfferController extends Controller
     public function getData($id)
     {
         return Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user'])->findOrFail($id);
+    }
+
+    public function createOffer() {
+        $offer = Offer::whereNull('inquiry_date')->get()->first();
+        if(!$offer){
+            $offer = new Offer();
+        }
+        $offer->user_id = Auth::user()->id;
+        $offer->created_at = date('Y-m-d H:i:s');
+        $offer->save();
+        return ['offer' => $offer];
     }
 }
