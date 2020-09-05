@@ -46,7 +46,12 @@ class UserController extends Controller
         $user->password = Hash::make($user->password);
 
         $user->save();
-        $user->assignRole('user');
+        if ($request->has('roles')) {
+            $user->syncRoles($request->get('roles'));
+        } else {
+            $user->assignRole('user');
+        }
+
 
         return redirect()->route('user.index');
     }
@@ -65,12 +70,12 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  User  $user
+     * @param User $user
      * @return View
      */
     public function edit(User $user)
     {
-        return view ('user.create' , ['user' => $user, 'roles' => Role::all()]);
+        return view('user.create', ['user' => $user, 'roles' => Role::all()]);
     }
 
     /**
@@ -85,8 +90,13 @@ class UserController extends Controller
         $user->name = $request->get('name');
         $user->email = $request->get('email');
 
-        if($request->has('password')) {
+        if ($request->has('password')) {
             $user->password = Hash::make($request->get('password'));
+        }
+
+        if ($request->has('roles')) {
+//            dd($request->get('roles'));
+            $user->syncRoles($request->get('roles'));
         }
 
         $user->save();
@@ -97,7 +107,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  User  $user
+     * @param User $user
      * @return RedirectResponse
      */
     public function destroy(User $user)

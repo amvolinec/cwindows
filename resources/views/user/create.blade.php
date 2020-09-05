@@ -88,9 +88,9 @@
                                        class="col-md-4 col-form-label text-md-right">{{ __('Assign Role') }}</label>
 
                                 <div class="col-md-6">
-                                    <select name="role[]" id="role" class="form-control">
+                                    <select name="roles[]" id="roles" multiple="multiple"  class="form-control select_multiple">
                                         @foreach($roles as $role)
-                                            <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                            <option value="{{ $role->name }}" {{ isset($user) && $user->hasRole($role->name) ? 'selected="selected"' : ''}}>{{ $role->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -119,7 +119,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#role').select2({multiple: true});
+            $('#roles').select2({multiple: true});
         });
     </script>
 @endsection
