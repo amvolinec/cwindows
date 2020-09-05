@@ -44,7 +44,11 @@ class ProfileController extends Controller
         $file_name = '';
 
         if ($request->hasFile('file')) {
-            $file_name = $request->file('file')->getClientOriginalName();
+
+            if(!$request->hasFile('file_name')){
+                $file_name = $request->file('file')->getClientOriginalName();
+            }
+
             $path = Storage::disk('uploads')->putFile('images', $request->file('file'));
 
         }
@@ -97,7 +101,9 @@ class ProfileController extends Controller
         $file_name = '';
 
         if ($request->hasFile('file')) {
-            $file_name = $request->file('file')->getClientOriginalName();
+            if(!$request->hasFile('file_name')){
+                $file_name = $request->file('file')->getClientOriginalName();
+            }
             $path = Storage::disk('uploads')->putFile('images', $request->file('file'));
         }
 

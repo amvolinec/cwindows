@@ -27,7 +27,7 @@
 								<th scope="col">{{ __("Price") }}</th>
 								<th scope="col">{{ __("Index") }}</th>
 								<th scope="col">{{ __("File name") }}</th>
-								<th scope="col">{{ __("File_uri") }}</th>
+								<th scope="col">{{ __("File") }}</th>
 
                                 <th scope="col">{{ __('Actions') }}</th>
                             </tr>
@@ -40,7 +40,9 @@
 									<td>{{ $profile->price }}</td>
 									<td>{{ $profile->index }}</td>
 									<td>{{ $profile->file_name }}</td>
-									<td>{{ $profile->file_uri }}</td>
+									<td>
+                                        <img src="{{ asset($profile->file_uri)}}" alt="{{ $profile->file_name }}" class="img-rounded">
+                                    </td>
 
                                     <td>
                                         <form class="float-right" action="{{ route('profile.destroy', $profile->id) }}"

@@ -14,7 +14,7 @@
                     </div>
                     @endif
 
-                    <form action="{{ isset($profile) ? route('profile.update', $profile->id) : route('profile.store') }}" method="post">
+                    <form action="{{ isset($profile) ? route('profile.update', $profile->id) : route('profile.store') }}" method="post" enctype="multipart/form-data">
                         @method( isset($profile) ? 'put' : 'post')
                         @csrf
 
@@ -76,8 +76,8 @@
                                 <div class="input-group col-md-6">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input"
-                                               id="fileUpload" value="{{ $profile->file_uri ?? old('file_uri') }}"
-                                               aria-describedby="inputGroupFileAddon01" name="file_uri" >
+                                               id="fileUpload"
+                                               aria-describedby="inputGroupFileAddon01" name="file" >
                                         <label class="custom-file-label" for="fileUpload">{{ __('Choose file') }}</label>
                                     </div>
                                 </div>
@@ -116,4 +116,16 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        });
+    </script>
 @endsection
