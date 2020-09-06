@@ -178,3 +178,9 @@ ul.i-list li {
 .col-form-label span {
     color: red;
 }
+
+.offer-comment {
+    max-height: 112px;
+    max-width: 200px;
+    overflow: auto;
+}

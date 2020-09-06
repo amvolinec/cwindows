@@ -10,7 +10,6 @@
                     {{ this.message }}
                 </div>
                 <div class="row">
-                    <div class="col-md-3"></div>
                     <div class="col-md-6">
                         <input type="hidden" v-model="offer.id">
 
@@ -78,7 +77,8 @@
                         <div class="form-group mb-1 row">
                             <label class="col-md-4 text-right col-form-label" for="delivery_date">Delivery date</label>
                             <datetime id="delivery_date" v-model="offer.delivery_date" type="date"
-                                      input-class="form-control form-control-sm col-md-8"></datetime>
+                                      input-class="form-control form-control-sm col-md-8"
+                                      format="yyyy-MM-dd"></datetime>
                         </div>
 
                         <div class="form-group mb-1 row">
@@ -93,6 +93,11 @@
                                    name="order_number"
                                    v-model="offer.order_number">
                         </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="description">Comments</label>
+                        <textarea id="description" type="text" class="form-control" name="description" rows="10"
+                                  v-model="offer.description"></textarea>
                     </div>
                 </div>
                 <offer-items></offer-items>
@@ -112,7 +117,16 @@ export default {
             clients: [],
             states: [],
             users: [],
-            offer: {id: 0, company_name: '', company_id: 0, client_id: 0, client_name: '', user_id: 0, state_id: 1},
+            offer: {
+                id: 0,
+                company_name: '',
+                company_id: 0,
+                client_id: 0,
+                client_name: '',
+                user_id: 0,
+                state_id: 1,
+                delivery_date: null
+            },
             showDropCompany: false,
             showDropContact: false,
             message: '',
@@ -200,6 +214,7 @@ export default {
         },
         saveOffer() {
             this.message = '';
+            this.offer.delivery_date = this.offer.delivery_date.substr(0, 10);
             axios.post('/set-offer', this.offer).then(response => {
                 if (response.data.status === 'error') {
                     this.message = response.data.message;
@@ -224,7 +239,7 @@ export default {
             this.showDropContact = false;
             this.message = '';
             this.closePopup();
-        }, itemDelete(item){
+        }, itemDelete(item) {
 
         }, itemAdd() {
             // this.positions = { index: 0 };

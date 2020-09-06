@@ -104,14 +104,24 @@
 
                 <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="delivery_address">Delivery Address</label>
-                    <input id="delivery_address" type="text" class="form-control col-md-8" name="delivery_address" @focusin="hideClient"
+                    <input id="delivery_address" type="text" class="form-control col-md-8" name="delivery_address"
+                           @focusin="hideClient"
                            v-model="offer.delivery_address">
                 </div>
 
                 <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="description">Description</label>
-                    <textarea id="description" type="text" class="form-control col-md-8" name="description" rows="3"
+                    <div class="col-md-8 p-0">
+                    <textarea id="description" type="text" class="form-control" name="description" rows="3"
                               v-model="offer.description"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="type_id">Upload files</label>
+                    <div class="col-md-8">
+                        <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                    </div>
                 </div>
 
                 <div class="form-group row">
@@ -145,7 +155,8 @@
                 <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="planed_date">Planned date of sale</label>
                     <datetime id="planed_date" v-model="offer.planed_date" type="date"
-                              input-class="form-control col-md-8"></datetime>
+                              input-class="form-control" format="yyyy-MM-dd"
+                              @change="changeFormat(offer.planed_date)"></datetime>
                 </div>
 
                 <div class="form-group row">
@@ -163,9 +174,11 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="comment">Description</label>
-                    <textarea id="comment" type="text" class="form-control col-md-8" name="comment" rows="3"
+                    <label class="col-md-4 text-right col-form-label" for="comment">Comments</label>
+                    <div class="col-md-8 p-0">
+                    <textarea id="comment" type="text" class="form-control" name="comment" rows="3"
                               v-model="offer.comment"></textarea>
+                    </div>
                 </div>
 
                 <div class="form-group row">
@@ -200,8 +213,9 @@
                         class="fas fa-times"></i>
                         Cancel
                     </button>
-                    <button class="btn btn-outline-success" type="button" @click="saveOffer"><i class="fas fa-save">
-                        Save</i>
+                    <button class="btn btn-outline-success" type="button" @click="saveOffer"><i
+                        class="fas fa-save"></i>
+                        Save
                     </button>
                 </div>
             </div>
@@ -212,6 +226,7 @@
 
 <script>
 import Contact from './NewContactComponent'
+
 export default {
     data() {
         return {
@@ -244,6 +259,7 @@ export default {
             errors: null,
             isFloat: false,
             createNew: false,
+            file: [],
         }
     },
     components: {
@@ -290,8 +306,7 @@ export default {
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
-        },
-        createOffer() {
+        }, createOffer() {
             axios.get('/create-offer').then(response => {
                 this.offer.id = response.data.offer.id;
                 this.offer.user_id = response.data.offer.user_id;
@@ -299,11 +314,9 @@ export default {
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
-        },
-        closePopup() {
+        }, closePopup() {
             this.$root.$data.popup = false;
-        },
-        getCompany(e) {
+        }, getCompany(e) {
             this.offer.company_id = 0;
             if (e.key === 'Escape') {
                 this.showDropCompany = false;
@@ -315,8 +328,7 @@ export default {
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
-        },
-        getContact(e) {
+        }, getContact(e) {
             this.offer.client_id = 0;
             if (e.key === 'Escape') {
                 this.showDropContact = false;
@@ -331,47 +343,79 @@ export default {
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
-        },
-        getPerson() {
+        }, getPerson() {
 
-        },
-        setCompany(company) {
+        }, setCompany(company) {
             this.showDropCompany = false;
             this.offer.company_name = company.name;
             this.offer.company_id = company.id;
-        },
-        setContact(client) {
+        }, setContact(client) {
             this.showDropContact = false;
             this.offer.client_name = client.name;
             this.offer.client_id = client.id;
-        },
-        hideCompany() {
+        }, hideCompany() {
             this.showDropCompany = false;
-        },
-        hideClient() {
+        }, hideClient() {
             this.showDropContact = false;
-        },
-        saveOffer() {
+        }, saveOffer() {
             this.message = '';
             this.errors = null;
-            this.offer.inquiry_date = this.offer.inquiry_date.substr(0,10);
-            axios.post('/set-offer', this.offer)
-                .then(response => {
+            this.offer.inquiry_date = this.offer.inquiry_date.substr(0, 10);
+            this.offer.planed_date = this.offer.planed_date.substr(0, 10);
+            this.file = this.$refs.file.files[0];
+
+            let formData = new FormData();
+            formData.append('file', this.file);
+            Object.keys(this.offer).forEach(key => {
+                if (this.offer[key] !== null)
+                    formData.append(key, this.offer[key])
+            });
+
+            // for ( let key in this.offer ) {
+            //     formData.append(key, this.offer[key]);
+            // }
+
+            axios.post('/set-offer', formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            ).then(response => {
                 if (response.data.status === 'error') {
+                    console.log(response.data);
                     this.message = response.data.message;
                 } else {
                     this.clearPopup();
                     this.$root.$emit('offerAdded');
                 }
             }).catch((e) => {
-                if (e.response.status === 422) {
+                if (typeof e.response !== 'undefined' && e.response.status === 422) {
+                    // console.log(e.response.data);
+                    // Object.keys(e.response.data.errors).forEach(key => this.errors.append(key, e.response.data.errors[key]));
                     this.errors = e.response.data.errors;
+                    // this.errors = e.data.errors;
                 } else {
                     this.$root.fetchError(e);
                 }
             });
-        },
-        clearPopup() {
+
+            // axios.post('/set-offer', this.offer)
+            //     .then(response => {
+            //         if (response.data.status === 'error') {
+            //             this.message = response.data.message;
+            //         } else {
+            //             this.clearPopup();
+            //             this.$root.$emit('offerAdded');
+            //         }
+            //     }).catch((e) => {
+            //     if (e.response.status === 422) {
+            //         this.errors = e.response.data.errors;
+            //     } else {
+            //         this.$root.fetchError(e);
+            //     }
+            // });
+        }, clearPopup() {
             this.companies = [];
             this.clients = [];
             this.states = [];
@@ -381,20 +425,21 @@ export default {
             this.showDropContact = false;
             this.message = '';
             this.closePopup();
-        },
-        dateNow() {
+        }, dateNow() {
             return new Date().toISOString().substr(0, 10);
-        },
-        createContact(){
+        }, createContact() {
             this.$root.$emit('newContactName', this.offer.client_name);
             this.$root.$data.newContact = true;
             this.isFloat = true;
-        },
-        castContact(client) {
+        }, castContact(client) {
             // this.$root.$data.newContact = true;
             this.isFloat = false;
             this.offer.client_id = client.id;
             this.offer.client_name = client.name;
+        }, changeFormat(date) {
+            date = date.substr(0, 10);
+        }, handleFileUpload() {
+
         }
     }
 }

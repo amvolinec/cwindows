@@ -17,7 +17,6 @@ class   Offer extends Model
         "title",
         "pv",
         "area",
-        "positions",
         "state_id",
         "state_comment",
         "info",
@@ -82,5 +81,10 @@ class   Offer extends Model
     public function positions()
     {
         return $this->hasMany('App\Position');
+    }
+
+    public function files()
+    {
+        return $this->hasMany('App\File');
     }
 }

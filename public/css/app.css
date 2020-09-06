@@ -17317,3 +17317,9 @@ ul.i-list li {
   color: red;
 }
 
+.offer-comment {
+  max-height: 112px;
+  max-width: 200px;
+  overflow: auto;
+}
+

@@ -19,6 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::resource('file', 'FileController');
+    Route::post('file/find/', 'FileController@find')->name('file.find');
+    Route::get('file/find/{string}', 'FileController@find')->name('file.find.get');
     Route::resource('maintenance', 'MaintenanceController');
     Route::post('maintenance/find/', 'MaintenanceController@find')->name('maintenance.find');
     Route::get('maintenance/find/{string}', 'MaintenanceController@find')->name('maintenance.find.get');

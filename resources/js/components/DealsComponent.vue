@@ -22,7 +22,8 @@
                             <th scope="col">Planed amount</th>
                             <th scope="col">Probability %</th>
                             <th scope="col">Stage</th>
-                            <th scope="col">Comments</th>
+                            <th scope="col" width="200">Description</th>
+                            <th scope="col">Files</th>
                             <th scope="col"></th>
                         </tr>
                         </thead>
@@ -43,7 +44,20 @@
                                     {{ item.state !== null && (typeof item.state.name !== undefined) ? item.state.name : '' }}
                                 </div>
                             </td>
-                            <td>{{ item.info }}</td>
+                            <td>
+                                <div class="offer-comment">
+                                    {{ item.description }}
+                                </div>
+
+                            </td>
+                            <td>
+                                <ul>
+                                    <li v-for="file in item.files">
+                                        <a v-bind:href="file.file_uri" target="_blank">{{ file.file_name}}</a>
+
+                                    </li>
+                                </ul>
+                            </td>
                             <td>
                                 <button class="btn btn-sm btn-outline-secondary" @click="itemShow(item.id)"><i
                                     class="fas fa-search-dollar"></i></button>

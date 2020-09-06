@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Architect;
 use App\Client;
 use App\Company;
+use App\File;
 use App\Http\Requests\OfferRequest;
 use App\Offer;
 use App\Position;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class OfferController extends Controller
@@ -30,7 +32,7 @@ class OfferController extends Controller
 
     public function get()
     {
-        return Offer::with(['client', 'architect', 'company', 'state'])->whereNotNull('inquiry_date')->get();
+        return Offer::with(['client', 'architect', 'company', 'state', 'files'])->whereNotNull('inquiry_date')->get();
 
     }
 
@@ -112,9 +114,9 @@ class OfferController extends Controller
         }
 
         try {
-            $offer->fill($request->except('client_id, manager_id, company_id'));
+            $offer->fill($request->except('client_id, manager_id, company_id, positions'));
         } catch (\Exception $exception) {
-            return ['status' => 'error', 'message' => $exception->getMessage()];
+            return ['status' => 'error', 'message' => 'Fill error: ' . PHP_EOL . $exception->getMessage()];
         }
 
         if ((int)$request->get('company_id') > 0) {
@@ -146,10 +148,29 @@ class OfferController extends Controller
 
         $client->save();
 
+        if ($request->hasFile('file')) {
+
+            $file_name = $request->file('file')->getClientOriginalName();
+
+            $this->checkDir();
+
+            try {
+                $path = Storage::disk('uploads')->putFile('documents', $request->file('file'));
+            } catch (\Exception $exception) {
+                return ['status' => 'error', 'message' => 'File save error: ' . PHP_EOL . $exception->getMessage()];
+            }
+
+            File::create([
+                'file_name' => $file_name,
+                'file_uri' => $path,
+                'offer_id' => $offer->id
+            ]);
+        }
+
         try {
             $offer->save();
         } catch (\Exception $exception) {
-            return ['status' => 'error', 'message' => $exception->getMessage()];
+            return ['status' => 'error', 'message' => 'Save error: ' . PHP_EOL . $exception->getMessage()];
         }
 
 
@@ -227,11 +248,11 @@ class OfferController extends Controller
 //            return ['status' => 'error', 'message' => $exception->getMessage()];
 //        }
 
-        if ($request->has('positions')) {
+        if ($request->has('positions') && !empty($request->get('positions'))) {
 
             $positions = $request->get('positions');
 
-            if (!empty($positions)) {
+            if (!empty($positions) && sizeof($positions) > 0) {
                 foreach ($positions as $position) {
 
                     if (is_array($position)) {
@@ -242,19 +263,22 @@ class OfferController extends Controller
                             $item = Position::find($position['id']);
                         }
 
-                        $item->title = $position['title'];
-                        $item->quantity = $position['quantity'];
-                        $item->cost = $position['cost'];
-                        $item->price = $position['price'];
-                        $item->discount = $position['discount'];
-                        $item->discount_next = $position['discount_next'];
-                        $item->final_price = $position['final_price'];
-                        $item->subtotal = $position['subtotal'];
-                        $item->total = $position['total'];
-                        $item->vat = $position['vat'];
-                        $item->offer_id = $offer->id;
+                        if (!empty($position['quantity'])) {
+                            $item->title = $position['title'];
+                            $item->quantity = $position['quantity'];
+                            $item->cost = $position['cost'];
+                            $item->price = $position['price'];
+                            $item->discount = $position['discount'];
+                            $item->discount_next = $position['discount_next'];
+                            $item->final_price = $position['final_price'];
+                            $item->subtotal = $position['subtotal'];
+                            $item->total = $position['total'];
+                            $item->vat = $position['vat'];
+                            $item->offer_id = $offer->id;
 
-                        $item->save();
+                            $item->save();
+                        }
+
                     } else {
                         Log::info("Position is not an Array ");
                     }
@@ -284,17 +308,31 @@ class OfferController extends Controller
 
     public function getData($id)
     {
-        return Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user'])->findOrFail($id);
+        return Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user', 'files'])->findOrFail($id);
     }
 
-    public function createOffer() {
+    public function createOffer()
+    {
         $offer = Offer::whereNull('inquiry_date')->get()->first();
-        if(!$offer){
+        if (!$offer) {
             $offer = new Offer();
         }
         $offer->user_id = Auth::user()->id;
         $offer->created_at = date('Y-m-d H:i:s');
         $offer->save();
         return ['offer' => $offer];
+    }
+
+    protected function checkDir()
+    {
+        $is_exist = Storage::disk('uploads')->exists('documents');
+
+        if (!$is_exist) {
+            try {
+                Storage::disk('uploads')->makeDirectory('documents');
+            } catch (Exception $e) {
+                return ['status' => 'error', 'message' => $e->getMessage()];
+            }
+        }
     }
 }

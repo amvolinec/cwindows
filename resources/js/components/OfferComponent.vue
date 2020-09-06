@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <div class="panel-info">
                         <div class="d-inline-flex">
-                            <h5>Information</h5>
+                            <h5><i class="fa fa-info-circle"></i> Information</h5>
                         </div>
                         <div class="d-inline-flex">
                             <button class="btn btn-sm btn-outline-secondary" @click="itemLoad(item)"><i
@@ -28,7 +28,7 @@
                         <tr>
                             <th scope="row">Company</th>
                             <td>
-                                {{ typeof item.company === 'undefined' ? '' : item.company.name }}
+                                {{ (typeof item.company === 'undefined') || (item.company !== 'null') ? '' : item.company.name }}
                             </td>
                         </tr>
                         <tr>
@@ -71,7 +71,7 @@
                 <div class="card-body">
                     <div class="panel-info">
                         <div class="d-inline-flex">
-                            <h5>Product list</h5>
+                            <h5><i class="fa fa-building"></i> Product list</h5>
                         </div>
                         <div class="d-inline-flex">
                             <button class="btn btn-sm btn-outline-secondary" @click="positionsLoad(item)"><i
@@ -87,7 +87,7 @@
                                     {{ position.quantity }} x {{ position.price }} €
                                 </div>
                                 <div class="float-right">
-                                    {{ $root.format(position.subtotal) }}˚
+                                    {{ $root.format(position.subtotal) }}
                                 </div>
                             </div>
                         </li>
