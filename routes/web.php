@@ -60,6 +60,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::post('client/find/', 'ClientController@find')->name('client.find');
     Route::get('client/find/{string}', 'ClientController@find')->name('client.find.get');
+    Route::post('contact-add', 'ClientController@add')->name('client.add');
 
     Route::post('category/find/', 'CategoryController@find')->name('category.find');
     Route::get('category/find/{string}', 'CategoryController@find')->name('category.find.get');

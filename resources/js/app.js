@@ -53,7 +53,8 @@ const app = new Vue({
         positions: false,
         configurator1: false,
         configurator2: false,
-        offer: []
+        offer: [],
+        newContact: false
     },
     methods: {
         fetchError(error){

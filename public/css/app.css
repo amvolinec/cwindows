@@ -17292,8 +17292,28 @@ ul.i-list li {
   border-radius: 2px;
 }
 
+.popup-sm {
+  transition: all 1s ease;
+}
+
 .popup-sm .drop-new {
   font-size: 0.7rem;
   padding: 2px 5px;
+}
+
+.client .drop-new {
+  cursor: pointer;
+}
+
+.popup-sm.left {
+  margin-left: 40px;
+}
+
+.popup-sm.brown .popup-head {
+  background: #8f583d;
+}
+
+.col-form-label span {
+  color: red;
 }
 

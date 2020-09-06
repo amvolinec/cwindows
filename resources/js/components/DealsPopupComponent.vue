@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper" v-if="this.$root.$data.popup">
-        <div class="popup-window popup-sm">
+        <div class="popup-window popup-sm" v-bind:class="{ left: isFloat }">
             <div class="popup-head">Create new deal<i @click="closePopup"
                                                       class="far fa-times-circle float-right"></i>
             </div>
@@ -9,13 +9,20 @@
                 <div class="alert alert-danger" role="alert" v-if="this.message.length > 0">
                     {{ this.message }}
                 </div>
-<!--                <input type="hidden" v-model="offer.id">-->
+
+                <div v-if="errors" class="alert alert-danger" role="alert">
+                    <ul v-for="(v, k) in errors" :key="k">
+                        <li v-for="error in v" :key="error" class="text-sm">
+                            {{ error }}
+                        </li>
+                    </ul>
+                </div>
 
                 <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="planed_date">Inquiry date</label>
                     <div class="col-md-8 p-0">
-                        <datetime id="inquiry_date" v-model="offer.inquiry_date" type="datetime"
-                                  input-class="form-control" format="yyyy-MM-dd HH:mm:ss"></datetime>
+                        <datetime id="inquiry_date" v-model="offer.inquiry_date" type="date"
+                                  input-class="form-control" format="yyyy-MM-dd"></datetime>
                     </div>
                 </div>
 
@@ -68,14 +75,14 @@
 
                 <div class="form-group row">
 
-                    <label class="col-md-4 text-right col-form-label" for="client">Contact</label>
+                    <label class="col-md-4 text-right col-form-label" for="client">Contact <span>*</span></label>
 
-                    <div class="col-md-8 p-0">
+                    <div class="col-md-8 p-0 client">
                         <input type="hidden" v-model="offer.client_id">
                         <input id="client" type="text" class="form-control" name="client" @keyup="getContact"
                                @focusin="hideCompany" v-model="offer.client_name">
-                        <div class="float-right drop-new"
-                             v-if="offer.client_id === 0 && offer.client_name.length > 2">New
+                        <div class="float-right drop-new" @click="createContact"
+                             v-if="offer.client_id === 0 && offer.client_name.length > 2">Create New
                         </div>
                         <div class="dropdown-select" v-if="showDropContact">
                             <ul v-for="client in clients">
@@ -118,7 +125,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="profile_id">Inquiry type</label>
+                    <label class="col-md-4 text-right col-form-label" for="profile_id">Inquiry profile</label>
                     <select id="profile_id" type="text" class="form-control col-md-8" name="profile_id"
                             v-model="offer.profile_id">
                         <option value="1">Wood</option>
@@ -199,10 +206,12 @@
                 </div>
             </div>
         </div>
+        <Contact></Contact>
     </div>
 </template>
 
 <script>
+import Contact from './NewContactComponent'
 export default {
     data() {
         return {
@@ -232,7 +241,13 @@ export default {
             showDropCompany: false,
             showDropContact: false,
             message: '',
+            errors: null,
+            isFloat: false,
+            createNew: false,
         }
+    },
+    components: {
+        Contact
     },
     created() {
         this.fetchStates();
@@ -260,6 +275,9 @@ export default {
         });
         this.$root.$on('newOffer', () => {
             this.createOffer();
+        });
+        this.$root.$on('contactAdded', (contact) => {
+            this.castContact(contact);
         });
     },
     methods: {
@@ -335,15 +353,22 @@ export default {
         },
         saveOffer() {
             this.message = '';
-            axios.post('/set-offer', this.offer).then(response => {
+            this.errors = null;
+            this.offer.inquiry_date = this.offer.inquiry_date.substr(0,10);
+            axios.post('/set-offer', this.offer)
+                .then(response => {
                 if (response.data.status === 'error') {
                     this.message = response.data.message;
-                    return;
+                } else {
+                    this.clearPopup();
+                    this.$root.$emit('offerAdded');
                 }
-                this.clearPopup();
-                this.$root.$emit('offerAdded');
-            }).catch((error) => {
-                this.$root.fetchError(error);
+            }).catch((e) => {
+                if (e.response.status === 422) {
+                    this.errors = e.response.data.errors;
+                } else {
+                    this.$root.fetchError(e);
+                }
             });
         },
         clearPopup() {
@@ -358,7 +383,18 @@ export default {
             this.closePopup();
         },
         dateNow() {
-            return new Date().toISOString();
+            return new Date().toISOString().substr(0, 10);
+        },
+        createContact(){
+            this.$root.$emit('newContactName', this.offer.client_name);
+            this.$root.$data.newContact = true;
+            this.isFloat = true;
+        },
+        castContact(client) {
+            // this.$root.$data.newContact = true;
+            this.isFloat = false;
+            this.offer.client_id = client.id;
+            this.offer.client_name = client.name;
         }
     }
 }

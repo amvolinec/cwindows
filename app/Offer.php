@@ -4,20 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Offer extends Model
+class   Offer extends Model
 {
     protected $fillable = [
         "company_id",
         "client_id",
         "architect_id",
-        "enquiry_date",
+        "inquiry_date",
+        "planed_date",
         "number",
         "order_number",
         "title",
         "pv",
         "area",
         "positions",
-        "profile",
         "state_id",
         "state_comment",
         "info",
@@ -40,7 +40,19 @@ class Offer extends Model
         "planned_amount_percents",
         "project_amount",
         "project_amount_with_vat",
-        "user_id"];
+        "user_id",
+        "delivery_address",
+        "delivery_date",
+        "comment",
+        "manager_id",
+        "received_id",
+        "private",
+        "description",
+        "type_id",
+        "profile_id",
+        "maintenance_id",
+        "partner",
+    ];
 
     public function client()
     {

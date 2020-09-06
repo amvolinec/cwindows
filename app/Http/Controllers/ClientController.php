@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\Company;
+use App\Http\Requests\ClientRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -119,6 +120,12 @@ class ClientController extends Controller
         } else {
             return $data;
         }
+    }
+
+    public function add(ClientRequest $request)
+    {
+        $client = Client::create($request->all());
+        return $client->id;
     }
 
 }
