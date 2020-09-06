@@ -2227,6 +2227,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2234,6 +2249,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       clients: [],
       states: [],
       users: [],
+      managers: [],
       offer: {
         inquiry_date: this.dateNow(),
         id: 0,
@@ -2242,6 +2258,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         client_id: 0,
         client_name: '',
         user_id: 0,
+        manager_id: 0,
         state_id: 1,
         received_id: 1,
         "private": 1,
@@ -2291,6 +2308,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       axios.get('/states').then(function (response) {
         _this2.states = response.data.states;
         _this2.users = response.data.users;
+        _this2.managers = response.data.managers;
         _this2.offer.user_id = response.data.user_id;
       })["catch"](function (error) {
         _this2.$root.fetchError(error);
@@ -49285,7 +49303,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return this.$root.$data.popup
     ? _c("div", { staticClass: "wrapper" }, [
-        _c("div", { staticClass: "popup-window" }, [
+        _c("div", { staticClass: "popup-window popup-sm" }, [
           _c("div", { staticClass: "popup-head" }, [
             _vm._v("Create new deal"),
             _c("i", {
@@ -50165,6 +50183,91 @@ var render = function() {
               _c("div", { staticClass: "col-md-6" }, [
                 _c("span", [_vm._v(_vm._s(_vm.offer.created_at))])
               ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 text-right col-form-label",
+                  attrs: { for: "manager_id" }
+                },
+                [_vm._v("Project Manager")]
+              ),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.offer.manager_id,
+                      expression: "offer.manager_id"
+                    }
+                  ],
+                  staticClass: "form-control col-md-8",
+                  attrs: { id: "manager_id", type: "text", name: "manager_id" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.offer,
+                        "manager_id",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                _vm._l(_vm.managers, function(manager) {
+                  return _c("option", { domProps: { value: manager.id } }, [
+                    _vm._v(_vm._s(manager.name))
+                  ])
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 text-right col-form-label",
+                  attrs: { for: "partner" }
+                },
+                [_vm._v("Partner ID")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.offer.partner,
+                    expression: "offer.partner"
+                  }
+                ],
+                staticClass: "form-control col-md-8",
+                attrs: { id: "partner", type: "text", name: "partner" },
+                domProps: { value: _vm.offer.partner },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.offer, "partner", $event.target.value)
+                  }
+                }
+              })
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group text-right" }, [

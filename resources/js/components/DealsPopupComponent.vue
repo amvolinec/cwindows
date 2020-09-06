@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper" v-if="this.$root.$data.popup">
-        <div class="popup-window">
+        <div class="popup-window popup-sm">
             <div class="popup-head">Create new deal<i @click="closePopup"
                                                       class="far fa-times-circle float-right"></i>
             </div>
@@ -170,7 +170,22 @@
                     </select>
                     <div class="col-md-4"></div>
                     <div class="col-md-6"><span>{{ offer.created_at }}</span></div>
+                </div>
 
+                <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="manager_id">Project Manager</label>
+
+                    <select id="manager_id" type="text" class="form-control col-md-8" name="manager_id"
+                            v-model="offer.manager_id">
+                        <option v-for="manager in managers" v-bind:value="manager.id">{{ manager.name }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="partner">Partner ID</label>
+                    <input id="partner" type="text" class="form-control col-md-8"
+                           name="partner"
+                           v-model="offer.partner">
                 </div>
 
                 <div class="form-group text-right">
@@ -195,6 +210,7 @@ export default {
             clients: [],
             states: [],
             users: [],
+            managers: [],
             offer: {
                 inquiry_date: this.dateNow(),
                 id: 0,
@@ -203,6 +219,7 @@ export default {
                 client_id: 0,
                 client_name: '',
                 user_id: 0,
+                manager_id: 0,
                 state_id: 1,
                 received_id: 1,
                 private: 1,
@@ -250,6 +267,7 @@ export default {
             axios.get('/states').then(response => {
                 this.states = response.data.states;
                 this.users = response.data.users;
+                this.managers = response.data.managers;
                 this.offer.user_id = response.data.user_id;
             }).catch((error) => {
                 this.$root.fetchError(error);

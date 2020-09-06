@@ -17283,3 +17283,17 @@ ul.i-list li {
   border-radius: 4px;
 }
 
+.popup-sm .form-control {
+  height: calc(1.6em + 0.5rem + 2px);
+  padding: 0.375rem 0.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  border: 1px solid #ced4da;
+  border-radius: 2px;
+}
+
+.popup-sm .drop-new {
+  font-size: 0.7rem;
+  padding: 2px 5px;
+}
+
