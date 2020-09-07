@@ -95,9 +95,12 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="description">Comments</label>
-                        <textarea id="description" type="text" class="form-control" name="description" rows="10"
+                        <label for="description">Description</label>
+                        <textarea id="description" type="text" class="form-control" name="description" rows="4"
                                   v-model="offer.description"></textarea>
+                        <label for="comment" class="mt-1">Comment</label>
+                        <textarea id="comment" type="text" class="form-control" name="comment" rows="4"
+                                  v-model="offer.comment"></textarea>
                     </div>
                 </div>
                 <offer-items></offer-items>

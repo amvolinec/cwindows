@@ -9,7 +9,7 @@ use App\File;
 use App\Http\Requests\OfferRequest;
 use App\Offer;
 use App\Position;
-use Exception;
+
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -172,81 +172,6 @@ class OfferController extends Controller
         } catch (\Exception $exception) {
             return ['status' => 'error', 'message' => 'Save error: ' . PHP_EOL . $exception->getMessage()];
         }
-
-
-//        try {
-//            $offer->title = $request->get('title');
-//            $offer->client_id = $client->id;
-//            $offer->state_id = $request->get('state_id');
-//            $offer->pipeline = $request->has('pipeline') ? $request->get('pipeline') : '';
-//            $offer->planed_date = $request->has('planed_date') ? substr($request->get('planed_date'), 0, 10) : null;
-//            $offer->project_amount = $request->has('project_amount') ? (float)$request->get('project_amount') : 0;
-//            $offer->planned_amount_percents = $request->has('planned_amount_percents') ? (float)$request->get('planned_amount_percents') : 0;
-//            $offer->info = $request->has('info') ? $request->get('info') : '';
-//            $offer->user_id = $request->get('user_id');
-//            $offer->delivery_address = $request->has('delivery_address') ? $request->get('delivery_address') : '';
-//
-//            if ($request->has('delivery_date')) {
-//                $offer->delivery_date = empty($request->get('delivery_date')) ? null : substr($request->get('delivery_date'),0,10);
-//            }
-//
-//            if ($request->has('number')) {
-//                $offer->number = $request->get('number');
-//            }
-//            if ($request->has('order_number')) {
-//                $offer->order_number = $request->get('order_number');
-//            }
-//            if ($request->has('total')) {
-//                $offer->total = $request->get('total');
-//            }
-//            if ($request->has('total_with_vat')) {
-//                $offer->total_with_vat = $request->get('total_with_vat');
-//            }
-//            if ($request->has('sales_profit')) {
-//                $offer->sales_profit = $request->get('sales_profit');
-//            }
-//
-//            $offer->save();
-//
-//            if ($request->has('positions')) {
-//
-//                $positions = $request->get('positions');
-//
-//                if (!empty($positions)) {
-//                    foreach ($positions as $position) {
-//
-//                        if (is_array($position)) {
-//
-//                            if (!isset($position['id'])) {
-//                                $item = new Position();
-//                            } else {
-//                                $item = Position::find($position['id']);
-//                            }
-//
-//                            $item->title = $position['title'];
-//                            $item->quantity = $position['quantity'];
-//                            $item->cost = $position['cost'];
-//                            $item->price = $position['price'];
-//                            $item->discount = $position['discount'];
-//                            $item->discount_next = $position['discount_next'];
-//                            $item->final_price = $position['final_price'];
-//                            $item->subtotal = $position['subtotal'];
-//                            $item->total = $position['total'];
-//                            $item->vat = $position['vat'];
-//                            $item->offer_id = $offer->id;
-//
-//                            $item->save();
-//                        } else {
-//                            Log::info("Position is not an Array ");
-//                        }
-//                    }
-//                }
-//
-//            }
-//
-//        } catch (\Exception $exception) {
-//            return ['status' => 'error', 'message' => $exception->getMessage()];
-//        }
 
         if ($request->has('positions') && !empty($request->get('positions'))) {
 

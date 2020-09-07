@@ -120,7 +120,16 @@
                 <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="type_id">Upload files</label>
                     <div class="col-md-8">
-                        <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                        <input type="file" id="file" ref="file"/>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="type_id"></label>
+                    <div class="col-md-8">
+                        <div v-for="offerFile in offer.files">
+                            <a target="_blank" :href="'/'  + offerFile.file_uri">{{ offerFile.file_name }}</a>
+                        </div>
                     </div>
                 </div>
 
@@ -438,8 +447,6 @@ export default {
             this.offer.client_name = client.name;
         }, changeFormat(date) {
             date = date.substr(0, 10);
-        }, handleFileUpload() {
-
         }
     }
 }

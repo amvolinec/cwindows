@@ -15,11 +15,13 @@
                     <table class="table table-sm table-striped">
                         <thead class="thead">
                         <tr>
-                            <th scope="col">Date planed</th>
+                            <th scope="col">#ID</th>
+                            <th scope="col">Inquiry Date</th>
+                            <th scope="col">Date Planed</th>
                             <th scope="col">Company</th>
                             <th scope="col">Contact</th>
                             <th scope="col">Title</th>
-                            <th scope="col">Planed amount</th>
+                            <th scope="col">Planed Amount</th>
                             <th scope="col">Probability %</th>
                             <th scope="col">Stage</th>
                             <th scope="col" width="200">Description</th>
@@ -29,7 +31,9 @@
                         </thead>
                         <tbody>
                         <tr class="group-line" v-for="item in items">
-                            <th scope="row">{{ item.planed_date }}</th>
+                            <th scope="row">{{ item.id }}</th>
+                            <td scope="row">{{ item.inquiry_date }}</td>
+                            <td scope="row">{{ item.planed_date }}</td>
                             <td>
                                 {{ item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : '' }}
                             </td>
