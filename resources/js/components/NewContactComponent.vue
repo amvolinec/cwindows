@@ -56,7 +56,7 @@ export default {
             item: {id: 0, route: '', message: ''},
             contact: {id: 0, name: '', phone: '', email: '', comment: ''},
             message: '',
-            errors: [],
+            errors: null,
             saved: null,
         }
     },

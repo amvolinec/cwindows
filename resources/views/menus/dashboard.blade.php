@@ -7,14 +7,14 @@
             <!-- Main Menu -->
             <div class="side-menu-container">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="{{ route('forms.index') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <li class="active"><a href="{{ route('offer.index') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                     </li>
                     <hr>
 
                     <li><a href="{{ route('company.index') }}"><i class="fas fa-building"></i> Companies</a></li>
                     <li><a href="{{ route('client.index') }}"><i class="far fa-address-book"></i> Clients</a></li>
                     <li><a href="{{ route('architect.index') }}"><i class="far fa-building"></i> Architects</a></li>
-                    <li><a href="{{ route('maintenance.index') }}"><i class="far fa-user-alt"></i> Maintenances</a></li>
+                    <li><a href="{{ route('maintenance.index') }}"><i class="far fa-user"></i> Maintenances</a></li>
                     <hr>
                     <li><a href="{{ route('offer.index') }}"><i class="fas fa-id-card-alt"></i> Deals</a></li>
                     <hr>
@@ -40,6 +40,7 @@
                                     @if(Auth::user()->hasRole('super-admin'))
                                         <br />
                                         <li><a href="{{ route('profile.index') }}"><i class="fas fa-wallet"></i> Profile</a></li>
+                                        <li><a href="{{ route('event.index') }}"><i class="fas fa-wallet"></i> Activity Log</a></li>
                                     @endif
                                 </ul>
                             </div>

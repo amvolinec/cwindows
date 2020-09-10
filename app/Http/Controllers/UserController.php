@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        return view('user.create', ['roles' => Role::all()]);
     }
 
     /**

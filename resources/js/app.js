@@ -29,8 +29,9 @@ Vue.component('deals-popup', require('./components/DealsPopupComponent.vue').def
 Vue.component('positions-popup', require('./components/PositionsComponent.vue').default);
 Vue.component('nope-popup', require('./components/NopePopupComponent.vue').default);
 Vue.component('find', require('./components/FindComponent.vue').default);
-Vue.component('offer', require('./components/OfferComponent.vue').default);
+Vue.component('offer', require('./components/OffersComponent.vue').default);
 Vue.component('offer-items', require('./components/OfferItemsComponent.vue').default);
+Vue.component('offer-state', require('./components/OfferStateComponent.vue').default);
 Vue.component('configurator', require('./components/СonfiguratorComponent.vue').default);
 Vue.component('configurator-w1', require('./components/СonfiguratorW1Component.vue').default);
 Vue.component('datetime', Datetime);

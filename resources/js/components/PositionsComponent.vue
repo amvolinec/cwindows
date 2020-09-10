@@ -77,7 +77,7 @@
                         <div class="form-group mb-1 row">
                             <label class="col-md-4 text-right col-form-label" for="delivery_date">Delivery date</label>
                             <datetime id="delivery_date" v-model="offer.delivery_date" type="date"
-                                      input-class="form-control form-control-sm col-md-8"
+                                      input-class="form-control form-control-sm col-md-8" value-zone="UTC+3"
                                       format="yyyy-MM-dd"></datetime>
                         </div>
 
@@ -156,6 +156,10 @@ export default {
         });
         this.$root.$on('saveOfferNow', (items) => {
             this.offer.positions = items;
+            this.saveOffer();
+        });
+        this.$root.$on('updateOffer', (offer) => {
+            this.offer = offer;
             this.saveOffer();
         });
         this.$root.$on('closePopupNow', () => {

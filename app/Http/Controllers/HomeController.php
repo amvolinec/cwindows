@@ -29,7 +29,7 @@ class HomeController extends Controller
     {
         $this->user = Auth::check() ? Auth::user() : false;
         if($this->user->hasRole('super-admin')) {
-            return redirect()->route('forms.index');
+            return redirect()->route('offer.index');
         } else {
             return view('home');
         }

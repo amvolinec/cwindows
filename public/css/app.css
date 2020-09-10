@@ -17323,3 +17323,87 @@ ul.i-list li {
   overflow: auto;
 }
 
+.editing {
+  background: #d7000022;
+}
+
+.offer-state-outer {
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.offer-state-item {
+  width: 120px;
+  height: auto;
+  margin: 0 5px 0 0;
+  text-align: center;
+  color: #fafafa;
+  background: #ccc;
+  display: inline-block;
+  position: relative;
+}
+
+.offer-state-item::before {
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  left: -1px;
+  border-style: solid;
+  border-width: 18px 0 18px 18px;
+  border-color: transparent transparent transparent #fff;
+  z-index: 0;
+}
+
+.offer-state-item.selected {
+  background: #26b8f4;
+  color: #fafafa;
+  border-top: 4px solid #ffffff;
+  border-bottom: 4px solid #ffffff;
+}
+
+.offer-state-item.completed {
+  background: #4bca81;
+  color: #fafafa;
+  border-top: 4px solid #ffffff;
+  border-bottom: 4px solid #ffffff;
+}
+
+.state-inner {
+  height: 36px;
+  line-height: 2.2rem;
+  padding-left: 20px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.state-inner::after {
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  right: -18px;
+  border-style: solid;
+  border-width: 18px 0 18px 18px;
+  border-color: transparent transparent transparent #ccc;
+  z-index: 10;
+}
+
+.selected .state-inner::after {
+  border-color: transparent transparent transparent #26b8f4;
+}
+
+.completed .state-inner::after {
+  border-color: transparent transparent transparent #4bca81;
+}
+
+.offer-state-item:hover {
+  background: rgba(4, 132, 75, 0.952941);
+}
+
+.state-inner:hover::after {
+  border-color: transparent transparent transparent rgba(4, 132, 75, 0.952941);
+}
+

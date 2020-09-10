@@ -10,6 +10,7 @@ use App\Http\Requests\OfferRequest;
 use App\Offer;
 use App\Position;
 
+use App\State;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -177,7 +178,7 @@ class OfferController extends Controller
 
             $positions = $request->get('positions');
 
-            if (!empty($positions) && sizeof($positions) > 0) {
+            if (!empty($positions) && is_array($positions) && count($positions) > 0) {
                 foreach ($positions as $position) {
 
                     if (is_array($position)) {
@@ -214,7 +215,7 @@ class OfferController extends Controller
 
         return [
             'status' => 'success',
-            'message' => json_encode($company),
+            'message' => 'Saved successfully',
             'offer' => $this->getData($offer->id)
         ];
     }
@@ -233,7 +234,12 @@ class OfferController extends Controller
 
     public function getData($id)
     {
-        return Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user', 'files'])->findOrFail($id);
+        return [
+            'offer' => Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user', 'files', 'manager'])
+                ->findOrFail($id),
+            'states' => State::all()
+        ];
+
     }
 
     public function createOffer()
@@ -259,5 +265,20 @@ class OfferController extends Controller
                 return ['status' => 'error', 'message' => $e->getMessage()];
             }
         }
+        return Storage::disk('uploads')->exists('documents');
+    }
+
+    protected function updateOffer(Request $request)
+    {
+        $offer = Offer::findOrFail($request->get('id'));
+        $offer->fill($request->except('client_id, manager_id, company_id, positions, file'));
+
+        try {
+            $offer->save();
+        } catch (\Exception $e) {
+            return ['status' => 'error', 'message' => $e->getMessage()];
+        }
+
+        return ['status' => 'success'];
     }
 }

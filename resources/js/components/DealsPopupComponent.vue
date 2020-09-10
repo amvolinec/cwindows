@@ -22,7 +22,7 @@
                     <label class="col-md-4 text-right col-form-label" for="planed_date">Inquiry date</label>
                     <div class="col-md-8 p-0">
                         <datetime id="inquiry_date" v-model="offer.inquiry_date" type="date"
-                                  input-class="form-control" format="yyyy-MM-dd"></datetime>
+                                  input-class="form-control" format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
                     </div>
                 </div>
 
@@ -164,7 +164,7 @@
                 <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="planed_date">Planned date of sale</label>
                     <datetime id="planed_date" v-model="offer.planed_date" type="date"
-                              input-class="form-control" format="yyyy-MM-dd"
+                              input-class="form-control" format="yyyy-MM-dd" value-zone="UTC+3"
                               @change="changeFormat(offer.planed_date)"></datetime>
                 </div>
 
@@ -408,22 +408,6 @@ export default {
                     this.$root.fetchError(e);
                 }
             });
-
-            // axios.post('/set-offer', this.offer)
-            //     .then(response => {
-            //         if (response.data.status === 'error') {
-            //             this.message = response.data.message;
-            //         } else {
-            //             this.clearPopup();
-            //             this.$root.$emit('offerAdded');
-            //         }
-            //     }).catch((e) => {
-            //     if (e.response.status === 422) {
-            //         this.errors = e.response.data.errors;
-            //     } else {
-            //         this.$root.fetchError(e);
-            //     }
-            // });
         }, clearPopup() {
             this.companies = [];
             this.clients = [];
@@ -435,7 +419,7 @@ export default {
             this.message = '';
             this.closePopup();
         }, dateNow() {
-            return new Date().toISOString().substr(0, 10);
+            return new Date().toISOString();
         }, createContact() {
             this.$root.$emit('newContactName', this.offer.client_name);
             this.$root.$data.newContact = true;

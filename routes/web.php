@@ -54,6 +54,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('get-companies', 'CompanyController@getCompany')->name('get.company');
     Route::post('get-clients', 'ClientController@getContact')->name('get.clients');
     Route::post('set-offer', 'OfferController@setOffer')->name('set.offer');
+    Route::post('update-offer', 'OfferController@updateOffer')->name('update.offer');
 
     Route::delete('offers', 'OfferController@deleteMany');
     Route::get('offer/get/{id}', 'OfferController@getData')->name('offer.get.data');
@@ -69,4 +70,12 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('category/find/{string}', 'CategoryController@find')->name('category.find.get');
 
     Route::delete('position', 'PositionController@delete');
+
+    Route::get('event', 'EventController@index')->name('event.index');
+    Route::get('event/{id}', 'EventController@show')->name('event.show');
+    Route::post('event/{id}', 'EventController@clear')->name('event.clear');
+    Route::post('event/find/', 'EventController@find')->name('event.find');
+    Route::get('event/find/{string}', 'EventController@find')->name('event.find.get');
 });
+
+

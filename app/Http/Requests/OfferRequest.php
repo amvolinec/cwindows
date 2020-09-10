@@ -24,7 +24,7 @@ class OfferRequest extends FormRequest
     public function rules()
     {
         return [
-            'inquiry_date' => ['required', 'date', 'max:10'],
+            'inquiry_date' => ['required', 'date'],
             'client_id' => ['required', 'exists:clients,id'],
         ];
     }
@@ -33,7 +33,6 @@ class OfferRequest extends FormRequest
         return [
             'inquiry_date.required' => 'The field Inquire Date is required',
             'inquiry_date.date' => 'Wrong Inquire Date format',
-            'inquiry_date.max' => 'Wrong Inquire Date format',
             'client_id.required' => 'The field Contact is required',
             'client_id.exists' => 'The Contact does not exist',
         ];
