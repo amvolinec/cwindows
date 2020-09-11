@@ -90,12 +90,11 @@ class UserController extends Controller
         $user->name = $request->get('name');
         $user->email = $request->get('email');
 
-        if ($request->has('password')) {
+        if ($request->has('password') && !empty($request->get('password'))) {
             $user->password = Hash::make($request->get('password'));
         }
 
         if ($request->has('roles')) {
-//            dd($request->get('roles'));
             $user->syncRoles($request->get('roles'));
         }
 

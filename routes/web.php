@@ -19,6 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::get('setting', 'SettingController@edit')->name('setting.edit');
+    Route::put('setting', 'SettingController@update')->name('setting.update');
+
     Route::resource('file', 'FileController');
     Route::post('file/find/', 'FileController@find')->name('file.find');
     Route::get('file/find/{string}', 'FileController@find')->name('file.find.get');
@@ -58,6 +61,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::delete('offers', 'OfferController@deleteMany');
     Route::get('offer/get/{id}', 'OfferController@getData')->name('offer.get.data');
+    Route::get('offer/print/{id}', 'OfferController@print')->name('offer.print');
 
     Route::post('company/find/', 'CompanyController@find')->name('company.find');
     Route::get('company/find/{string}', 'CompanyController@find')->name('company.find.get');

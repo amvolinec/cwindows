@@ -41,6 +41,7 @@
                                         <br />
                                         <li><a href="{{ route('profile.index') }}"><i class="fas fa-wallet"></i> Profile</a></li>
                                         <li><a href="{{ route('event.index') }}"><i class="fas fa-wallet"></i> Activity Log</a></li>
+                                        <li><a href="{{ route('setting.edit') }}"><i class="fas fa-wallet"></i> Settings</a></li>
                                     @endif
                                 </ul>
                             </div>

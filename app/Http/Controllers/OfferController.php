@@ -11,8 +11,10 @@ use App\Offer;
 use App\Position;
 
 use App\State;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -280,5 +282,21 @@ class OfferController extends Controller
         }
 
         return ['status' => 'success'];
+    }
+
+    public function print($id) {
+        $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $id)->get()->first();
+        $positions = Position::where('offer_id', $id)->get();
+
+        if(empty($positions)){
+            return ['status' => 'error', 'message' => 'Offer is empty'];
+        }
+
+        $fileName = 'offer_' . date('Ymd_His') . '_v1.pdf';
+        $filePath = public_path('documents') . '/' . $fileName;
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('documents.offer', ['offer' => $offer, 'positions' => $positions])->save($filePath)->stream($fileName);
+        return ['status' => 'success', 'file_path' =>  $filePath, 'file_name' => $fileName];
     }
 }

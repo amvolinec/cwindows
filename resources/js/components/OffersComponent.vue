@@ -69,7 +69,7 @@
                         <tr>
                             <th scope="row">Contact</th>
                             <td>
-                                {{ typeof item.client === 'undefined' ? '' : item.client.name }}
+                                {{ (typeof item.client === 'undefined') || (item.client === null)  ? '' : item.client.name }}
                             </td>
                         </tr>
                         <tr v-if="item.title">

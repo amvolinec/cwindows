@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-inline-block" style="vertical-align: top; padding: 6px;">
-                            <h4>{{ __('Events') }}</h4>
+                            <h4>{{ __('Activity Log') }}</h4>
                         </div>
                         <find route="event" fields="created_at,subject_type" search="{{ $search ?? '' }}"></find>
                     </div>
@@ -21,14 +21,14 @@
                                 <th scope="col">{{ __("Description") }}</th>
                                 <th scope="col">{{ __("Changes") }}</th>
 
-                                <th scope="col">{{ __('Actions') }}</th>
+{{--                                <th scope="col">{{ __('Actions') }}</th>--}}
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($events AS $event)
                                 <tr>
                                     <td>{{ $event->created_at  }}</td>
-                                    <td>{{ $event->user->name  }}</td>
+                                    <td>{{ isset($event->user) && (is_object($event->user)) ? $event->user->name : 'web' }}</td>
                                     <td>
                                         <a href="{{ url($event->link) }}" target="_blank">
                                             {{ substr($event->subject_type, 4)  }}
@@ -41,15 +41,15 @@
                                             : {{ isset($event->changes['old'][$key]) ? $event->changes['old'][$key] . ' => ' : '' }} {{ $value}}
                                         @endforeach
                                     </td>
-                                    <td>
-                                        <form class="float-right" action="{{ route('event.clear', $event->id) }}"
-                                              method="post" onsubmit="return confirm('Do you really want to delete?');">
-                                            @method('post')
-                                            @csrf
-                                            <button class="btn btn-sm btn-outline-danger" type="submit"><i
-                                                    class="fas fa-trash"></i></button>
-                                        </form>
-                                    </td>
+{{--                                    <td>--}}
+{{--                                        <form class="float-right" action="{{ route('event.clear', $event->id) }}"--}}
+{{--                                              method="post" onsubmit="return confirm('Do you really want to delete?');">--}}
+{{--                                            @method('post')--}}
+{{--                                            @csrf--}}
+{{--                                            <button class="btn btn-sm btn-outline-danger" type="submit"><i--}}
+{{--                                                    class="fas fa-trash"></i></button>--}}
+{{--                                        </form>--}}
+{{--                                    </td>--}}
                                 </tr>
                             @endforeach
                             </tbody>

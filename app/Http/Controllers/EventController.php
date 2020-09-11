@@ -8,7 +8,7 @@ use App\Activity;
 class EventController extends Controller
 {
     public function index() {
-        $events = Activity::paginate(20);
+        $events = Activity::orderBy('id', 'DESC')->paginate(20);
         return view('events.index', ['events' => $events]);
     }
 
