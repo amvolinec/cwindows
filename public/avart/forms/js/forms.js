@@ -1,8 +1,10 @@
 $(document).ready(function () {
 
     $('#add-field').click(function () {
+        console.log('add field');
         let line = '<div class="col-md-12 form-line"><div class="row">' + $('#form-line').html() + '</div></div>';
         $('#form-inner').append(line);
+        $('#form-inner #form-line').removeClass('hidden');
     });
 
     $('#store-fields').click(function () {
@@ -22,7 +24,7 @@ $(document).ready(function () {
         let model = $('#model').val()
         console.log(model)
         axios
-            .post('/av-panel/get-plural/', {model: model})
+            .get('/av-panel/get-plural/' + model)
             .then(function (response) {
                 $('#name').val(response.data.plural);
                 $('#route').val(response.data.route);

@@ -111,7 +111,12 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        try{
+            $user->delete();
+        } catch (\Exception $exception) {
+            return redirect()->back()->withErrors([$exception->getMessage()]);
+        }
+
         return redirect()->route('user.index');
     }
 

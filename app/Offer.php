@@ -176,4 +176,71 @@ class Offer extends Model
     {
         $this->attributes['delivery_date'] = empty($value) ? null : substr($value, 0, 10);
     }
+
+    public function getTotalWordsAttribute() {
+        return $this->getSumWords((int)$this->total_with_vat);
+    }
+
+    public function getFractionAttribute() {
+        $str = (string)$this->total_with_vat - floor($this->total_with_vat);
+        return substr($str, 2);
+    }
+
+    public function getSumWords($skaicius){
+
+        if ( $skaicius < 0 || strlen( $skaicius ) > 9 ) return "";
+
+        if ( $skaicius == 0 ) return 'nulis';
+
+        $vienetai = array( '', 'vienas', 'du', 'trys', 'keturi', 'penki', 'šeši', 'septyni', 'aštuoni', 'devyni' );
+
+        $niolikai = array( '', 'vienuolika', 'dvylika', 'trylika', 'keturiolika', 'penkiolika', 'šešiolika', 'septyniolika', 'aštuoniolika', 'devyniolika' );
+
+        $desimtys = array( '', 'dešimt', 'dvidešimt', 'trisdešimt', 'keturiasdešimt', 'penkiasdešimt', 'šešiasdešimt', 'septyniasdešimt', 'aštuoniasdešimt', 'devyniasdešimt' );
+
+        $pavadinimas = array(
+            array( 'milijonas', 'milijonai', 'milijonų' ),
+            array( 'tūkstantis', 'tūkstančiai', 'tūkstančių' ),
+        );
+
+        $skaicius = sprintf( '%09d', $skaicius ); // iki milijardu 10^9 (milijardu neskaiciuosim)
+        $skaicius = str_split( $skaicius, 3 ); // kertam kas tris simbolius
+
+        $zodziais = array();
+
+        foreach ( $skaicius as $i => $tripletas ) {
+
+            if ( $tripletas{0} > 0 ) {
+                $zodziais[] = $vienetai[ $tripletas{0} ];
+                $zodziais[] = ( $tripletas{0} > 1 ) ? 'šimtai' : 'šimtas';
+            }
+
+            $du = substr( $tripletas, 1 );
+
+            if ( $du > 10 && $du < 20 ) {
+                $zodziais[] = $niolikai[ $du{1} ];
+                $linksnis = 2;
+            } else {
+
+                if ( $du{0} > 0 ) {
+                    $zodziais[] = $desimtys[ $du{0} ];
+                }
+
+                if ( $du{1} > 0 ) {
+                    $zodziais[] = $vienetai[ $du{1} ];
+                    $linksnis = ( $du{1} > 1 ) ? 1 : 0;
+                } else {
+                    $linksnis = 2;
+                }
+
+            }
+
+            if ( $i < count( $pavadinimas ) && $tripletas != '000' ) {
+                $zodziais[] = $pavadinimas[ $i ][ $linksnis ];
+            }
+
+        }
+
+        return implode( ' ', $zodziais );
+    }
 }

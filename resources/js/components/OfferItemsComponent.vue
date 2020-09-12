@@ -35,8 +35,8 @@
                             <option value="wx2">Window x2</option>
                             <option value="wx3">Window x3</option>
                         </select>
-<!--                        <button class="btn btn-sm btn-outline-dark" @click="generateGood(goods)"><i-->
-<!--                            class="fas fa-building"></i></button>-->
+                        <!--                        <button class="btn btn-sm btn-outline-dark" @click="generateGood(goods)"><i-->
+                        <!--                            class="fas fa-building"></i></button>-->
                     </td>
                     <td><textarea class="form-control item-sm" type="text" v-model="item.title"></textarea></td>
                     <td><input class="form-control item-sm text-right" type="text" v-model="item.quantity"
@@ -115,11 +115,21 @@
                 </div>
 
                 <div class="form-group mb-0 text-right">
+                    <button class="btn btn-outline-secondary" type="button" @click="printOffer"
+                            v-if="typeof items[0].offer_id !== 'undefined'">
+                        <i class="fas fa-file-pdf"></i>
+                        Print
+                    </button>
+                    <button class="btn btn-outline-secondary" type="button" @click="previewOffer"
+                            v-if="typeof items[0].offer_id !== 'undefined'">
+                        <i class="far fa-file-pdf"></i>
+                        Preview
+                    </button>
                     <button class="btn btn-outline-dark" type="button" @click="closePopup"><i class="fas fa-times"></i>
                         Cancel
                     </button>
-                    <button class="btn btn-outline-success" type="button" @click="saveOffer"><i class="fas fa-save">
-                        Save</i>
+                    <button class="btn btn-outline-success" type="button" @click="saveOffer"><i class="fas fa-save"></i>
+                        Save
                     </button>
                 </div>
             </div>
@@ -257,12 +267,24 @@ export default {
                 });
             });
         }, generateGood(e) {
-            let val =e.target.value;
+            let val = e.target.value;
             console.log(val);
             if (val === 'wx1')
                 this.$root.$data.configurator1 = true;
             if (val === 'wx2')
                 this.$root.$data.configurator2 = true;
+        }, previewOffer() {
+            window.open('/offer/preview/' + this.items[0].offer_id, "blank", "width=900,height=640");
+        }, printOffer() {
+            axios.get('/offer/print/' + this.items[0].offer_id).then(response => {
+                if (response.data.status === 'error') {
+                    this.message = response.data.message;
+                    return;
+                }
+                window.open('/documents/' + response.data.file_name);
+            }).catch((error) => {
+                this.$root.fetchError(error);
+            });
         }
     }
 }

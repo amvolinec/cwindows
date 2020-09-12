@@ -44,4 +44,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function offers(){
+        return $this->hasMany('App\Offer');
+    }
+
+    public function hasOffers(){
+        return count($this->offers) > 0;
+    }
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::observe('App\Observers\UserObserver');
+    }
 }

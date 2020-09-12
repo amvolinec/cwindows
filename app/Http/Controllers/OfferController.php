@@ -10,6 +10,7 @@ use App\Http\Requests\OfferRequest;
 use App\Offer;
 use App\Position;
 
+use App\Setting;
 use App\State;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\RedirectResponse;
@@ -292,11 +293,46 @@ class OfferController extends Controller
             return ['status' => 'error', 'message' => 'Offer is empty'];
         }
 
-        $fileName = 'offer_' . date('Ymd_His') . '_v1.pdf';
+        $fileName = 'offer_' . date('Ymd_His') . '_v'. $offer->version .'.pdf';
         $filePath = public_path('documents') . '/' . $fileName;
 
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('documents.offer', ['offer' => $offer, 'positions' => $positions])->save($filePath)->stream($fileName);
-        return ['status' => 'success', 'file_path' =>  $filePath, 'file_name' => $fileName];
+        $dompdf = App::make('dompdf.wrapper');
+        $dompdf->setPaper('A4', 'portrait');
+
+
+        $dompdf->loadView('documents.offer', [
+            'offer' => $offer,
+            'positions' => $positions,
+            'settings' => Setting::find(1),
+            'i' => 1,
+            'button' => false
+        ])->save($filePath)->stream($fileName);
+
+        File::create([
+            'offer_id' => $offer->id,
+            'file_name' => $fileName,
+            'file_uri' => 'documents/' . $fileName
+        ]);
+
+        $offer->version++;
+        $offer->save();
+
+        return ['status' => 'success', 'file_name' => $fileName];
+    }
+
+    public function preview($id) {
+        $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $id)->get()->first();
+        $positions = Position::where('offer_id', $id)->get();
+
+        if(empty($positions)){
+            return ['status' => 'error', 'message' => 'Offer is empty'];
+        }
+        return view('documents.offer', [
+            'offer' => $offer,
+            'positions' => $positions,
+            'settings' => Setting::find(1),
+            'i' => 1,
+            'button' => true
+        ]);
     }
 }
