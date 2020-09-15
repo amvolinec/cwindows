@@ -23,11 +23,14 @@
                             <thead class="thead">
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">{{ __("Created") }}</th>
                                 <th scope="col">{{ __("Name") }}</th>
 								<th scope="col">{{ __("Phone") }}</th>
 								<th scope="col">{{ __("Email") }}</th>
 								<th scope="col">{{ __("Address") }}</th>
 								<th scope="col">{{ __("Comments") }}</th>
+								<th scope="col">{{ __("Notes") }}</th>
+								<th scope="col">{{ __("Offers") }}</th>
 
                                 <th scope="col">{{ __('Actions') }}</th>
                             </tr>
@@ -36,12 +39,22 @@
                             @foreach($maintenances AS $maintenance)
                                 <tr>
                                     <th scope="row">{{ $maintenance->id  }}</th>
+                                    <td>{{ substr($maintenance->created_at,0,10) }}</td>
                                     <td>{{ $maintenance->name }}</td>
 									<td>{{ $maintenance->phone }}</td>
 									<td>{{ $maintenance->email }}</td>
 									<td>{{ $maintenance->address }}</td>
 									<td>{{ $maintenance->comments }}</td>
-
+									<td>{{ $maintenance->notes }}</td>
+                                    <td>
+                                        @if($maintenance->offers)
+                                            @foreach($maintenance->offers as $offer)
+                                                <a href="/offer/{{ $offer->id }}" target="_blank">
+                                                    {{ $offer->id }}-{{ $offer->inquiry_date }} {{ $offer->name }}
+                                                </a>
+                                            @endforeach
+                                        @endif
+                                    </td>
                                     <td>
                                         <form class="float-right" action="{{ route('maintenance.destroy', $maintenance->id) }}"
                                               method="post" onsubmit="return confirm('Do you really want to delete?');">

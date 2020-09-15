@@ -70,20 +70,39 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="comments" class="col-md-4 col-form-label text-md-right">{{ __('Comments') }}</label>
+                        <div class="form-group row">
+                            <label for="comments"
+                                   class="col-md-4 col-form-label text-md-right">{{ __('Comments') }}</label>
 
-                                <div class="col-md-6">
-                                    <textarea id="comments" type="text" class="form-control @error('comments') is-invalid @enderror" name="comments" autocomplete="comments" >{{ $maintenance->comments ?? old('comments') }}</textarea>
+                            <div class="col-md-6">
+                                <textarea id="comments" type="text"
+                                          class="form-control @error('comments') is-invalid @enderror" name="comments"
+                                          autocomplete="comments">{{ $maintenance->comments ?? old('comments') }}</textarea>
 
-                                    @error('comments')
-                                    <span class="invalid-feedback" role="alert">
+                                @error('comments')
+                                <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
-                                    @enderror
-                                </div>
+                                @enderror
                             </div>
+                        </div>
 
+                        <div class="form-group row">
+                            <label for="notes"
+                                   class="col-md-4 col-form-label text-md-right">{{ __('Notes') }}</label>
+
+                            <div class="col-md-6">
+                                <textarea id="notes" type="text"
+                                          class="form-control @error('notes') is-invalid @enderror" name="notes"
+                                          autocomplete="notes">{{ $maintenance->notes ?? old('notes') }}</textarea>
+
+                                @error('notes')
+                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                @enderror
+                            </div>
+                        </div>
 
                         <div class="form-group row mt-3">
                             <div class="col-md-4"></div>

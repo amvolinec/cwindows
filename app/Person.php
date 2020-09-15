@@ -22,5 +22,10 @@ class Person extends Model
         return $this->belongsTo('App\Company');
     }
 
-	//
+    public function offers()
+    {
+        return $this->belongsToMany('App\Offer');
+    }
+
+    //
 }

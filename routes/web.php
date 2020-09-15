@@ -19,6 +19,15 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::resource('service', 'ServiceController');
+    Route::post('service/find/', 'ServiceController@find')->name('service.find');
+    Route::get('service/find/{string}', 'ServiceController@find')->name('service.find.get');
+    Route::resource('persontype', 'PersonTypeController');
+    Route::post('persontype/find/', 'PersonTypeController@find')->name('persontype.find');
+    Route::get('persontype/find/{string}', 'PersonTypeController@find')->name('persontype.find.get');
+    Route::resource('personoffer', 'PersonToOfferController');
+    Route::post('personoffer/find/', 'PersonToOfferController@find')->name('personoffer.find');
+    Route::get('personoffer/find/{string}', 'PersonToOfferController@find')->name('personoffer.find.get');
     Route::resource('person', 'PersonController');
     Route::post('person/find/', 'PersonController@find')->name('person.find');
     Route::get('person/find/{string}', 'PersonController@find')->name('person.find.get');

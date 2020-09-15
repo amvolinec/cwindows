@@ -139,6 +139,11 @@ class Offer extends Model
         return $this->hasMany('App\Position');
     }
 
+    public function persons()
+    {
+        return $this->belongsToMany('App\Person');
+    }
+
     public function files()
     {
         return $this->hasMany('App\File');

@@ -144,6 +144,25 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <label for="notes"
+                                           class="col-md-4 col-form-label text-md-right">{{ __('Notes') }}</label>
+
+                                    <div class="col-md-6">
+                                        <textarea id="notes" type="text"
+                                               class="form-control @error('notes') is-invalid @enderror"
+                                               name="notes" rows="5"
+                                                  autocomplete="notes">{{ $company->notes ?? old('notes') }}</textarea>
+
+                                        @error('notes')
+                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <div class="form-group row">
                                     <div class="col-md-4"></div>
                                     <div class="col-md-6">
