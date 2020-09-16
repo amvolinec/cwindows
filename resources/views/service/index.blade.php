@@ -45,11 +45,11 @@
                                     <th scope="row">{{ $service->id  }}</th>
                                     <td>{{ substr($service->created_at,0,10) }}</td>
                                     <td>{{ $service->completed_at }}</td>
-									<td>{{ $service->state }}</td>
+									<td>{{ $service->state_name }}</td>
 									<td>{{ $service->costs }}</td>
 									<td>{{ $service->income }}</td>
-									<td>{{ $service->who_pays }}</td>
-									<td>{{ $service->warranty }}</td>
+									<td>{{ $service->payer_name }}</td>
+									<td>{{ $service->warranty ? 'Yes' : 'No' }}</td>
 									<td>{{ $service->notes }}</td>
 									<td>{{ $service->list_of_orders }}</td>
 									<td>{{ $service->executor }}</td>

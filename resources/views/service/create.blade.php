@@ -14,6 +14,19 @@
                             </div>
                         @endif
 
+                        @if($errors->all())
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-6 alert alert-warning" role="alert">
+                                    <ul>
+                                        @foreach($errors->all() as $message)
+                                            <li> {{$message}} </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        @endif
+
                         <form
                             action="{{ isset($service) ? route('service.update', $service->id) : route('service.store') }}"
                             method="post">
@@ -29,14 +42,10 @@
                                               value="{{ $service->completed_at ??  old('completed_at') }}"
                                               input-class="form-control" format="yyyy-MM-dd"
                                               value-zone="UTC+3"></datetime>
-
-                                    @error('completed_at')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
                                 </div>
                             </div>
+
+
                             <div class="form-group row">
                                 <label for="state_id"
                                        class="col-md-4 col-form-label text-md-right">{{ __('State') }}</label>
@@ -46,17 +55,14 @@
                                         <option value="" disabled selected>{{ __('Select your option') }}</option>
                                         @foreach($states as $item)
                                             <option value="{{ $item['id'] }}"
-                                                    @if(isset($service) && $item['id'] === $service->state_id) selected @endif>
+                                                    @if(isset($service) && $item['id'] === $service->state_id || (int)old('state_id') === $item['id']) selected @endif>
                                                 {{ $item['name'] }}</option>
                                         @endforeach
                                     </select>
-                                    @error('state_id')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
                                 </div>
                             </div>
+
+
                             <div class="form-group row">
                                 <label for="costs"
                                        class="col-md-4 col-form-label text-md-right">{{ __('Costs') }}</label>
@@ -66,11 +72,6 @@
                                            class="form-control @error('costs') is-invalid @enderror" name="costs"
                                            value="{{ $service->costs ?? old('costs') }}" autocomplete="costs">
 
-                                    @error('costs')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -82,27 +83,22 @@
                                            class="form-control @error('income') is-invalid @enderror" name="income"
                                            value="{{ $service->income ?? old('income') }}" autocomplete="income">
 
-                                    @error('income')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <label for="who_pays"
+                                <label for="payer_id"
                                        class="col-md-4 col-form-label text-md-right">{{ __('Who Pays') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="who_pays" type="number"
-                                           class="form-control @error('who_pays') is-invalid @enderror" name="who_pays"
-                                           value="{{ $service->who_pays ?? old('who_pays') }}" autocomplete="who_pays">
-
-                                    @error('who_pays')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
+                                    <select class="form-control" name="payer_id" id="payer_id">
+                                        <option value="" disabled selected>{{ __('Select your option') }}</option>
+                                        @foreach($payers as $item)
+                                            <option value="{{ $item['id'] }}"
+                                                    @if(isset($service) && $item['id'] === $service->payer_id || $item['id'] === (int)old('payer_id') || $item['id'] === 1) selected @endif>
+                                                {{ $item['name'] }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 
@@ -127,12 +123,6 @@
                                     <textarea id="notes" type="text"
                                               class="form-control @error('notes') is-invalid @enderror" name="notes"
                                               autocomplete="notes">{{ $service->notes ?? old('notes') }}</textarea>
-
-                                    @error('notes')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -144,12 +134,6 @@
                                               class="form-control @error('list_of_orders') is-invalid @enderror"
                                               name="list_of_orders"
                                               autocomplete="list_of_orders">{{ $service->list_of_orders ?? old('list_of_orders') }}</textarea>
-
-                                    @error('list_of_orders')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -160,12 +144,6 @@
                                     <input id="executor" type="text"
                                            class="form-control @error('executor') is-invalid @enderror" name="executor"
                                            value="{{ $service->executor ?? old('executor') }}" autocomplete="executor">
-
-                                    @error('executor')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
                                 </div>
                             </div>
 
@@ -178,16 +156,11 @@
                                         <option value="" disabled selected>{{ __('Select your option') }}</option>
                                         @foreach($offers as $item)
                                             <option value="{{ $item->id }}"
-                                                    @if(isset($service) && $item->id === $service->offer_id) selected @endif>
+                                                    @if(isset($service) && $item->id === $service->offer_id || $item['id'] === (int)old('offer_id')) selected @endif>
                                                 {{ $item->inquiry_date}}-{{ $item->id }} {{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                @error('offer_id')
-                                <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                @enderror
                             </div>
 
                             <div class="form-group row">
@@ -204,11 +177,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                @error('manager_id')
-                                <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                @enderror
                             </div>
 
                             <div class="form-group row mt-3">
@@ -236,6 +204,7 @@
     <script>
         $(document).ready(function () {
             $('#state_id').select2();
+            $('#payer_id').select2();
             $('#manager_id').select2();
             $('#offer_id').select2();
         });

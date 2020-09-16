@@ -31,9 +31,11 @@ class ServiceController extends Controller
     {
         return view('service.create', [
             'states' => Service::states(),
+            'payers' => Service::payers(),
             'offers' => \App\Offer::all(),
             'managers' => \App\User::role('manager')->get(),
-            'clients' => \App\Client::all()]);
+            'clients' => \App\Client::all()
+        ]);
     }
 
     /**
@@ -48,6 +50,8 @@ class ServiceController extends Controller
         $service = Service::create($request->except('_method', '_token', 'warranty'));
         $service->warranty = $request->has('warranty') ? 1 : 0;
         $service->user_id = Auth::user()->id;
+        $service->save();
+
         return redirect()->route('service.index');
     }
 
@@ -72,6 +76,7 @@ class ServiceController extends Controller
     {
         return view('service.create', [
             'states' => Service::states(),
+            'payers' => Service::payers(),
             'service' => $service,
             'offers' => \App\Offer::all(),
             'managers' => \App\User::role('manager')->get()]);
@@ -86,7 +91,10 @@ class ServiceController extends Controller
      */
     public function update(ServiceStoreRequest $request, Service $service)
     {
-        $service->fill($request->except('_method', '_token'))->save();
+        $service->fill($request->except('_method', '_token', 'warranty'))->save();
+        $service->warranty = $request->has('warranty') ? 1 : 0;
+        $service->save();
+
         return redirect()->route('service.index');
     }
 

@@ -27,6 +27,8 @@ class ServiceStoreRequest extends FormRequest
             'offer_id' => 'required',
             'manager_id' => 'required',
             'state_id' => 'required',
+            'costs' => 'required_without:income',
+            'income' => 'required_without:costs',
         ];
     }
 

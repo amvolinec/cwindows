@@ -17,6 +17,7 @@
                     <li><a href="{{ route('maintenance.index') }}"><i class="far fa-user"></i> Maintenances</a></li>
                     <hr>
                     <li><a href="{{ route('offer.index') }}"><i class="fas fa-id-card-alt"></i> Deals</a></li>
+                    <li><a href="{{ route('service.index') }}"><i class="fas fa-screwdriver"></i> Service</a></li>
                     <hr>
 
                     <!-- Dropdown-->

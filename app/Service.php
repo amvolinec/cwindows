@@ -47,16 +47,16 @@ class Service extends Model
         return self::$states;
     }
 
-    public function getStateAttribute() {
-        return $this->states[(int)$this->state_id];
+    public function getStateNameAttribute() {
+        return self::$states[(int)$this->state_id]['name'];
     }
 
     public static function payers(){
         return self::$payers;
     }
 
-    public function getPayerAttribute() {
-        return $this->states[(int)$this->payer_id];
+    public function getPayerNameAttribute() {
+        return self::$payers[(int)$this->payer_id]['name'];
     }
 
 }

@@ -22,6 +22,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('service', 'ServiceController');
     Route::post('service/find/', 'ServiceController@find')->name('service.find');
     Route::get('service/find/{string}', 'ServiceController@find')->name('service.find.get');
+
     Route::resource('persontype', 'PersonTypeController');
     Route::post('persontype/find/', 'PersonTypeController@find')->name('persontype.find');
     Route::get('persontype/find/{string}', 'PersonTypeController@find')->name('persontype.find.get');
