@@ -26,6 +26,7 @@ class ServiceStoreRequest extends FormRequest
         return [
             'offer_id' => 'required',
             'manager_id' => 'required',
+            'state_id' => 'required',
         ];
     }
 
@@ -33,6 +34,7 @@ class ServiceStoreRequest extends FormRequest
     {
         return [
             'offer_id.required' => 'Select Offer, please',
+            'state_id.required' => 'Select state, please',
             'manager_id.required' => 'Select Manager, please',
         ];
     }

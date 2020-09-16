@@ -29,13 +29,17 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        return view('service.create',['offers' => \App\Offer::all(),'managers' => \App\User::role('manager')->get(),'clients' => \App\Client::all()]);
+        return view('service.create', [
+            'states' => Service::states(),
+            'offers' => \App\Offer::all(),
+            'managers' => \App\User::role('manager')->get(),
+            'clients' => \App\Client::all()]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ServiceStoreRequest  $request
+     * @param ServiceStoreRequest $request
      * @return RedirectResponse
      */
     public function store(ServiceStoreRequest $request)
@@ -55,25 +59,29 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        return view('service.index', ['services' => Service::where('id', $id)->paginate(),'offers' => \App\Offer::all(),'managers' => \App\User::role('manager')->get()]);
+        return view('service.index', ['services' => Service::where('id', $id)->paginate(), 'offers' => \App\Offer::all(), 'managers' => \App\User::role('manager')->get()]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Service  $service
+     * @param Service $service
      * @return View
      */
     public function edit(Service $service)
     {
-        return view ('service.create' , ['service' => $service,'offers' => \App\Offer::all(),'managers' => \App\User::role('manager')->get()]);
+        return view('service.create', [
+            'states' => Service::states(),
+            'service' => $service,
+            'offers' => \App\Offer::all(),
+            'managers' => \App\User::role('manager')->get()]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  ServiceStoreRequest  $request
-     * @param  Service  $service
+     * @param ServiceStoreRequest $request
+     * @param Service $service
      * @return RedirectResponse
      */
     public function update(ServiceStoreRequest $request, Service $service)
@@ -85,7 +93,7 @@ class ServiceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Service  $service
+     * @param Service $service
      * @return RedirectResponse
      */
     public function destroy(Service $service)
@@ -98,9 +106,8 @@ class ServiceController extends Controller
     {
         $string = $search ?? $request->get('string');
 
-        $data = Service::where('completed_at', 'like', '%' . $string . '%')
-            // ->orWhere('title', 'like', '%' . $string . '%')
-            ;
+        $data = Service::where('completed_at', 'like', '%' . $string . '%')// ->orWhere('title', 'like', '%' . $string . '%')
+        ;
 
         if ($search !== false && !empty($search)) {
             return view('service.index', ['services' => $data->paginate(20), 'search' => $string]);

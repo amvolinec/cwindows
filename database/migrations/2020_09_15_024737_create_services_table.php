@@ -19,7 +19,7 @@ class CreateServicesTable extends Migration
 			$table->unsignedTinyInteger('state_id')->nullable();
 			$table->decimal('costs',9,2)->nullable();
 			$table->decimal('income',9,2)->nullable();
-			$table->unsignedTinyInteger('pay_id')->nullable();
+			$table->unsignedTinyInteger('payer_id')->nullable();
 			$table->boolean('warranty')->nullable();
 			$table->text('notes')->nullable();
 			$table->text('list_of_orders')->nullable();

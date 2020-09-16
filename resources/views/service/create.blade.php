@@ -38,15 +38,19 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="state"
+                                <label for="state_id"
                                        class="col-md-4 col-form-label text-md-right">{{ __('State') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="state" type="number"
-                                           class="form-control @error('state') is-invalid @enderror" name="state"
-                                           value="{{ $service->state ?? old('state') }}" autocomplete="state">
-
-                                    @error('state')
+                                    <select class="form-control" name="state_id" id="state_id">
+                                        <option value="" disabled selected>{{ __('Select your option') }}</option>
+                                        @foreach($states as $item)
+                                            <option value="{{ $item['id'] }}"
+                                                    @if(isset($service) && $item['id'] === $service->state_id) selected @endif>
+                                                {{ $item['name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('state_id')
                                     <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
@@ -231,7 +235,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            // $('#completed_at').datetimepicker();
+            $('#state_id').select2();
             $('#manager_id').select2();
             $('#offer_id').select2();
         });
