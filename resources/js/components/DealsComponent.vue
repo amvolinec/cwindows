@@ -12,7 +12,7 @@
                 </div>
 
                 <div class="card-body">
-                    <table class="table table-sm table-striped">
+                    <table class="table table-sm table-striped table-responsive">
                         <thead class="thead">
                         <tr>
                             <th scope="col">#ID</th>
@@ -20,8 +20,37 @@
                             <th scope="col">Date Planed</th>
                             <th scope="col">Company</th>
                             <th scope="col">Contact</th>
+                            <th scope="col">Offer Number</th>
+                            <th scope="col">Order Number</th>
                             <th scope="col">Title</th>
-                            <th scope="col">Planed Amount</th>
+                            <th scope="col">State</th>
+                            <th scope="col">State comment</th>
+                            <th scope="col">Info</th>
+                            <th scope="col">See received_id</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Total with vat</th>
+                            <th scope="col">Balance</th>
+                            <th scope="col">Expences (services)</th>
+                            <th scope="col">Profit</th>
+                            <th scope="col">Planned Amount</th>
+                            <th scope="col">Amoun (fact)</th>
+                            <th scope="col">Amount with VAT</th>
+                            <th scope="col">User (created by)</th>
+                            <th scope="col">Delivery address</th>
+                            <th scope="col">Delivery date</th>
+                            <th scope="col">Comment</th>
+                            <th scope="col">Manager</th>
+                            <th scope="col">Request received</th>
+                            <th scope="col">Private|Company</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Inquiry type</th>
+                            <th scope="col">Inquiry profile</th>
+                            <th scope="col">Maintenance (staff service)</th>
+                            <th scope="col">Partner</th>
+                            <th scope="col">Date created</th>
+                            <th scope="col">Date updated</th>
+                            <th scope="col">Version</th>
+
                             <th scope="col">Probability %</th>
                             <th scope="col">Stage</th>
                             <th scope="col" width="200">Description</th>
@@ -40,9 +69,37 @@
                             <td>
                                 {{ item.client !== null && (typeof item.client.name !== undefined) ? item.client.name : '' }}
                             </td>
+                            <td>{{ item.number }}</td>
+                            <td>{{ item.order_number }}</td>
                             <td>{{ item.title }}</td>
-                            <td>{{ item.project_amount }}</td>
-                            <td>{{ item.planned_amount_percents }}</td>
+                            <td>{{ item.state_id}}</td>
+                            <td>{{ item.state_comment }}</td>
+                            <td>{{ item.info }}</td>
+                            <td>{{ item.enquiry_channel }}</td>
+                            <td>{{ item.total }}</td>
+                            <td>{{ item.total_with_vat }}</td>
+                            <td>{{ item.balance }}</td>
+                            <td>{{ item.other_services }}</td>
+                            <td>{{ item.sales_profit }}</td>
+                            <td>{{ item.planned_amount_percents}}</td>
+                            <td>{{ item.project_amount}}</td>
+                            <td>{{ item.project_amount_with_vat}}</td>
+                            <td>{{ item.user_id }}</td>
+                            <td>{{ item.delivery_address }}</td>
+                            <td>{{ item.delivery_date }}</td>
+                            <td>{{ item.comment }}</td>
+                            <td>{{ item.comment }}</td>
+                            <td>{{ item.manager_id }}</td>
+                            <td>{{ item.received_id }}</td>
+                            <td>{{ item.private }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>{{ item.type_id }}</td>
+                            <td>{{ item.profile_id }}</td>
+                            <td>{{ item.maintenance_id }}</td>
+                            <td>{{ item.partner }}</td>
+                            <td>{{ item.created_at }}</td>
+                            <td>{{ item.updated_at }}</td>
+                            <td>{{ item.version }}</td>
                             <td>
                                 <div class="stage " v-bind:class="item.state.class">
                                     {{ item.state !== null && (typeof item.state.name !== undefined) ? item.state.name : '' }}
