@@ -36,6 +36,7 @@
 								<th scope="col">{{ __("Offer") }}</th>
 								<th scope="col">{{ __("Client") }}</th>
                                 <th scope="col">{{ __("Manager") }}</th>
+                                <th scope="col">{{ __("Created by") }}</th>
                                 <th scope="col" style="width: 100px;">{{ __('Actions') }}</th>
                             </tr>
                             </thead>
@@ -56,6 +57,7 @@
 									<td>{{ $service->offer->inquiry_date ? ($service->offer->inquiry_date.'-'.$service->offer->id.' '.$service->offer->title) : '' }}</td>
 									<td>{{ $service->offer->client->name ?? '' }}</td>
                                     <td>{{ $service->manager->name ?? ''}}</td>
+                                    <td>{{ $service->user->name ?? ''}}</td>
                                     <td>
                                         <form class="float-right" action="{{ route('service.destroy', $service->id) }}"
                                               method="post" onsubmit="return confirm('Do you really want to delete?');">
