@@ -22,19 +22,12 @@ class Offer extends Model
         "pv",
         "area",
         "state_id",
-        "state_comment",
         "info",
         "pipeline",
         "enquiry_channel",
         "klaes",
         "contract_date",
         "contract_nr",
-        "price_1_date",
-        "price_1",
-        "price_2_date",
-        "price_2",
-        "price_3_date",
-        "price_3",
         "total",
         "total_with_vat",
         "balance",
@@ -55,6 +48,13 @@ class Offer extends Model
         "profile_id",
         "maintenance_id",
         "partner",
+        "chance",
+        "editor_id",
+        "material_id",
+        "color_id",
+        "materials",
+        "squaring",
+        "colors",
     ];
 
     protected static $logAttributes = [
@@ -69,19 +69,12 @@ class Offer extends Model
         "pv",
         "area",
         "state_id",
-        "state_comment",
         "info",
         "pipeline",
         "enquiry_channel",
         "klaes",
         "contract_date",
         "contract_nr",
-        "price_1_date",
-        "price_1",
-        "price_2_date",
-        "price_2",
-        "price_3_date",
-        "price_3",
         "total",
         "total_with_vat",
         "balance",
@@ -102,6 +95,13 @@ class Offer extends Model
         "profile_id",
         "maintenance_id",
         "partner",
+        "chance",
+        "editor_id",
+        "material_id",
+        "color_id",
+        "materials",
+        "squaring",
+        "colors",
     ];
 
     public function client()
@@ -124,6 +124,20 @@ class Offer extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function editor()
+    {
+        return $this->belongsTo('App\User', 'editor_id', 'id');
+    }
+
+    public function color()
+    {
+        return $this->belongsTo('App\Color');
+    }
+
+    public function material()
+    {
+        return $this->belongsTo('App\Material');
+    }
     public function manager()
     {
         return $this->belongsTo('App\User', 'manager_id', 'id');
@@ -160,21 +174,6 @@ class Offer extends Model
     public function setContractDateAttribute($value)
     {
         $this->attributes['contract_date'] = empty($value) ? null : substr($value, 0, 10);
-    }
-
-    public function setPrice1DateAttribute($value)
-    {
-        $this->attributes['price_1_date'] = empty($value) ? null : substr($value, 0, 10);
-    }
-
-    public function setPrice2DateAttribute($value)
-    {
-        $this->attributes['price_2_date'] = empty($value) ? null : substr($value, 0, 10);
-    }
-
-    public function setPrice3DateAttribute($value)
-    {
-        $this->attributes['price_3_date'] = empty($value) ? null : substr($value, 0, 10);
     }
 
     public function setDeliveryDateAttribute($value)

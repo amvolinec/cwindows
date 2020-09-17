@@ -126,19 +126,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="state_comment" class="col-md-4 col-form-label text-md-right">{{ __('State Comment') }}</label>
 
-                                <div class="col-md-6">
-                                    <input id="state_comment" type="text" class="form-control @error('state_comment') is-invalid @enderror" name="state_comment" value="{{ $offer->state_comment ?? old('state_comment') }}" autocomplete="state_comment" >
-
-                                    @error('state_comment')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
                             <div class="form-group row">
                                 <label for="info" class="col-md-4 col-form-label text-md-right">{{ __('Info') }}</label>
 
@@ -204,84 +192,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="price_1_date" class="col-md-4 col-form-label text-md-right">{{ __('Price 1 Date') }}</label>
 
-                                <div class="col-md-6">
-                                    <input id="price_1_date" type="date" class="form-control @error('price_1_date') is-invalid @enderror" name="price_1_date" value="{{ $offer->price_1_date ??  old('price_1_date') }}" autocomplete="price_1_date" >
-
-                                    @error('price_1_date')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="price_1" class="col-md-4 col-form-label text-md-right">{{ __('Price 1') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="price_1" type="number" step=".01" class="form-control @error('price_1') is-invalid @enderror" name="price_1" value="{{ $offer->price_1 ?? old('price_1') }}" autocomplete="price_1" >
-
-                                    @error('price_1')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="price_2_date" class="col-md-4 col-form-label text-md-right">{{ __('Price 2 Date') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="price_2_date" type="date" class="form-control @error('price_2_date') is-invalid @enderror" name="price_2_date" value="{{ $offer->price_2_date ??  old('price_2_date') }}" autocomplete="price_2_date" >
-
-                                    @error('price_2_date')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="price_2" class="col-md-4 col-form-label text-md-right">{{ __('Price 2') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="price_2" type="number" step=".01" class="form-control @error('price_2') is-invalid @enderror" name="price_2" value="{{ $offer->price_2 ?? old('price_2') }}" autocomplete="price_2" >
-
-                                    @error('price_2')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="price_3_date" class="col-md-4 col-form-label text-md-right">{{ __('Price 3 Date') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="price_3_date" type="date" class="form-control @error('price_3_date') is-invalid @enderror" name="price_3_date" value="{{ $offer->price_3_date ??  old('price_3_date') }}" autocomplete="price_3_date" >
-
-                                    @error('price_3_date')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="price_3" class="col-md-4 col-form-label text-md-right">{{ __('Price 3') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="price_3" type="number" step=".01" class="form-control @error('price_3') is-invalid @enderror" name="price_3" value="{{ $offer->price_3 ?? old('price_3') }}" autocomplete="price_3" >
-
-                                    @error('price_3')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
                             <div class="form-group row">
                                 <label for="total" class="col-md-4 col-form-label text-md-right">{{ __('Total') }}</label>
 
