@@ -104,6 +104,10 @@ class Offer extends Model
         "colors",
     ];
 
+    private $sources = [
+        ['www', 'email', 'other']
+    ];
+
     public function client()
     {
         return $this->belongsTo('App\Client');
@@ -153,9 +157,19 @@ class Offer extends Model
         return $this->hasMany('App\Position');
     }
 
+    public function transactions()
+    {
+        return $this->hasMany('App\Transaction');
+    }
+
     public function persons()
     {
         return $this->belongsToMany('App\Person');
+    }
+
+    public function maintenance()
+    {
+        return $this->belongsTo('App\Maintenance');
     }
 
     public function files()
@@ -188,6 +202,10 @@ class Offer extends Model
     public function getFractionAttribute() {
         $str = (string)$this->total_with_vat - floor($this->total_with_vat);
         return substr($str, 2);
+    }
+
+    public function getReceivedAttribute() {
+        return $this->sources[(int)$this->received_id];
     }
 
     public function getSumWords($skaicius){

@@ -11,6 +11,9 @@ window.Vue = require('vue');
 import { Datetime } from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css'
 
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -35,6 +38,7 @@ Vue.component('offer-state', require('./components/OfferStateComponent.vue').def
 Vue.component('configurator', require('./components/СonfiguratorComponent.vue').default);
 Vue.component('configurator-w1', require('./components/СonfiguratorW1Component.vue').default);
 Vue.component('datetime', Datetime);
+Vue.component('v-select', vSelect);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

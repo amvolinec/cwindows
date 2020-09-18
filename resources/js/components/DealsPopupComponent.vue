@@ -211,6 +211,13 @@
                 </div>
 
                 <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="manager_id">Stuff Service</label>
+                    <div class="col-md-8 mb-2 p-0">
+                        <v-select label="name" :options="maintenances" v-model="staff" @input="staffSelected"></v-select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="partner">Partner ID</label>
                     <input id="partner" type="text" class="form-control col-md-8"
                            name="partner"
@@ -261,6 +268,7 @@ export default {
                 type_id: 1,
                 profile_id: 1,
                 comment: '',
+                maintenance_id: 0
             },
             showDropCompany: false,
             showDropContact: false,
@@ -269,6 +277,8 @@ export default {
             isFloat: false,
             createNew: false,
             file: [],
+            maintenances: [],
+            staff: [],
         }
     },
     components: {
@@ -297,6 +307,7 @@ export default {
             this.offer.company_name = item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : '';
             this.offer.client_id = item.client !== null && (typeof item.client.id !== undefined) ? item.client.id : 0;
             this.offer.client_name = item.client !== null && (typeof item.client.name !== undefined) ? item.client.name : '';
+            this.staff = item.maintenance;
         });
         this.$root.$on('newOffer', () => {
             this.createOffer();
@@ -312,6 +323,7 @@ export default {
                 this.users = response.data.users;
                 this.managers = response.data.managers;
                 this.offer.user_id = response.data.user_id;
+                this.maintenances = response.data.maintenances;
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -431,6 +443,8 @@ export default {
             this.offer.client_name = client.name;
         }, changeFormat(date) {
             date = date.substr(0, 10);
+        }, staffSelected(){
+            this.offer.maintenance_id = this.staff.id;
         }
     }
 }

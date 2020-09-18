@@ -36,7 +36,16 @@ class OfferController extends Controller
 
     public function get()
     {
-        return Offer::with(['client', 'architect', 'company', 'state', 'files'])->whereNotNull('inquiry_date')->get();
+        return Offer::with(['client', 'architect', 'company', 'state', 'user', 'manager', 'files', 'color', 'material', 'editor', 'maintenance'])->whereNotNull('inquiry_date')->get();
+    }
+
+    public function getData($id)
+    {
+        return [
+            'offer' => Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user', 'files', 'manager', 'color', 'material', 'editor', 'maintenance'])
+                ->findOrFail($id),
+            'states' => State::all()
+        ];
 
     }
 
@@ -171,6 +180,8 @@ class OfferController extends Controller
             ]);
         }
 
+        $offer->editor_id = Auth::user()->id;
+
         try {
             $offer->save();
         } catch (\Exception $exception) {
@@ -233,16 +244,6 @@ class OfferController extends Controller
         } catch (Exception $e) {
             return ['status' => 'error', 'message' => $e->getMessage()];
         }
-    }
-
-    public function getData($id)
-    {
-        return [
-            'offer' => Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user', 'files', 'manager'])
-                ->findOrFail($id),
-            'states' => State::all()
-        ];
-
     }
 
     public function createOffer()

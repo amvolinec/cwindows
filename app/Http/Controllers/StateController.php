@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Architect;
+use App\Maintenance;
 use App\Offer;
 use App\State;
 use App\User;
@@ -97,7 +99,9 @@ class StateController extends Controller
             'states' => State::all(),
             'users' => User::all(),
             'user_id' => Auth::id(),
-            'managers' => User::role('manager')->get()
+            'managers' => User::role('manager')->get(),
+            'maintenances' => Maintenance::all(),
+            'architects' => Architect::all(),
             ];
     }
 }

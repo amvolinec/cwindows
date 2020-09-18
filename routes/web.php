@@ -19,6 +19,18 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::resource('transaction', 'TransactionController');
+    Route::post('transaction/find/', 'TransactionController@find')->name('transaction.find');
+    Route::get('transaction/find/{string}', 'TransactionController@find')->name('transaction.find.get');
+    Route::resource('transactiontype', 'TransactionTypeController');
+    Route::post('transactiontype/find/', 'TransactionTypeController@find')->name('transactiontype.find');
+    Route::get('transactiontype/find/{string}', 'TransactionTypeController@find')->name('transactiontype.find.get');
+    Route::resource('material', 'MaterialController');
+    Route::post('material/find/', 'MaterialController@find')->name('material.find');
+    Route::get('material/find/{string}', 'MaterialController@find')->name('material.find.get');
+    Route::resource('color', 'ColorController');
+    Route::post('color/find/', 'ColorController@find')->name('color.find');
+    Route::get('color/find/{string}', 'ColorController@find')->name('color.find.get');
     Route::resource('service', 'ServiceController');
     Route::post('service/find/', 'ServiceController@find')->name('service.find');
     Route::get('service/find/{string}', 'ServiceController@find')->name('service.find.get');
