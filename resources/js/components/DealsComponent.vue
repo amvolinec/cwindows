@@ -37,6 +37,7 @@
                             <th scope="col">Delivery date</th>
                             <th scope="col">Comment</th>
                             <th scope="col">Manager</th>
+                            <th scope="col">Architect</th>
                             <th scope="col">Request received</th>
                             <th scope="col">Private|Company</th>
                             <th scope="col">Inquiry type</th>
@@ -84,6 +85,9 @@
                             <td>
                                 {{ item.manager !== null && (typeof item.manager.name !== undefined) ? item.manager.name : '' }}
                             </td>
+                            <td>
+                                {{ item.architect !== null && (typeof item.architect.title !== undefined) ? item.architect.title : '' }}
+                            </td>
                             <td>{{ sources[item.received_id] }}</td>
                             <td>{{ private[item.private] }}</td>
                             <td>{{ types[item.type_id] }}</td>
@@ -117,6 +121,8 @@
                                 </ul>
                             </td>
                             <td>
+                                <button class="btn btn-sm btn-outline-secondary" @click="newTransaction(item.id)"><i
+                                    class="fas fa-dollar-sign"></i></button>
                                 <button class="btn btn-sm btn-outline-secondary" @click="itemShow(item.id)"><i
                                     class="fas fa-search-dollar"></i></button>
                                 <button class="btn btn-sm btn-outline-secondary" @click="itemLoad(item)"><i
@@ -133,6 +139,7 @@
         </div>
         <deals-popup ref="popup"></deals-popup>
         <nope-popup ref="nope"></nope-popup>
+        <new-transaction></new-transaction>
     </div>
 </template>
 
@@ -152,6 +159,9 @@ export default {
     },
     mounted() {
         this.$root.$on('offerAdded', () => {
+            this.fetchItems();
+        });
+        this.$root.$on('transactionAdded', (t) => {
             this.fetchItems();
         });
     },
@@ -181,6 +191,9 @@ export default {
         },
         itemShow(id) {
             document.location.href = '/offer/' + id;
+        }, newTransaction(id){
+            this.$root.$emit('createNewTransaction', id);
+            this.$root.$data.newTransaction = true;
         }
     }
 }

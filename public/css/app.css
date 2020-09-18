@@ -17407,3 +17407,7 @@ ul.i-list li {
   border-color: transparent transparent transparent rgba(4, 132, 75, 0.952941);
 }
 
+.popup-window.popup-sm .form-group {
+  margin-bottom: 0.25rem;
+}
+

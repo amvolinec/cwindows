@@ -12,12 +12,16 @@ class TransactionTypeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return View
+     * @param Request $request
+     * @return View|Array
      */
-    public function index()
+    public function index(Request $request)
     {
-        $transaction_types = TransactionType::paginate(20);
-        return view('transactiontype.index', ['transaction_types' => $transaction_types]);
+        if($request->ajax()){
+            return TransactionType::get()->toArray();
+        }
+
+        return view('transactiontype.index', ['transaction_types' => TransactionType::paginate(20)]);
     }
 
     /**

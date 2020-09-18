@@ -6,12 +6,14 @@ use App\Architect;
 use App\Client;
 use App\Company;
 use App\File;
+use App\Helpers\BalanceHelper;
 use App\Http\Requests\OfferRequest;
 use App\Offer;
 use App\Position;
 
 use App\Setting;
 use App\State;
+use App\TransactionType;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -36,15 +38,16 @@ class OfferController extends Controller
 
     public function get()
     {
-        return Offer::with(['client', 'architect', 'company', 'state', 'user', 'manager', 'files', 'color', 'material', 'editor', 'maintenance'])->whereNotNull('inquiry_date')->get();
+        return Offer::with(['client', 'architect', 'company', 'state', 'user','positions', 'manager', 'files', 'color', 'material', 'editor', 'maintenance'])->whereNotNull('inquiry_date')->get();
     }
 
     public function getData($id)
     {
         return [
-            'offer' => Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user', 'files', 'manager', 'color', 'material', 'editor', 'maintenance'])
+            'offer' => Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user', 'files', 'manager', 'color', 'material', 'editor', 'maintenance', 'transactions'])
                 ->findOrFail($id),
-            'states' => State::all()
+            'states' => State::all(),
+            'types' => TransactionType::all()
         ];
 
     }
@@ -102,7 +105,9 @@ class OfferController extends Controller
      */
     public function update(Request $request, Offer $offer)
     {
-        $offer->fill($request->except('_method', '_token'))->save();
+        $offer->fill($request->except('_method', '_token'));
+        $offer->balance = BalanceHelper::calc($offer->id);
+        $offer->save();
         return redirect()->route('offer.index');
     }
 
@@ -180,6 +185,7 @@ class OfferController extends Controller
             ]);
         }
 
+        $offer->balance = BalanceHelper::calc($offer->id);
         $offer->editor_id = Auth::user()->id;
 
         try {

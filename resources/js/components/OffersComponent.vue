@@ -69,7 +69,9 @@
                         <tr>
                             <th scope="row">Contact</th>
                             <td>
-                                {{ (typeof item.client === 'undefined') || (item.client === null)  ? '' : item.client.name }}
+                                {{
+                                    (typeof item.client === 'undefined') || (item.client === null) ? '' : item.client.name
+                                }}
                             </td>
                         </tr>
                         <tr v-if="item.title">
@@ -96,8 +98,12 @@
                         <tr>
                             <th>Uploaded files</th>
                             <td>
-                                <a v-for="file in item.files" v-bind:href="'/' + file.file_uri" target="_blank">
-                                    {{ file.file_name }}</a>
+                                <div v-for="file in item.files">
+                                    <a v-bind:href="'/' + file.file_uri" target="_blank">
+                                        {{ file.file_name }}</a>
+                                    <i class="fas fa-trash" style="cursor: pointer;"
+                                       @click="nopeFile(file)"></i>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -120,14 +126,6 @@
                                 </select>
                             </td>
                         </tr>
-<!--                        <tr>-->
-<!--                            <th>Status</th>-->
-<!--                            <td>-->
-<!--                                <select :disabled="isDisabled" class="form-control-plaintext" v-model="item.state_id">-->
-<!--                                    <option v-for="state in states" v-bind:value="state.id">{{ state.name }}</option>-->
-<!--                                </select>-->
-<!--                            </td>-->
-<!--                        </tr>-->
                         <tr v-if="item.planed_date">
                             <th>Planned date of sale</th>
                             <td>{{ item.planed_date }}</td>
@@ -136,9 +134,9 @@
                             <th scope="row">Planned amount</th>
                             <td>{{ item.project_amount }}</td>
                         </tr>
-                        <tr v-if="item.planned_amount_percents > 0">
+                        <tr v-if="item.chance > 0">
                             <th>Probability %</th>
-                            <td>{{ item.planned_amount_percents }}</td>
+                            <td>{{ item.chance }}</td>
                         </tr>
                         <tr v-if="item.comment">
                             <th>Comment</th>
@@ -165,6 +163,15 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <th scope="row">Architect</th>
+                            <td>
+                                <div>{{
+                                        typeof item.architect_id === 'undefined' || item.architect_id === null ? '' : item.architect.title
+                                    }}
+                                </div>
+                            </td>
+                        </tr>
                         <tr v-if="item.partner">
                             <th>Partner ID</th>
                             <td>{{ item.partner }}</td>
@@ -176,6 +183,10 @@
                         <tr v-if="item.order_number">
                             <th scope="row">Order No.</th>
                             <td>{{ item.order_number }}</td>
+                        </tr>
+                        <tr v-if="item.balance">
+                            <th scope="row">Balance</th>
+                            <td>{{ item.balance }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -218,11 +229,41 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card mt-2">
+                <div class="card-body">
+                    <div class="panel-info">
+                        <div class="d-inline-flex">
+                            <h5><i class="fas fa-money-bill-wave-alt"></i> Payments</h5>
+                            <div class="d-inline-flex">
+                                <button class="btn btn-sm btn-outline-secondary" @click="newTransaction(item.id)">
+                                    <i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <ul class="i-list mb-2" v-for="transaction in item.transactions">
+                        <li>
+                            <div class="i-line">
+                                <div class="float-left">
+                                    {{ transaction.date }} {{ transaction.number }}
+                                </div>
+                                <div class="float-right">
+                                    {{ $root.format(transaction.amount) }}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="text-right"><strong>Balance: {{ this.$root.format(item.balance) }}</strong></div>
+                </div>
+            </div>
         </div>
         <div class="col-md-6"></div>
         <deals-popup ref="popup"></deals-popup>
         <positions-popup string="item"></positions-popup>
         <nope-popup ref="nope"></nope-popup>
+        <new-transaction></new-transaction>
     </div>
 </template>
 
@@ -236,12 +277,16 @@ export default {
             item: [],
             positions: [],
             states: [],
+            types: [],
             isDisabled: true,
         }
     },
     mounted() {
         this.$root.$on('updateOffer', (offer) => {
             // this.positions = offer.positions;
+            this.fetchItems();
+        });
+        this.$root.$on('transactionAdded', (transaction) => {
             this.fetchItems();
         });
         this.$root.$on('stateChanged', (state) => {
@@ -256,10 +301,11 @@ export default {
     methods: {
         fetchItems() {
             let url = '/offer/get/' + this.id;
-            axios.get(url).then(response => {
-                this.item = response.data.offer;
-                this.states = response.data.states;
-                this.positions = typeof response.data.positions !== 'undefined' ? response.data.positions : [];
+            axios.get(url).then(r => {
+                this.item = r.data.offer;
+                this.states = r.data.states;
+                this.types = r.data.types;
+                this.positions = typeof r.data.offer.positions !== 'undefined' ? r.data.offer.positions : [];
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -295,6 +341,19 @@ export default {
                 this.$root.fetchError(error);
             });
             this.isDisabled = true;
+        }, nopeFile(item) {
+            let data = {
+                id: item.id,
+                route: '/files',
+                message: 'Delete ' + item.file_name + ' ?',
+                location: window.location.href
+            };
+            this.$root.$emit('nopeItem', data);
+            this.$root.$data.nope = true;
+            this.fetchItems();
+        }, newTransaction(id) {
+            this.$root.$emit('createNewTransaction', id);
+            this.$root.$data.newTransaction = true;
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TransactionRequest;
 use App\Offer;
 use App\Transaction;
 use Illuminate\Http\RedirectResponse;
@@ -38,13 +39,19 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  TransactionRequest  $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(TransactionRequest $request)
     {
-        Transaction::create($request->except('_method', '_token'));
-        return redirect()->route('transaction.index');
+        $transaction = Transaction::create($request->except('_method', '_token'));
+
+        if($request->ajax()){
+            return $transaction->id;
+        } else {
+            return redirect()->route('transaction.index');
+        }
+
     }
 
     /**
@@ -82,14 +89,19 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
+     * @param  TransactionRequest  $request
      * @param  Transaction  $transaction
      * @return RedirectResponse
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(TransactionRequest $request, Transaction $transaction)
     {
         $transaction->fill($request->except('_method', '_token'))->save();
-        return redirect()->route('transaction.index');
+
+        if($request->ajax()){
+            return $transaction->id;
+        } else {
+            return redirect()->route('transaction.index');
+        }
     }
 
     /**

@@ -37,6 +37,7 @@ Vue.component('offer-items', require('./components/OfferItemsComponent.vue').def
 Vue.component('offer-state', require('./components/OfferStateComponent.vue').default);
 Vue.component('configurator', require('./components/СonfiguratorComponent.vue').default);
 Vue.component('configurator-w1', require('./components/СonfiguratorW1Component.vue').default);
+Vue.component('new-transaction', require('./components/NewTransactionComponent.vue').default);
 Vue.component('datetime', Datetime);
 Vue.component('v-select', vSelect);
 
@@ -59,7 +60,8 @@ const app = new Vue({
         configurator1: false,
         configurator2: false,
         offer: [],
-        newContact: false
+        newContact: false,
+        newTransaction: false
     },
     methods: {
         fetchError(error){

@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Helpers\BalanceHelper;
 use App\Offer;
 use App\Transaction;
 
@@ -64,11 +65,7 @@ class TransactionObserver
 
     protected function updateOfferBalance(Transaction $transaction) {
         $offer = Offer::findOrFail((int)$transaction->offer_id);
-        $balance = 0;
-        foreach($offer->transactions as $transaction) {
-            $balance += $transaction->amount;
-        }
-        $offer->balance = $balance;
+        $offer->balance = BalanceHelper::calc($offer->id);
         $offer->save();
     }
 }

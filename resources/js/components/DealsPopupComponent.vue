@@ -175,11 +175,11 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="planned_amount_percents">Probability
+                    <label class="col-md-4 text-right col-form-label">Probability
                         %</label>
-                    <input id="planned_amount_percents" type="text" class="form-control col-md-8"
-                           name="planned_amount_percents"
-                           v-model="offer.planned_amount_percents">
+                    <div class="col-md-8 p-0">
+                        <v-select label="title" :options="chances" v-model="chance" @input="chanceSelected"></v-select>
+                    </div>
                 </div>
 
                 <div class="form-group row">
@@ -213,7 +213,16 @@
                 <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="manager_id">Stuff Service</label>
                     <div class="col-md-8 mb-2 p-0">
-                        <v-select label="name" :options="maintenances" v-model="staff" @input="staffSelected"></v-select>
+                        <v-select label="name" :options="maintenances" v-model="staff"
+                                  @input="staffSelected"></v-select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-4 text-right col-form-label" for="manager_id">Architect</label>
+                    <div class="col-md-8 p-0">
+                        <v-select label="title" :options="architects" v-model="architect"
+                                  @input="architectSelected"></v-select>
                     </div>
                 </div>
 
@@ -279,6 +288,22 @@ export default {
             file: [],
             maintenances: [],
             staff: [],
+            chances: [
+                {id: 100, 'title': '100'},
+                {id: 90, 'title': '90'},
+                {id: 80, 'title': '80'},
+                {id: 70, 'title': '70'},
+                {id: 60, 'title': '60'},
+                {id: 50, 'title': '50'},
+                {id: 40, 'title': '40'},
+                {id: 30, 'title': '30'},
+                {id: 20, 'title': '20'},
+                {id: 10, 'title': '10'},
+
+            ],
+            chance: {id: 100, 'title': '100'},
+            architects: [],
+            architect: {},
         }
     },
     components: {
@@ -318,20 +343,22 @@ export default {
     },
     methods: {
         fetchStates() {
-            axios.get('/states').then(response => {
-                this.states = response.data.states;
-                this.users = response.data.users;
-                this.managers = response.data.managers;
-                this.offer.user_id = response.data.user_id;
-                this.maintenances = response.data.maintenances;
+            axios.get('/states').then(r => {
+                this.states = r.data.states;
+                this.users = r.data.users;
+                this.managers = r.data.managers;
+                this.offer.user_id = r.data.user_id;
+                this.maintenances = r.data.maintenances;
+                this.architects = r.data.architects;
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
         }, createOffer() {
-            axios.get('/create-offer').then(response => {
-                this.offer.id = response.data.offer.id;
-                this.offer.user_id = response.data.offer.user_id;
-                this.offer.created_at = response.data.offer.created_at;
+            axios.get('/create-offer').then(r => {
+                this.offer.id = r.data.offer.id;
+                this.offer.user_id = r.data.offer.user_id;
+                this.offer.created_at = r.data.offer.created_at;
+                this.chance = {id: r.data.offer.chance, name: r.data.offer.chance}
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -391,11 +418,6 @@ export default {
                 if (this.offer[key] !== null)
                     formData.append(key, this.offer[key])
             });
-
-            // for ( let key in this.offer ) {
-            //     formData.append(key, this.offer[key]);
-            // }
-
             axios.post('/set-offer', formData,
                 {
                     headers: {
@@ -443,8 +465,12 @@ export default {
             this.offer.client_name = client.name;
         }, changeFormat(date) {
             date = date.substr(0, 10);
-        }, staffSelected(){
+        }, staffSelected() {
             this.offer.maintenance_id = this.staff.id;
+        }, chanceSelected() {
+            this.offer.chance = this.chance.id
+        }, architectSelected() {
+            this.offer.architect_id = this.architect.id;
         }
     }
 }

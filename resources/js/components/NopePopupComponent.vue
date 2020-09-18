@@ -1,7 +1,8 @@
 <template>
     <div class="wrapper" v-if="this.$root.$data.nope">
         <div class="popup-window">
-            <div class="popup-head">{{ item.message }}<i @click="closePopup" class="far fa-times-circle float-right"></i>
+            <div class="popup-head">{{ item.message }}<i @click="closePopup"
+                                                         class="far fa-times-circle float-right"></i>
             </div>
             <div class="popup-inner">
 
@@ -26,8 +27,8 @@
 export default {
     data() {
         return {
-            item: { id: 0, route: '', message: ''},
-            message: ''
+            item: {id: 0, route: '', message: '', location: ''},
+            message: '',
         }
     },
     mounted() {
@@ -38,12 +39,13 @@ export default {
     methods: {
         closePopup() {
             this.$root.$data.nope = false;
-        }, deleteItem(){
+        }, deleteItem() {
             axios.delete(this.item.route, {params: {'id': this.item.id}})
                 .then((r) => {
                     this.closePopup();
+                    if (this.item.location.length > 0)
+                        window.location.href = this.item.location;
                 });
-            // console.log(this.item.id + ' ' + this.item.model);
         },
     }
 }

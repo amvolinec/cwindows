@@ -123,6 +123,18 @@ class FileController extends Controller
         return redirect()->route('file.index');
     }
 
+    public function deleteMany(Request $request)
+    {
+        try {
+            File::where('id', $request->get('id'))->delete();
+
+            return ['status' => 'success'];
+
+        } catch (Exception $e) {
+            return ['status' => 'error', 'message' => $e->getMessage()];
+        }
+    }
+
     public function find(Request $request, $search = false)
     {
         $string = $search ?? $request->get('string');

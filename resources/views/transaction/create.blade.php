@@ -20,6 +20,19 @@
                             @method( isset($transaction) ? 'put' : 'post')
                             @csrf
 
+                            @if($errors->all())
+                                <div class="row">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-6 alert alert-warning" role="alert">
+                                        <ul>
+                                            @foreach($errors->all() as $message)
+                                                <li> {{$message}} </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endif
+
                             <div class="form-group row">
                                 <label for="amount"
                                        class="col-md-4 col-form-label text-md-right">{{ __('Amount') }}</label>
@@ -28,12 +41,6 @@
                                     <input id="amount" type="number"
                                            class="form-control @error('amount') is-invalid @enderror" name="amount"
                                            value="{{ $transaction->amount ?? old('amount') }}" autocomplete="amount">
-
-                                    @error('amount')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -44,21 +51,15 @@
                                     <input id="number" type="text"
                                            class="form-control @error('number') is-invalid @enderror" name="number"
                                            value="{{ $transaction->number ?? old('number') }}" autocomplete="number">
-
-                                    @error('number')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="state_id"
                                        class="col-md-4 col-form-label text-md-right">{{ __('Date') }}</label>
                                 <div class="col-md-6">
-                                <datetime id="date" type="date" name="date"
-                                          value="{{ $service->date ??  old('date') }}" input-class="form-control"
-                                          format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
+                                    <datetime id="date" type="date" name="date"
+                                              value="{{ $transaction->date ??  old('date') }}" input-class="form-control"
+                                              format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
                                 </div>
                             </div>
 
@@ -99,11 +100,6 @@
                                               class="form-control @error('info') is-invalid @enderror" name="info"
                                               autocomplete="info">{{ $transaction->info ?? old('info') }}</textarea>
 
-                                    @error('info')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -114,12 +110,6 @@
                                     <textarea id="details" type="text"
                                               class="form-control @error('details') is-invalid @enderror" name="details"
                                               autocomplete="details">{{ $transaction->details ?? old('details') }}</textarea>
-
-                                    @error('details')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row">

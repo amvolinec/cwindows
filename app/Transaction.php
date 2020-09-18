@@ -35,6 +35,10 @@ class Transaction extends Model
         return self::$states[$this->state_id]['name'];
     }
 
+    public function setDateAttribute($value) {
+        $this->attributes['date'] = substr($value, 0, 10);
+    }
+
     public static function states() {
         return self::$states;
     }
