@@ -76,32 +76,6 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="area" class="col-md-4 col-form-label text-md-right">{{ __('Area') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="area" type="text" class="form-control @error('area') is-invalid @enderror" name="area" value="{{ $offer->area ?? old('area') }}" autocomplete="area" >
-
-                                    @error('area')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="positions" class="col-md-4 col-form-label text-md-right">{{ __('Positions') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="positions" type="number" class="form-control @error('positions') is-invalid @enderror" name="positions" value="{{ $offer->positions ?? old('positions') }}" autocomplete="positions" >
-
-                                    @error('positions')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
                                 <label for="profile" class="col-md-4 col-form-label text-md-right">{{ __('Profile') }}</label>
 
                                 <div class="col-md-6">
@@ -233,12 +207,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="other_services" class="col-md-4 col-form-label text-md-right">{{ __('Other Services') }}</label>
+                                <label for="expenses" class="col-md-4 col-form-label text-md-right">{{ __('Other Services') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="other_services" type="text" class="form-control @error('other_services') is-invalid @enderror" name="other_services" value="{{ $offer->other_services ?? old('other_services') }}" autocomplete="other_services" >
+                                    <input id="expenses" type="text" class="form-control @error('expenses') is-invalid @enderror" name="expenses" value="{{ $offer->expenses ?? old('expenses') }}" autocomplete="expenses" >
 
-                                    @error('other_services')
+                                    @error('expenses')
                                     <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>

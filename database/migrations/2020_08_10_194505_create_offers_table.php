@@ -42,8 +42,6 @@ class CreateOffersTable extends Migration
 			$table->string('order_number')->nullable();
 			$table->string('title')->nullable();
 			$table->string('pv')->nullable();
-			$table->string('area')->nullable();
-			$table->integer('positions')->nullable();
 			$table->unsignedSmallInteger('state_id')->nullable()->index();
 			$table->string('info')->nullable();
 			$table->string('pipeline')->nullable();
@@ -51,14 +49,12 @@ class CreateOffersTable extends Migration
 			$table->string('klaes')->nullable();
 			$table->date('contract_date')->nullable();
 			$table->string('contract_nr')->nullable();
+			$table->decimal('cost',11, 2)->default(0);
 			$table->decimal('total',11, 2)->default(0);
 			$table->decimal('total_with_vat', 11, 2)->default(0);
-			$table->decimal('balance', 11, 2)->default(0);
-			$table->string('other_services')->nullable();
+            $table->decimal('expenses', 11, 2)->default(0);
 			$table->decimal('sales_profit', 11, 2)->default(0);
-            $table->decimal('planned_amount_percents',11,2)->default(0);
-			$table->decimal('project_amount', 11, 2)->default(0);
-			$table->decimal('project_amount_with_vat', 11, 2)->default(0);
+            $table->decimal('balance', 11, 2)->default(0);
             $table->unsignedBigInteger('user_id')->nullable()->index();
             $table->string('delivery_address')->nullable();
             $table->date('delivery_date')->nullable();

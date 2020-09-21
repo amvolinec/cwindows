@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ClientSeeder extends Seeder
+class ProfileSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,9 +13,11 @@ class ClientSeeder extends Seeder
     public function run()
     {
         $data = [
-            'name' => 'Alfredas Ivanauskas', 'phone' => '44551236546'
+            'name' => 'Wood',
+            'name' => 'Wood + All',
+            'name' => 'Aluminium',
         ];
 
-        DB::table('clients')->insert($data);
+        DB::table('profiles')->insert($data);
     }
 }

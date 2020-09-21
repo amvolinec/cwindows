@@ -29,9 +29,6 @@
                             <th scope="col">Balance</th>
                             <th scope="col">Expences (services)</th>
                             <th scope="col">Profit</th>
-                            <th scope="col">Planned Amount</th>
-                            <th scope="col">Amount (fact)</th>
-                            <th scope="col">Amount with VAT</th>
                             <th scope="col">User (created by)</th>
                             <th scope="col">Delivery address</th>
                             <th scope="col">Delivery date</th>
@@ -73,11 +70,8 @@
                             <td>{{ item.total }}</td>
                             <td>{{ item.total_with_vat }}</td>
                             <td>{{ item.balance }}</td>
-                            <td>{{ item.other_services }}</td>
+                            <td>{{ item.expenses }}</td>
                             <td>{{ item.sales_profit }}</td>
-                            <td>{{ item.planned_amount_percents}}</td>
-                            <td>{{ item.project_amount}}</td>
-                            <td>{{ item.project_amount_with_vat}}</td>
                             <td>{{ item.user.name }}</td>
                             <td>{{ item.delivery_address }}</td>
                             <td>{{ item.delivery_date }}</td>

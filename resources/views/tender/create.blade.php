@@ -32,12 +32,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
+                                <label for="delivery_address" class="col-md-4 col-form-label text-md-right">{{ __('Delivery Address') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ $tender->address ?? old('address') }}" autocomplete="address" >
+                                    <input id="delivery_address" type="text" class="form-control @error('delivery_address') is-invalid @enderror" name="delivery_address" value="{{ $tender->delivery_address ?? old('delivery_address') }}" autocomplete="delivery_address" >
 
-                                    @error('address')
+                                    @error('delivery_address')
                                     <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
@@ -71,12 +71,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="wood" class="col-md-4 col-form-label text-md-right">{{ __('Wood') }}</label>
+                                <label for="materials" class="col-md-4 col-form-label text-md-right">{{ __('Materials') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="wood" type="text" class="form-control @error('wood') is-invalid @enderror" name="wood" value="{{ $tender->wood ?? old('wood') }}" autocomplete="wood" >
+                                    <input id="materials" type="text" class="form-control @error('materials') is-invalid @enderror" name="materials" value="{{ $tender->materials ?? old('materials') }}" autocomplete="materials" >
 
-                                    @error('wood')
+                                    @error('materials')
                                     <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
@@ -84,12 +84,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="color" class="col-md-4 col-form-label text-md-right">{{ __('Color') }}</label>
+                                <label for="colors" class="col-md-4 col-form-label text-md-right">{{ __('Colors') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="color" type="text" class="form-control @error('color') is-invalid @enderror" name="color" value="{{ $tender->color ?? old('color') }}" autocomplete="color" >
+                                    <input id="colors" type="text" class="form-control @error('colors') is-invalid @enderror" name="colors" value="{{ $tender->colors ?? old('colors') }}" autocomplete="colors" >
 
-                                    @error('color')
+                                    @error('colors')
                                     <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
@@ -97,12 +97,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="area" class="col-md-4 col-form-label text-md-right">{{ __('Area') }}</label>
+                                <label for="squaring" class="col-md-4 col-form-label text-md-right">{{ __('Squaring') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="area" type="number" step=".01" class="form-control @error('area') is-invalid @enderror" name="area" value="{{ $tender->area ?? old('area') }}" autocomplete="area" >
+                                    <input id="squaring" type="text" class="form-control @error('squaring') is-invalid @enderror" name="squaring" value="{{ $tender->squaring ?? old('squaring') }}" autocomplete="squaring" >
 
-                                    @error('area')
+                                    @error('squaring')
                                     <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
@@ -123,12 +123,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="total" class="col-md-4 col-form-label text-md-right">{{ __('Total') }}</label>
+                                <label for="total_with_vat" class="col-md-4 col-form-label text-md-right">{{ __('Total With VAT') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="total" type="number" step=".01" class="form-control @error('total') is-invalid @enderror" name="total" value="{{ $tender->total ?? old('total') }}" autocomplete="total" >
+                                    <input id="total_with_vat" type="number" step=".01" class="form-control @error('total_with_vat') is-invalid @enderror" name="total_with_vat" value="{{ $tender->total_with_vat ?? old('total_with_vat') }}" autocomplete="total_with_vat" >
 
-                                    @error('total')
+                                    @error('total_with_vat')
                                     <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
@@ -181,6 +181,32 @@
                                     <input id="state" type="number" class="form-control @error('state') is-invalid @enderror" name="state" value="{{ $tender->state ?? old('state') }}" autocomplete="state" >
 
                                     @error('state')
+                                    <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="offer_id" class="col-md-4 col-form-label text-md-right">{{ __('Offer') }}</label>
+
+                                <div class="col-md-6">
+                                    <select class="form-control" name="offer_id" id="offer_id" >
+                                        <option value="" disabled selected>{{ __('Select your option') }}</option>
+                                        @foreach($offers as $item)
+                                            <option value="{{ $item->id }}"
+                                                    @if(isset($tender) && $item->id === $tender->offer_id) selected @endif>{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="total" class="col-md-4 col-form-label text-md-right">{{ __('Total') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="total" type="number" step=".01" class="form-control @error('total') is-invalid @enderror" name="total" value="{{ $tender->total ?? old('total') }}" autocomplete="total" >
+
+                                    @error('total')
                                     <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>

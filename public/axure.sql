@@ -16,41 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `relations`
---
-
-LOCK TABLES `relations` WRITE;
-/*!40000 ALTER TABLE `relations` DISABLE KEYS */;
-/*!40000 ALTER TABLE `relations` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `table_files`
---
-
-LOCK TABLES `table_files` WRITE;
-/*!40000 ALTER TABLE `table_files` DISABLE KEYS */;
-/*!40000 ALTER TABLE `table_files` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `fields`
 --
 
 LOCK TABLES `fields` WRITE;
 /*!40000 ALTER TABLE `fields` DISABLE KEYS */;
-INSERT INTO `fields` VALUES (1,1,8,NULL,'manager_id','Manager',1,NULL,1,1,'{\"belongsTo\": \"App\\\\User\", \"fieldName\":\"users\", \"fieldToShow\": \"name\"}','2020-09-21 14:02:54','2020-09-21 14:04:04'),(2,1,1,NULL,'address','Address',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(3,1,6,NULL,'version','Version',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(4,1,8,NULL,'profile_id','Profile',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(5,1,1,NULL,'wood','Wood',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(6,1,1,NULL,'color','Color',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(7,1,13,NULL,'area','Area',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(8,1,13,NULL,'meters','Meters',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(10,1,13,NULL,'total','Total',1,NULL,1,1,'{\"parameters\": \"8,2\"}','2020-09-21 14:02:54','2020-09-21 14:04:04'),(11,1,13,NULL,'cost','Cost',1,NULL,1,1,'{\"parameters\": \"8,2\"}','2020-09-21 14:02:54','2020-09-21 14:04:04'),(12,1,13,NULL,'expenses','Expenses',1,NULL,1,1,'{\"parameters\": \"8,2\"}','2020-09-21 14:02:54','2020-09-21 14:04:04'),(14,1,5,NULL,'comments','Comments',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(15,1,6,NULL,'state','State',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54');
+INSERT INTO `fields` VALUES (1,1,8,NULL,'manager_id','Manager',1,NULL,1,1,'{\"belongsTo\": \"App\\\\User\", \"fieldName\":\"managers\", \"fieldToShow\": \"name\"}','2020-09-21 14:02:54','2020-09-21 14:47:21'),(2,1,1,NULL,'delivery_address','Delivery Address',1,'\'\'',1,1,'','2020-09-21 14:02:54','2020-09-21 17:51:13'),(3,1,6,NULL,'version','Version',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(4,1,8,NULL,'profile_id','Profile',1,NULL,1,1,'{\"belongsTo\": \"App\\\\Profile\", \"fieldName\":\"profiles\", \"fieldToShow\": \"name\"}','2020-09-21 14:02:54','2020-09-21 14:48:49'),(5,1,1,NULL,'materials','Materials',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 15:23:11'),(6,1,1,NULL,'colors','Colors',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 15:23:11'),(7,1,1,NULL,'squaring','Squaring',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 17:50:28'),(8,1,13,NULL,'meters','Meters',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(10,1,13,NULL,'total_with_vat','Total With VAT',1,NULL,1,1,'{\"parameters\": \"11,2\"}','2020-09-21 14:02:54','2020-09-21 17:50:28'),(11,1,13,NULL,'cost','Cost',1,NULL,1,1,'{\"parameters\": \"11,2\"}','2020-09-21 14:02:54','2020-09-21 17:50:28'),(12,1,13,NULL,'expenses','Expenses',1,NULL,1,1,'{\"parameters\": \"11,2\"}','2020-09-21 14:02:54','2020-09-21 17:50:28'),(14,1,5,NULL,'comments','Comments',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(15,1,6,NULL,'state','State',1,NULL,1,1,'','2020-09-21 14:02:54','2020-09-21 14:02:54'),(16,1,8,NULL,'offer_id','Offer',1,NULL,1,1,'{\"belongsTo\": \"App\\\\Offer\", \"fieldName\":\"offers\", \"fieldToShow\": \"title\"}','2020-09-21 14:56:38','2020-09-21 14:57:14'),(17,1,13,NULL,'total','Total',1,NULL,1,1,'{\"parameters\": \"11,2\"}','2020-09-21 16:43:40','2020-09-21 17:50:39');
 /*!40000 ALTER TABLE `fields` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `types`
---
-
-LOCK TABLES `types` WRITE;
-/*!40000 ALTER TABLE `types` DISABLE KEYS */;
-INSERT INTO `types` VALUES (1,'string','text',NULL,NULL),(2,'integer','number',NULL,NULL),(3,'boolean','checkbox',NULL,NULL),(4,'dateTime','datetime',NULL,NULL),(5,'text','textarea',NULL,NULL),(6,'unsignedSmallInteger','number',NULL,NULL),(7,'unsignedBigInteger','number',NULL,NULL),(8,'unsignedBigInteger','select',NULL,NULL),(9,'bigInteger','number',NULL,NULL),(10,'char','text',NULL,NULL),(11,'date','date',NULL,NULL),(12,'decimal','number',NULL,NULL),(13,'decimal','decimal',NULL,NULL),(14,'float','number',NULL,NULL),(15,'json','textarea',NULL,NULL),(16,'jsonb','textarea',NULL,NULL),(17,'longText','textarea',NULL,NULL),(18,'smallInteger','number',NULL,NULL),(19,'softDeletes','datetime',NULL,NULL),(20,'string','file',NULL,NULL);
-/*!40000 ALTER TABLE `types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -59,7 +31,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `tables` WRITE;
 /*!40000 ALTER TABLE `tables` DISABLE KEYS */;
-INSERT INTO `tables` VALUES (1,'tenders',NULL,'tender','Tender',1,1,1,1,0,'2020-09-21 14:02:54','2020-09-21 14:02:54');
+INSERT INTO `tables` VALUES (1,'tenders',NULL,'tender','Tender',1,1,1,1,0,'2020-09-21 14:02:54','2020-09-21 14:57:37');
 /*!40000 ALTER TABLE `tables` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-21 20:42:01
+-- Dump completed on 2020-09-21 23:52:59

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Offer;
 use App\Tender;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -27,7 +29,7 @@ class TenderController extends Controller
      */
     public function create()
     {
-        return view('tender.create',['users' => \App\User::all()]);
+        return view('tender.create',['managers' => \App\User::all(),'profiles' => \App\Profile::all(),'offers' => \App\Offer::all()]);
     }
 
     /**
@@ -50,7 +52,7 @@ class TenderController extends Controller
      */
     public function show($id)
     {
-        return view('tender.index', ['tenders' => Tender::where('id', $id)->paginate(),'users' => \App\User::all()]);
+        return view('tender.index', ['tenders' => Tender::where('id', $id)->paginate(),'managers' => \App\User::all(),'profiles' => \App\Profile::all(),'offers' => \App\Offer::all()]);
     }
 
     /**
@@ -61,7 +63,7 @@ class TenderController extends Controller
      */
     public function edit(Tender $tender)
     {
-        return view ('tender.create' , ['tender' => $tender,'users' => \App\User::all()]);
+        return view ('tender.create' , ['tender' => $tender,'managers' => \App\User::all(),'profiles' => \App\Profile::all(),'offers' => \App\Offer::all()]);
     }
 
     /**
@@ -102,5 +104,38 @@ class TenderController extends Controller
         } else {
             return $data->take(10)->get();
         }
+    }
+
+    public function makeVersion($offer_id)
+    {
+        $offer = Offer::with('positions')->findOrFail($offer_id);
+        $this->makeNewTender($offer);
+    }
+
+    public function makeNewTender(Offer $offer)
+    {
+        if(empty($offer->manager_id)) throw new Exception('Manager not defined');
+        if(empty($offer->profile_id)) throw new Exception('Profile not defined');
+
+        if(empty($offer->positions)) throw new Exception('Empty items count');
+
+        $tender = Tender::create([
+            'offer_id' => $offer->id,
+            'manager_id' => (int)$offer->manager_id,
+            'delivery_address' => $offer->delivery_address ?? '',
+            'version' => ++$offer->version,
+            'profile_id' => $offer->profile_id ?? null,
+            'materials' => $offer->materials ?? '',
+            'colors' => $offer->colors ?? '',
+            'squaring' => $offer->squaring ?? '',
+            'total' => $offer->total,
+            'total_with_vat' => $offer->total_with_vat,
+            'cost' => $offer->cost,
+            'expenses' => $offer->expenses,
+            'comments' => $offer->comments,
+            'state_id' => $offer->state_id,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
     }
 }

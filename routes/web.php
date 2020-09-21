@@ -93,6 +93,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('offer/get/{id}', 'OfferController@getData')->name('offer.get.data');
     Route::get('offer/print/{id}', 'OfferController@print')->name('offer.print');
     Route::get('offer/preview/{id}', 'OfferController@preview')->name('offer.preview');
+    Route::get('tender/{id}/make', 'TenderController@makeVersion')->name('tender.make');
 
     Route::post('company/find/', 'CompanyController@find')->name('company.find');
     Route::get('company/find/{string}', 'CompanyController@find')->name('company.find.get');
