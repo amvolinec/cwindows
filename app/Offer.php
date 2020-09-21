@@ -232,25 +232,25 @@ class Offer extends Model
 
         foreach ( $skaicius as $i => $tripletas ) {
 
-            if ( $tripletas{0} > 0 ) {
-                $zodziais[] = $vienetai[ $tripletas{0} ];
-                $zodziais[] = ( $tripletas{0} > 1 ) ? 'šimtai' : 'šimtas';
+            if ( $tripletas[0] > 0 ) {
+                $zodziais[] = $vienetai[ $tripletas[0] ];
+                $zodziais[] = ( $tripletas[0] > 1 ) ? 'šimtai' : 'šimtas';
             }
 
             $du = substr( $tripletas, 1 );
 
             if ( $du > 10 && $du < 20 ) {
-                $zodziais[] = $niolikai[ $du{1} ];
+                $zodziais[] = $niolikai[ $du[1] ];
                 $linksnis = 2;
             } else {
 
-                if ( $du{0} > 0 ) {
-                    $zodziais[] = $desimtys[ $du{0} ];
+                if ( $du[0] > 0 ) {
+                    $zodziais[] = $desimtys[ $du[0] ];
                 }
 
-                if ( $du{1} > 0 ) {
-                    $zodziais[] = $vienetai[ $du{1} ];
-                    $linksnis = ( $du{1} > 1 ) ? 1 : 0;
+                if ( $du[1] > 0 ) {
+                    $zodziais[] = $vienetai[ $du[1] ];
+                    $linksnis = ( $du[1] > 1 ) ? 1 : 0;
                 } else {
                     $linksnis = 2;
                 }

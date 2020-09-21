@@ -19,6 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::resource('tender', 'TenderController');
+    Route::post('tender/find/', 'TenderController@find')->name('tender.find');
+    Route::get('tender/find/{string}', 'TenderController@find')->name('tender.find.get');
     Route::resource('transaction', 'TransactionController');
     Route::post('transaction/find/', 'TransactionController@find')->name('transaction.find');
     Route::get('transaction/find/{string}', 'TransactionController@find')->name('transaction.find.get');
