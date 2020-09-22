@@ -37,9 +37,10 @@ class CreateOffersTable extends Migration
 			$table->unsignedBigInteger('client_id')->nullable()->index();
 			$table->unsignedBigInteger('architect_id')->nullable()->index();
 			$table->date('inquiry_date')->nullable();
-			$table->date('planed_date')->nullable();
+			$table->date('contract_date')->nullable();
 			$table->string('number')->nullable();
 			$table->string('order_number')->nullable();
+            $table->string('contract_number')->nullable();
 			$table->string('title')->nullable();
 			$table->string('pv')->nullable();
 			$table->unsignedSmallInteger('state_id')->nullable()->index();
@@ -47,7 +48,6 @@ class CreateOffersTable extends Migration
 			$table->string('pipeline')->nullable();
 			$table->string('enquiry_channel')->nullable();
 			$table->string('klaes')->nullable();
-			$table->date('contract_date')->nullable();
 			$table->string('contract_nr')->nullable();
 			$table->decimal('cost',11, 2)->default(0);
 			$table->decimal('total',11, 2)->default(0);

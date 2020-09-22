@@ -27,6 +27,7 @@ class OfferRequest extends FormRequest
             'inquiry_date' => ['required', 'date'],
             'client_id' => ['required', 'exists:clients,id'],
             'profile_id' => ['required', 'exists:profiles,id'],
+            'manager_id' => ['required', 'exists:users,id'],
         ];
     }
 

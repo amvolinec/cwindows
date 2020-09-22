@@ -162,13 +162,6 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="planed_date">Planned date of sale</label>
-                    <datetime id="planed_date" v-model="offer.planed_date" type="date"
-                              input-class="form-control" format="yyyy-MM-dd" value-zone="UTC+3"
-                              @change="changeFormat(offer.planed_date)"></datetime>
-                </div>
-
-                <div class="form-group row">
                     <label class="col-md-4 text-right col-form-label" for="project_amount">Planned amount</label>
                     <input id="project_amount" type="text" class="form-control col-md-8" name="project_amount"
                            v-model="offer.project_amount">
@@ -409,7 +402,6 @@ export default {
             this.message = '';
             this.errors = null;
             this.offer.inquiry_date = this.offer.inquiry_date.substr(0, 10);
-            this.offer.planed_date = this.offer.planed_date.substr(0, 10);
             this.file = this.$refs.file.files[0];
 
             let formData = new FormData();

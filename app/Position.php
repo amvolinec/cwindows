@@ -45,4 +45,10 @@ class Position extends Model
     {
         return $this->belongsTo('App\Offer');
     }
+
+    public function tenders()
+    {
+        return $this->belongsToMany('App\Tender', 'tender_position');
+    }
+
 }

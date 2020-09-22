@@ -35,10 +35,6 @@
                             <td>{{ item.id }}</td>
                         </tr>
                         <tr>
-                            <th>Planned date of sale</th>
-                            <td>{{ item.planed_date }}</td>
-                        </tr>
-                        <tr>
                             <th>Request received</th>
                             <td>
                                 <select :disabled="isDisabled" class="form-control-plaintext"
@@ -125,10 +121,6 @@
                                     <option value="3">Aluminium</option>
                                 </select>
                             </td>
-                        </tr>
-                        <tr v-if="item.planed_date">
-                            <th>Planned date of sale</th>
-                            <td>{{ item.planed_date }}</td>
                         </tr>
                         <tr v-if="item.project_amount > 0">
                             <th scope="row">Planned amount</th>
@@ -259,7 +251,37 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6"></div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="panel-info">
+                        <div class="d-inline-flex">
+                            <h5><i class="far fa-file"></i> Offers (Tenders)</h5>
+                            <div class="d-inline-flex">
+                                <button class="btn btn-sm btn-outline-secondary" @click="newTender(item.id)">
+                                    <i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <ul class="i-list mb-2" v-for="tender in item.tenders">
+                        <li>
+                            <div class="i-line">
+                                <div class="float-left">
+                                    {{ tender.created_at }} v{{ tender.version }}
+                                </div>
+                                <div class="float-right">
+                                    {{ $root.format(tender.total_with_vat) }}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <deals-popup ref="popup"></deals-popup>
         <positions-popup string="item"></positions-popup>
         <nope-popup ref="nope"></nope-popup>
@@ -354,6 +376,15 @@ export default {
         }, newTransaction(id) {
             this.$root.$emit('createNewTransaction', id);
             this.$root.$data.newTransaction = true;
+        }, newTender(id){
+            axios.get('/tender/'+ id +'/make', this.item).then(response => {
+                if (response.data.status === 'error') {
+                    this.message = response.data.message;
+                }
+                this.fetchItems();
+            }).catch((error) => {
+                this.$root.fetchError(error);
+            });
         }
     }
 }

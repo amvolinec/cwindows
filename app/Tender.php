@@ -25,5 +25,13 @@ class Tender extends Model
         return $this->belongsTo('App\Offer');
     }
 
-	//
+    public function positions()
+    {
+        return $this->belongsToMany('App\Position', 'tender_position');
+    }
+
+    public function files()
+    {
+        return $this->belongsToMany('App\File','tender_file');
+    }
 }

@@ -16,6 +16,6 @@ class BalanceHelper
             $balance += $transaction->amount;
         }
         $offer->balance = $balance - $offer->total;
-        return $balance - $offer->total;
+        return $balance - $offer->total_with_vat;
     }
 }

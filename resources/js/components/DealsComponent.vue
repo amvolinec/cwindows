@@ -17,7 +17,6 @@
                         <tr>
                             <th scope="col">#ID</th>
                             <th scope="col">Inquiry Date</th>
-                            <th scope="col">Date Planed</th>
                             <th scope="col">Company</th>
                             <th scope="col">Contact</th>
                             <th scope="col">Offer Number</th>
@@ -46,6 +45,7 @@
                             <th scope="col">Updated By</th>
                             <th scope="col">Version</th>
                             <th scope="col">Probability %</th>
+                            <th scope="col">Contract Date</th>
                             <th scope="col">Stage</th>
                             <th scope="col" width="200">Description</th>
                             <th scope="col">Files</th>
@@ -56,7 +56,6 @@
                         <tr class="group-line" v-for="item in items">
                             <th scope="row">{{ item.id }}</th>
                             <td scope="row">{{ item.inquiry_date }}</td>
-                            <td scope="row">{{ item.planed_date }}</td>
                             <td>
                                 {{ item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : '' }}
                             </td>
@@ -95,6 +94,7 @@
                             <td>{{ item.editor.name }}</td>
                             <td>{{ item.version }}</td>
                             <td>{{ item.chance }}</td>
+                            <td scope="row">{{ item.contract_date }}</td>
                             <td>
                                 <div class="stage " v-bind:class="item.state.class">
                                     {{ item.state !== null && (typeof item.state.name !== undefined) ? item.state.name : '' }}

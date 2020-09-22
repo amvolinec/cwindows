@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Offer;
+use App\Position;
 use App\Tender;
+use App\Traits\TenderTrait;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,6 +13,7 @@ use Illuminate\View\View;
 
 class TenderController extends Controller
 {
+    use TenderTrait;
     /**
      * Display a listing of the resource.
      *
@@ -29,13 +32,13 @@ class TenderController extends Controller
      */
     public function create()
     {
-        return view('tender.create',['managers' => \App\User::all(),'profiles' => \App\Profile::all(),'offers' => \App\Offer::all()]);
+        return view('tender.create', ['managers' => \App\User::all(), 'profiles' => \App\Profile::all(), 'offers' => \App\Offer::all()]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return RedirectResponse
      */
     public function store(Request $request)
@@ -52,25 +55,25 @@ class TenderController extends Controller
      */
     public function show($id)
     {
-        return view('tender.index', ['tenders' => Tender::where('id', $id)->paginate(),'managers' => \App\User::all(),'profiles' => \App\Profile::all(),'offers' => \App\Offer::all()]);
+        return view('tender.index', ['tenders' => Tender::where('id', $id)->paginate(), 'managers' => \App\User::all(), 'profiles' => \App\Profile::all(), 'offers' => \App\Offer::all()]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Tender  $tender
+     * @param Tender $tender
      * @return View
      */
     public function edit(Tender $tender)
     {
-        return view ('tender.create' , ['tender' => $tender,'managers' => \App\User::all(),'profiles' => \App\Profile::all(),'offers' => \App\Offer::all()]);
+        return view('tender.create', ['tender' => $tender, 'managers' => \App\User::all(), 'profiles' => \App\Profile::all(), 'offers' => \App\Offer::all()]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  Tender  $tender
+     * @param Request $request
+     * @param Tender $tender
      * @return RedirectResponse
      */
     public function update(Request $request, Tender $tender)
@@ -82,7 +85,7 @@ class TenderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Tender  $tender
+     * @param Tender $tender
      * @return RedirectResponse
      */
     public function destroy(Tender $tender)
@@ -95,47 +98,13 @@ class TenderController extends Controller
     {
         $string = $search ?? $request->get('string');
 
-        $data = Tender::where('name', 'like', '%' . $string . '%')
-            // ->orWhere('title', 'like', '%' . $string . '%')
-            ;
+        $data = Tender::where('name', 'like', '%' . $string . '%')// ->orWhere('title', 'like', '%' . $string . '%')
+        ;
 
         if ($search !== false && !empty($search)) {
             return view('tender.index', ['tenders' => $data->paginate(20), 'search' => $string]);
         } else {
             return $data->take(10)->get();
         }
-    }
-
-    public function makeVersion($offer_id)
-    {
-        $offer = Offer::with('positions')->findOrFail($offer_id);
-        $this->makeNewTender($offer);
-    }
-
-    public function makeNewTender(Offer $offer)
-    {
-        if(empty($offer->manager_id)) throw new Exception('Manager not defined');
-        if(empty($offer->profile_id)) throw new Exception('Profile not defined');
-
-        if(empty($offer->positions)) throw new Exception('Empty items count');
-
-        $tender = Tender::create([
-            'offer_id' => $offer->id,
-            'manager_id' => (int)$offer->manager_id,
-            'delivery_address' => $offer->delivery_address ?? '',
-            'version' => ++$offer->version,
-            'profile_id' => $offer->profile_id ?? null,
-            'materials' => $offer->materials ?? '',
-            'colors' => $offer->colors ?? '',
-            'squaring' => $offer->squaring ?? '',
-            'total' => $offer->total,
-            'total_with_vat' => $offer->total_with_vat,
-            'cost' => $offer->cost,
-            'expenses' => $offer->expenses,
-            'comments' => $offer->comments,
-            'state_id' => $offer->state_id,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
     }
 }

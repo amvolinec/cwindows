@@ -118,7 +118,7 @@
                     <button class="btn btn-outline-secondary" type="button" @click="printOffer"
                             v-if="typeof items[0].offer_id !== 'undefined'">
                         <i class="fas fa-file-pdf"></i>
-                        Print
+                        Make Tender
                     </button>
                     <button class="btn btn-outline-secondary" type="button" @click="previewOffer"
                             v-if="typeof items[0].offer_id !== 'undefined'">
@@ -282,6 +282,7 @@ export default {
                     return;
                 }
                 window.open('/documents/' + response.data.file_name);
+                this.closePopup();
             }).catch((error) => {
                 this.$root.fetchError(error);
             });

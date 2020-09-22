@@ -15,7 +15,7 @@ class Offer extends Model
         "client_id",
         "architect_id",
         "inquiry_date",
-        "planed_date",
+        "contract_date",
         "number",
         "order_number",
         "title",
@@ -26,7 +26,7 @@ class Offer extends Model
         "pipeline",
         "enquiry_channel",
         "klaes",
-        "contract_date",
+        "expenses",
         "contract_nr",
         "total",
         "total_with_vat",
@@ -60,7 +60,7 @@ class Offer extends Model
         "client_id",
         "architect_id",
         "inquiry_date",
-        "planed_date",
+        "contract_date",
         "number",
         "order_number",
         "title",
@@ -71,7 +71,7 @@ class Offer extends Model
         "pipeline",
         "enquiry_channel",
         "klaes",
-        "contract_date",
+        "expenses",
         "contract_nr",
         "total",
         "total_with_vat",
@@ -173,17 +173,31 @@ class Offer extends Model
         return $this->hasMany('App\File');
     }
 
+    public function tenders(){
+        return $this->hasMany('App\Tender');
+    }
+
+    public function getPositionsIdsAttribute()
+    {
+        return $this->positions->pluck('id');
+    }
+
+    public function getFilesIdsAttribute()
+    {
+        return $this->files->pluck('id');
+    }
+
     public function setInquiryDateAttribute($value){
         $this->attributes['inquiry_date'] = empty($value) ? null : substr($value, 0, 10);
     }
 
     public function setPlanedDateAttribute($value){
-        $this->attributes['planed_date'] = empty($value) ? null : substr($value, 0, 10);
+        $this->attributes['contract_date'] = empty($value) ? null : substr($value, 0, 10);
     }
 
     public function setContractDateAttribute($value)
     {
-        $this->attributes['contract_date'] = empty($value) ? null : substr($value, 0, 10);
+        $this->attributes['expenses'] = empty($value) ? null : substr($value, 0, 10);
     }
 
     public function setDeliveryDateAttribute($value)

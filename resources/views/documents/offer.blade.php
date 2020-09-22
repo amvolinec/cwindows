@@ -56,7 +56,7 @@
                     A.S. Nr.:: {{ $settings->address }}
                 </td>
                 <td class="paragraph">
-                    <strong>Pristatymo data:</strong> {{ $offer->planed_date }}
+                    <strong>Pristatymo data:</strong> {{ $offer->contract_date }}
                 </td>
             </tr>
             </tbody>

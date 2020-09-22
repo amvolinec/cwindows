@@ -13,6 +13,7 @@ use App\Position;
 
 use App\Setting;
 use App\State;
+use App\Traits\TenderTrait;
 use App\TransactionType;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\RedirectResponse;
@@ -25,6 +26,7 @@ use Illuminate\View\View;
 
 class OfferController extends Controller
 {
+    use TenderTrait;
     /**
      * Display a listing of the resource.
      *
@@ -38,13 +40,13 @@ class OfferController extends Controller
 
     public function get()
     {
-        return Offer::with(['client', 'architect', 'company', 'state', 'user','positions', 'manager', 'files', 'color', 'material', 'editor', 'maintenance'])->whereNotNull('inquiry_date')->get();
+        return Offer::with(['client', 'architect', 'company', 'state', 'user','positions', 'manager', 'files', 'color', 'material', 'editor', 'maintenance', 'tenders'])->whereNotNull('inquiry_date')->get();
     }
 
     public function getData($id)
     {
         return [
-            'offer' => Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user', 'files', 'manager', 'color', 'material', 'editor', 'maintenance', 'transactions'])
+            'offer' => Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user', 'files', 'manager', 'color', 'material', 'editor', 'maintenance', 'transactions', 'tenders'])
                 ->findOrFail($id),
             'states' => State::all(),
             'types' => TransactionType::all()
@@ -321,8 +323,9 @@ class OfferController extends Controller
             'file_uri' => 'documents/' . $fileName
         ]);
 
-        $offer->version++;
         $offer->save();
+
+        $this->makeVersion($offer->id);
 
         return ['status' => 'success', 'file_name' => $fileName];
     }

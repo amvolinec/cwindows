@@ -141,12 +141,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="contract_date" class="col-md-4 col-form-label text-md-right">{{ __('Contract Date') }}</label>
+                                <label for="expenses" class="col-md-4 col-form-label text-md-right">{{ __('Contract Date') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="contract_date" type="date" class="form-control @error('contract_date') is-invalid @enderror" name="contract_date" value="{{ $offer->contract_date ??  old('contract_date') }}" autocomplete="contract_date" >
+                                    <input id="expenses" type="date" class="form-control @error('expenses') is-invalid @enderror" name="expenses" value="{{ $offer->expenses ??  old('expenses') }}" autocomplete="expenses" >
 
-                                    @error('contract_date')
+                                    @error('expenses')
                                     <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
