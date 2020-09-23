@@ -34,8 +34,7 @@ trait TenderTrait
             'total_with_vat' => $offer->total_with_vat,
             'cost' => $offer->cost,
             'expenses' => $offer->expenses,
-            'comments' => $offer->comments,
-            'state_id' => $offer->state_id,
+            'comment' => $offer->comment,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
@@ -62,7 +61,9 @@ trait TenderTrait
             $file->offer_id = null;
             $file->save();
         }
-        ++$offer->version;
+
+        $offer->version = 1 + (int)Tender::where('offer_id','=', $offer->id)->max('version');
+
         $offer->save();
     }
 }

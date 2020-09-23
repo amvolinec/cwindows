@@ -30,8 +30,18 @@ class Tender extends Model
         return $this->belongsToMany('App\Position', 'tender_position');
     }
 
+    public function getPositionsIdsAttribute()
+    {
+        return $this->positions->pluck('id');
+    }
+
     public function files()
     {
         return $this->belongsToMany('App\File','tender_file');
+    }
+
+    public function getFilesIdsAttribute()
+    {
+        return $this->files->pluck('id');
     }
 }

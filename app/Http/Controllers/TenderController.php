@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Offer;
-use App\Position;
 use App\Tender;
+use App\Traits\OfferTrait;
 use App\Traits\TenderTrait;
-use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -14,6 +13,8 @@ use Illuminate\View\View;
 class TenderController extends Controller
 {
     use TenderTrait;
+    use OfferTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -97,14 +98,20 @@ class TenderController extends Controller
     public function find(Request $request, $search = false)
     {
         $string = $search ?? $request->get('string');
-
-        $data = Tender::where('name', 'like', '%' . $string . '%')// ->orWhere('title', 'like', '%' . $string . '%')
-        ;
+        $data = Tender::where('name', 'like', '%' . $string . '%');
 
         if ($search !== false && !empty($search)) {
             return view('tender.index', ['tenders' => $data->paginate(20), 'search' => $string]);
         } else {
             return $data->take(10)->get();
         }
+    }
+
+    public function set($id)
+    {
+        $tender = Tender::with('positions', 'files')->findOrFail($id);
+        $offer = Offer::with('positions', 'files')->findOrFail($tender->offer_id);
+
+        return $this->setVersion($offer, $tender);
     }
 }

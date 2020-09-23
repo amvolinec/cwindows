@@ -30,7 +30,7 @@ class CreateTendersTable extends Migration
 			$table->decimal('total_with_vat',11,2)->nullable();
 			$table->decimal('cost',11,2)->nullable();
 			$table->decimal('expenses',11,2)->nullable();
-			$table->text('comments')->nullable();
+			$table->text('comment')->nullable();
 			$table->unsignedSmallInteger('state')->nullable();
 			$table->unsignedBigInteger('offer_id')->nullable();
 			$table->foreign('offer_id')->references('id')->on('offers')->onDelete('set null');

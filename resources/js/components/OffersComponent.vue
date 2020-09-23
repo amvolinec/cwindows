@@ -35,6 +35,10 @@
                             <td>{{ item.id }}</td>
                         </tr>
                         <tr>
+                            <th>Version#</th>
+                            <td>{{ item.version }}</td>
+                        </tr>
+                        <tr>
                             <th>Request received</th>
                             <td>
                                 <select :disabled="isDisabled" class="form-control-plaintext"
@@ -274,6 +278,8 @@
                                 </div>
                                 <div class="float-right">
                                     {{ $root.format(tender.total_with_vat) }}
+                                    <button class="btn btn-sm btn-outline-secondary" @click="setTender(tender.id)">
+                                        <i class="fas fa-check"></i></button>
                                 </div>
                             </div>
                         </li>
@@ -376,8 +382,17 @@ export default {
         }, newTransaction(id) {
             this.$root.$emit('createNewTransaction', id);
             this.$root.$data.newTransaction = true;
-        }, newTender(id){
-            axios.get('/tender/'+ id +'/make', this.item).then(response => {
+        }, newTender(id) {
+            axios.get('/tender/' + id + '/make', this.item).then(response => {
+                if (response.data.status === 'error') {
+                    this.message = response.data.message;
+                }
+                this.fetchItems();
+            }).catch((error) => {
+                this.$root.fetchError(error);
+            });
+        }, setTender(id) {
+            axios.get('/tender/' + id + '/set', this.item).then(response => {
                 if (response.data.status === 'error') {
                     this.message = response.data.message;
                 }
