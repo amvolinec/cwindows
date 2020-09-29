@@ -13,6 +13,7 @@ use App\Position;
 
 use App\Setting;
 use App\State;
+use App\Tender;
 use App\Traits\TenderTrait;
 use App\TransactionType;
 use Barryvdh\DomPDF\PDF;
@@ -296,6 +297,8 @@ class OfferController extends Controller
 
     public function print($id) {
         $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $id)->get()->first();
+        $offer->version = 1 + (int)Tender::where('offer_id','=', $offer->id)->max('version');
+        
         $positions = Position::where('offer_id', $id)->get();
 
         if(empty($positions)){

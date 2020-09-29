@@ -62,7 +62,7 @@ trait TenderTrait
             $file->save();
         }
 
-        $offer->version = 1 + (int)Tender::where('offer_id','=', $offer->id)->max('version');
+//        $offer->version = 1 + (int)Tender::where('offer_id','=', $offer->id)->max('version');
 
         $offer->save();
     }
