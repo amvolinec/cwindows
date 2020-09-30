@@ -50,7 +50,8 @@ class OfferController extends Controller
             'offer' => Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user', 'files', 'manager', 'color', 'material', 'editor', 'maintenance', 'transactions', 'tenders'])
                 ->findOrFail($id),
             'states' => State::all(),
-            'types' => TransactionType::all()
+            'types' => TransactionType::all(),
+            'tenders' => Tender::with('positions', 'files')->where('offer_id','=', $id)->get()
         ];
 
     }
@@ -298,7 +299,7 @@ class OfferController extends Controller
     public function print($id) {
         $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $id)->get()->first();
         $offer->version = 1 + (int)Tender::where('offer_id','=', $offer->id)->max('version');
-        
+
         $positions = Position::where('offer_id', $id)->get();
 
         if(empty($positions)){
@@ -320,15 +321,14 @@ class OfferController extends Controller
             'button' => false
         ])->save($filePath)->stream($fileName);
 
-        File::create([
-            'offer_id' => $offer->id,
+        $file = File::create([
             'file_name' => $fileName,
             'file_uri' => 'documents/' . $fileName
         ]);
 
         $offer->save();
 
-        $this->makeVersion($offer->id);
+        $this->makeVersion($offer->id, $file);
 
         return ['status' => 'success', 'file_name' => $fileName];
     }

@@ -226,7 +226,7 @@
                 </div>
             </div>
 
-            <div class="card mt-2">
+            <div class="card mt-2" v-if="item.state_id >= 5">
                 <div class="card-body">
                     <div class="panel-info">
                         <div class="d-inline-flex">
@@ -263,27 +263,46 @@
                         <div class="d-inline-flex">
                             <h5><i class="far fa-file"></i> Offers (Tenders)</h5>
                             <div class="d-inline-flex">
-                                <button class="btn btn-sm btn-outline-secondary" @click="newTender(item.id)">
+                                <button v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary" @click="newTender(item.id)">
                                     <i class="fas fa-plus"></i></button>
                             </div>
                         </div>
 
                     </div>
 
-                    <ul class="i-list mb-2" v-for="tender in item.tenders">
+                    <ul class="i-list mb-2" v-for="tender in tenders">
                         <li>
-                            <div class="i-line">
-                                <div class="float-left">
-                                    {{ tender.created_at }} v{{ tender.version }}
+                            <div class="t-i-line">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="float-left">{{ tender.created_at }} v{{ tender.version }}</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="float-right">
+                                            {{ $root.format(tender.total_with_vat) }}
+                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
+                                                     @click="setTender(tender.id)"><i class="fas fa-check"></i></button>
+                                            <a v-for="file in tender.files" class="btn btn-sm btn-outline-secondary"
+                                               v-bind:href="'/' + file.file_uri" target="_blank">PDF</a>
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="float-right">
-                                    {{ $root.format(tender.total_with_vat) }}
-                                    <button class="btn btn-sm btn-outline-secondary" @click="setTender(tender.id)">
-                                        <i class="fas fa-check"></i></button>
+                                <div class="tender-item-line" v-for="pos in tender.positions">
+                                    <div class="row small">
+                                        <div class="col-md-4">{{ pos.title }}</div>
+                                        <div class="col-md-4">{{ pos.quantity }} x {{ pos.final_price }}</div>
+                                        <div class="col-md-4"><span class="float-right">{{ pos.total }}</span></div>
+                                    </div>
                                 </div>
                             </div>
                         </li>
                     </ul>
+
+                    <div class="row" v-if="item.state_id < 5">
+                        <div class="col-md-12">
+                            <button class="btn btn-outline-success" @click="createContract">Create Contract</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -307,6 +326,7 @@ export default {
             states: [],
             types: [],
             isDisabled: true,
+            tenders: [],
         }
     },
     mounted() {
@@ -334,6 +354,7 @@ export default {
                 this.states = r.data.states;
                 this.types = r.data.types;
                 this.positions = typeof r.data.offer.positions !== 'undefined' ? r.data.offer.positions : [];
+                this.tenders = typeof r.data.tenders !== 'undefined' ? r.data.tenders : [];
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -400,6 +421,11 @@ export default {
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
+        }, createContract() {
+            this.item.state_id = 5;
+            this.itemSave();
+        }, printTender(tenderId){
+            window.location.href
         }
     }
 }
