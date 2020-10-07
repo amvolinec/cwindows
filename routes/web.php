@@ -19,6 +19,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::resource('currency', 'CurrencyController');
+    Route::post('currency/find/', 'CurrencyController@find')->name('currency.find');
+    Route::get('currency/find/{string}', 'CurrencyController@find')->name('currency.find.get');
+    Route::resource('setting', 'SettingController');
+    Route::post('setting/find/', 'SettingController@find')->name('setting.find');
+    Route::get('setting/find/{string}', 'SettingController@find')->name('setting.find.get');
     Route::resource('tender', 'TenderController');
     Route::post('tender/find/', 'TenderController@find')->name('tender.find');
     Route::get('tender/find/{string}', 'TenderController@find')->name('tender.find.get');
@@ -47,8 +53,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('person', 'PersonController');
     Route::post('person/find/', 'PersonController@find')->name('person.find');
     Route::get('person/find/{string}', 'PersonController@find')->name('person.find.get');
-    Route::get('setting', 'SettingController@edit')->name('setting.edit');
-    Route::put('setting', 'SettingController@update')->name('setting.update');
+//    Route::get('setting', 'SettingController@edit')->name('setting.edit');
+//    Route::put('setting', 'SettingController@update')->name('setting.update');
 
     Route::resource('file', 'FileController');
     Route::post('file/find/', 'FileController@find')->name('file.find');

@@ -180,7 +180,7 @@
                             <th scope="row">Order No.</th>
                             <td>{{ item.order_number }}</td>
                         </tr>
-                        <tr v-if="item.balance">
+                        <tr v-if="item.state_id >= 5">
                             <th scope="row">Balance</th>
                             <td>{{ item.balance }}</td>
                         </tr>

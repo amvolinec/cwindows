@@ -13,9 +13,13 @@ class SettingSeeder extends Seeder
     public function run()
     {
         $data = [
-            'name' => '',
-            'code' => '123456789',
-            'vat_code' => 'EU123456789',
+            'name' => 'AG Bespoke Solutions Ltd',
+            'code' => '12345678',
+            'vat_code' => 'EU12345678',
+            'address' => '214 Essex Road, London n1 3AP',
+            'phone' => '02081507171',
+            'email' => 'info@agbespokesolutions.com',
+            'web' => 'agbespokewindows.com'
         ];
 
         DB::table('settings')->insert($data);

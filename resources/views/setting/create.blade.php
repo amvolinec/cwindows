@@ -14,7 +14,7 @@
                     </div>
                     @endif
 
-                    <form action="{{ isset($setting) ? route('setting.update', $setting->id) : route('setting.store') }}" method="post">
+                    <form action="{{ isset($setting) ? route('setting.update', $setting->id) : route('setting.store') }}" method="post" enctype="multipart/form-data">
                         @method( isset($setting) ? 'put' : 'post')
                         @csrf
 
@@ -109,6 +109,56 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="web" class="col-md-4 col-form-label text-md-right">{{ __('Web') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="web" type="text" class="form-control @error('web') is-invalid @enderror" name="web" value="{{ $setting->web ?? old('web') }}" autocomplete="web" >
+
+                                    @error('web')
+                                    <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="file_name" class="col-md-4 col-form-label text-md-right">{{ __('Logo Name') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="file_name" type="text" class="form-control @error('file_name') is-invalid @enderror" name="file_name" value="{{ $setting->file_name ?? old('file_name') }}" autocomplete="file_name" >
+
+                                    @error('file_name')
+                                    <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4"></div>
+                                <div class="input-group col-md-6">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input"
+                                               id="fileUpload" value="{{ $setting->file_uri ?? old('file_uri') }}"
+                                               aria-describedby="inputGroupFileAddon01" name="file_uri" >
+                                        <label class="custom-file-label" for="fileUpload">{{ __('Logo') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="currency_id" class="col-md-4 col-form-label text-md-right">{{ __('Currency') }}</label>
+
+                                <div class="col-md-6">
+                                    <select class="form-control" name="currency_id" id="currency_id" >
+                                        <option value="" disabled selected>{{ __('Select your option') }}</option>
+                                        @foreach($currencies as $item)
+                                            <option value="{{ $item->id }}"
+                                                    @if(isset($setting) && $item->id === $setting->currency_id) selected @endif>{{ $item->currency }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
 
 
                         <div class="form-group row mt-3">
@@ -129,4 +179,16 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    });
+</script>
 @endsection
