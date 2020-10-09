@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Setting;
 use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create', ['roles' => Role::all()]);
+        return view('user.create', ['roles' => Role::all(), 'settings' => Setting::all()]);
     }
 
     /**
@@ -52,6 +53,11 @@ class UserController extends Controller
             $user->assignRole('user');
         }
 
+        if ($request->has('setting_id') && !empty($request->get('setting_id'))) {
+            $user->setting()->associate((int)$request->get('setting_id'));
+        }
+
+        $user->save();
 
         return redirect()->route('user.index');
     }
@@ -75,7 +81,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('user.create', ['user' => $user, 'roles' => Role::all()]);
+        return view('user.create', ['user' => $user, 'roles' => Role::all(), 'settings' => Setting::all()]);
     }
 
     /**
@@ -96,6 +102,10 @@ class UserController extends Controller
 
         if ($request->has('roles')) {
             $user->syncRoles($request->get('roles'));
+        }
+
+        if ($request->has('setting_id') && !empty($request->get('setting_id'))) {
+            $user->setting()->associate((int)$request->get('setting_id'));
         }
 
         $user->save();

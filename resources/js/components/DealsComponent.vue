@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header" v-if="setting !== null">
                     <div class="d-inline-block" style="vertical-align: top;">
                         <button class="btn btn-success" @click="addDeal"><i class="fas fa-plus"></i></button>
                     </div>
@@ -146,6 +146,7 @@ export default {
             private: ['private', 'company'],
             types: ['Private', 'Apartments', 'Commercial'],
             profiles: ['Wood', 'Wood + Al', 'Aluminium'],
+            setting: []
         }
     },
     created() {
@@ -163,7 +164,8 @@ export default {
         fetchItems() {
             axios.get('/deals').then(response => {
                 if (response.data.length > 0)
-                    this.items = response.data;
+                    this.items = response.data.offers;
+                    this.setting = response.data.setting;
             }).catch((error) => {
                 this.$root.fetchError(error);
             });

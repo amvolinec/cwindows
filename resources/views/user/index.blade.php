@@ -31,6 +31,7 @@
                                 <th scope="col">{{ __("Name") }}</th>
                                 <th scope="col">{{ __("Email") }}</th>
                                 <th scope="col">{{ __("Roles") }}</th>
+                                <th scope="col">{{ __("Company") }}</th>
 
                                 <th scope="col">{{ __('Actions') }}</th>
                             </tr>
@@ -46,7 +47,7 @@
                                             {{ $role->name }}
                                         @endforeach
                                     </td>
-
+                                    <td>{{ $user->setting->name ?? '' }}</td>
                                     <td>
                                         <form class="float-right" action="{{ route('user.destroy', $user->id) }}"
                                               method="post" onsubmit="return confirm('Do you really want to delete?');">

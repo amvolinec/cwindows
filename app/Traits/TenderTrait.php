@@ -54,20 +54,6 @@ trait TenderTrait
 
         $tender->files()->sync($file_id);
 
-
-//        $tender->files()->sync($offer->files_ids);
-//        $files = $offer->files;
-//
-//        foreach ($files as $file) {
-//            $new = $file->replicate();
-//            $new->push();
-//
-//            $file->offer_id = null;
-//            $file->save();
-//        }
-
-//        $offer->version = 1 + (int)Tender::where('offer_id','=', $offer->id)->max('version');
-
         $offer->save();
     }
 }

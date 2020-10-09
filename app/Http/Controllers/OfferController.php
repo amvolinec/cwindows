@@ -16,6 +16,7 @@ use App\State;
 use App\Tender;
 use App\Traits\TenderTrait;
 use App\TransactionType;
+use App\User;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,7 +42,9 @@ class OfferController extends Controller
 
     public function get()
     {
-        return Offer::with(['client', 'architect', 'company', 'state', 'user','positions', 'manager', 'files', 'color', 'material', 'editor', 'maintenance', 'tenders'])->whereNotNull('inquiry_date')->get();
+        $user = User::findOrFail(Auth::user()->id);
+        $offers = Offer::with(['client', 'architect', 'company', 'state', 'user','positions', 'manager', 'files', 'color', 'material', 'editor', 'maintenance', 'tenders'])->whereNotNull('inquiry_date')->get();
+        return ['offers' => $offers, 'setting' => $user->setting];
     }
 
     public function getData($id)

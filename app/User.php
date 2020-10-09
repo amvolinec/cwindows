@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\SettingTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,6 +14,7 @@ class User extends Authenticatable
     use Notifiable;
     use HasRoles;
     use LogsActivity;
+    use SettingTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -51,6 +53,10 @@ class User extends Authenticatable
 
     public function hasOffers(){
         return count($this->offers) > 0;
+    }
+
+    public function setting(){
+        return $this->belongsTo('App\Setting');
     }
 
     /**
