@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Architect;
+use App\Traits\SettingTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ArchitectController extends Controller
 {
+    use SettingTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +41,10 @@ class ArchitectController extends Controller
      */
     public function store(Request $request)
     {
-        Architect::create($request->except('_method', '_token'));
+        $architect = Architect::create($request->except('_method', '_token'));
+        $architect->setting_id = $this->getSettingId();
+        $architect->save();
+
         return redirect()->route('architect.index');
     }
 

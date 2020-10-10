@@ -77,7 +77,11 @@ class OfferController extends Controller
      */
     public function store(Request $request)
     {
-        Offer::create($request->except('_method', '_token'));
+
+        $offers = Offer::create($request->except('_method', '_token'));
+        $offers->setting_id = $this->getSettingId();
+        $offers->save();
+
         return redirect()->route('offer.index');
     }
 

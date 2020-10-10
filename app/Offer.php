@@ -53,6 +53,7 @@ class Offer extends Model
         "materials",
         "squaring",
         "colors",
+        "setting_id",
     ];
 
     protected static $logAttributes = [
@@ -98,6 +99,7 @@ class Offer extends Model
         "materials",
         "squaring",
         "colors",
+        "setting_id",
     ];
 
     private $sources = [
@@ -275,4 +277,9 @@ class Offer extends Model
 
         return implode( ' ', $zodziais );
     }
+
+    public function setting(){
+        return $this->belongsTo('App\Setting');
+    }
+
 }

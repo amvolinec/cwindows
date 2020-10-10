@@ -13,7 +13,7 @@ trait SettingTrait
         if(is_object($auth_user)){
             $user_id = $auth_user->id;
             $user = User::findOrFail($user_id);
-            return $user->setting;
+            return $user->setting->id;
         } else {
             return null;
         }

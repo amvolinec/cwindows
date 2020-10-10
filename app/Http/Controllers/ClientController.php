@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\Company;
 use App\Http\Requests\ClientRequest;
+use App\Traits\SettingTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ClientController extends Controller
 {
+    use SettingTrait;
     /**
      * Display a listing of the resource.
      *
@@ -40,8 +42,12 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        Client::create($request->except('_method', '_token'));
+        $client = Client::create($request->except('_method', '_token'));
+        $client->setting_id = $this->getSettingId();
+        $client->save();
+
         return redirect()->route('client.index');
+
     }
 
     /**

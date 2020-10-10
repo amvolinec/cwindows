@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NameRequest;
 use App\Maintenance;
+use App\Traits\SettingTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +13,7 @@ use Illuminate\View\View;
 
 class MaintenanceController extends Controller
 {
-
+    use SettingTrait;
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +43,10 @@ class MaintenanceController extends Controller
      */
     public function store(NameRequest $request)
     {
-        Maintenance::create($request->except('_method', '_token'));
+        $maintenances = Maintenance::create($request->except('_method', '_token'));
+        $maintenances ->setting_id = $this->getSettingId();
+        $maintenances ->save();
+
         return redirect()->route('maintenance.index');
     }
 

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Traits\SettingTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CompanyController extends Controller
 {
+    use SettingTrait;
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +40,11 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        Company::create($request->except('_method', '_token'));
+        $companies = Company::create($request->except('_method', '_token'));
+        $companies->setting_id = $this->getSettingId();
+        $companies->save();
+
+
         return redirect()->route('company.index');
     }
 

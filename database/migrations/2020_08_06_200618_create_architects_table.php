@@ -20,6 +20,7 @@ class CreateArchitectsTable extends Migration
 			$table->string('email')->nullable();
 			$table->string('company')->nullable();
 
+
             $table->timestamps();
         });
     }
