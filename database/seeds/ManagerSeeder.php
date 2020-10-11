@@ -20,6 +20,7 @@ class ManagerSeeder extends Seeder
             'name' => 'Test Manager',
             'email' => 'manager@example.com',
             'password' => Hash::make('adminas2020'),
+            'setting_id' => 1
         ]);
 
         $user->assignRole($role_manager);

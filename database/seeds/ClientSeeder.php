@@ -13,7 +13,7 @@ class ClientSeeder extends Seeder
     public function run()
     {
         $data = [
-            'name' => 'Alfredas Ivanauskas', 'phone' => '44551236546'
+            'name' => 'Alfredas Ivanauskas', 'phone' => '44551236546', 'setting_id' => 1
         ];
 
         DB::table('clients')->insert($data);
