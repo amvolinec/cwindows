@@ -94,14 +94,15 @@ class StateController extends Controller
         return redirect()->route('state.index');
     }
 
-    public function getStates(){
+    public function getStates(Request $request){
+        $setting_id = $request->user()->setting_id;
         return [
             'states' => State::all(),
-            'users' => User::all(),
-            'user_id' => Auth::id(),
-            'managers' => User::role('manager')->get(),
-            'maintenances' => Maintenance::all(),
-            'architects' => Architect::all(),
+            'users' => User::where('setting_id', $setting_id)->get(),
+            'user_id' => $request->user()->id,
+            'managers' => User::where('setting_id', $setting_id)->role('manager')->get(),
+            'maintenances' => Maintenance::where('setting_id', $setting_id)->get(),
+            'architects' => Architect::where('setting_id', $setting_id)->get(),
             ];
     }
 }

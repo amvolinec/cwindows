@@ -17411,3 +17411,7 @@ ul.i-list li {
   margin-bottom: 0.25rem;
 }
 
+.img-thumbnail.preview {
+  max-width: 120px;
+}
+

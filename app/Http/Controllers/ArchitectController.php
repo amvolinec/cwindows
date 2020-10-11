@@ -15,11 +15,12 @@ class ArchitectController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $architects = Architect::all();
+        $architects = Architect::where('setting_id', $request->user()->setting_id)->get();
         return view('architect.index', ['architects' => $architects]);
     }
 
@@ -42,7 +43,7 @@ class ArchitectController extends Controller
     public function store(Request $request)
     {
         $architect = Architect::create($request->except('_method', '_token'));
-        $architect->setting_id = $this->getSettingId();
+        $architect->setting_id = $request->user()->setting_id;
         $architect->save();
 
         return redirect()->route('architect.index');

@@ -96,21 +96,25 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="setting_id"
-                                       class="col-md-4 col-form-label text-md-right">{{ __('Company') }}</label>
+                            @if($current_user->hasRole('super-admin'))
+                                <div class="form-group row">
+                                    <label for="setting_id"
+                                           class="col-md-4 col-form-label text-md-right">{{ __('Company') }}</label>
 
-                                <div class="col-md-6">
-                                    <select class="form-control" name="setting_id" id="setting_id">
-                                        <option value="" disabled selected>{{ __('Select your option') }}</option>
-                                        @foreach($settings as $item)
-                                            <option value="{{ $item->id }}"
-                                                    @if(isset($user) && $item->id === $user->setting_id) selected @endif>
-                                                {{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="col-md-6">
+                                        <select class="form-control" name="setting_id" id="setting_id">
+                                            <option value="" disabled selected>{{ __('Select your option') }}</option>
+                                            @foreach($settings as $item)
+                                                <option value="{{ $item->id }}"
+                                                        @if(isset($user) && $item->id === $user->setting_id) selected @endif>
+                                                    {{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            @else
+                                <input type="hidden" name="setting_id" value="{{ $current_user->setting_id }}">
+                            @endif
 
                             <div class="form-group row mt-3">
                                 <div class="col-md-4"></div>

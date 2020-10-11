@@ -14,6 +14,7 @@ use App\Position;
 use App\Setting;
 use App\State;
 use App\Tender;
+use App\Traits\SettingTrait;
 use App\Traits\TenderTrait;
 use App\TransactionType;
 use App\User;
@@ -25,32 +26,62 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use NumberFormatter;
 
 class OfferController extends Controller
 {
     use TenderTrait;
+    use SettingTrait;
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $offers = Offer::whereNotNull('inquiry_date')->get();
+        $offers = Offer::whereNotNull('inquiry_date')->where('setting_id', $request->user()->setting_id)->get();
         return view('offer.index', ['offers' => $offers]);
     }
 
-    public function get()
+    public function get(Request $request)
     {
-        $user = User::findOrFail(Auth::user()->id);
-        $offers = Offer::with(['client', 'architect', 'company', 'state', 'user','positions', 'manager', 'files', 'color', 'material', 'editor', 'maintenance', 'tenders'])->whereNotNull('inquiry_date')->get();
-        return ['offers' => $offers, 'setting' => $user->setting];
+        return Offer::with(
+                'client',
+                'architect',
+                'company',
+                'state',
+                'user',
+                'positions',
+                'manager',
+                'files',
+                'color',
+                'material',
+                'editor',
+                'maintenance',
+                'tenders'
+            )->whereNotNull('inquiry_date')->where('setting_id', $request->user()->setting_id)->get();
     }
 
     public function getData($id)
     {
         return [
-            'offer' => Offer::with(['client', 'architect', 'company', 'state', 'positions', 'user', 'files', 'manager', 'color', 'material', 'editor', 'maintenance', 'transactions', 'tenders'])
+            'offer' => Offer::with([
+                'client',
+                'architect',
+                'company',
+                'state',
+                'positions',
+                'user',
+                'files',
+                'manager',
+                'color',
+                'material',
+                'editor',
+                'maintenance',
+                'transactions',
+                'tenders'])
                 ->findOrFail($id),
             'states' => State::all(),
             'types' => TransactionType::all(),
@@ -79,7 +110,7 @@ class OfferController extends Controller
     {
 
         $offers = Offer::create($request->except('_method', '_token'));
-        $offers->setting_id = $this->getSettingId();
+        $offers->setting_id = $request->user()->setting_id;
         $offers->save();
 
         return redirect()->route('offer.index');
@@ -153,6 +184,7 @@ class OfferController extends Controller
             $offer->company_id = (int)$request->get('company_id');
         } else if ($request->has('company_name') && !empty($request->get('company_name'))) {
             $company = Company::create(['name' => $request->get('company_name')]);
+            $company->setting_id = $request->user()->setting_id;
             $offer->company_id = $company->id;
         } else {
             $company = null;
@@ -162,6 +194,8 @@ class OfferController extends Controller
             $client = Client::find($request->get('client_id'));
         } else if (!empty($request->get('client_name'))) {
             $client = Client::create(['name' => $request->get('client_name')]);
+            $client->setting_id = $request->user()->setting_id;
+
             if (!empty($company)) {
                 $client->company_id = $company->id;
             }
@@ -263,7 +297,7 @@ class OfferController extends Controller
         }
     }
 
-    public function createOffer()
+    public function createOffer(Request $request)
     {
         $offer = Offer::whereNull('inquiry_date')->get()->first();
         if (!$offer) {
@@ -271,6 +305,7 @@ class OfferController extends Controller
         }
         $offer->user_id = Auth::user()->id;
         $offer->created_at = date('Y-m-d H:i:s');
+        $offer->setting_id = $request->user()->setting_id;
         $offer->save();
         return ['offer' => $offer];
     }
@@ -319,13 +354,16 @@ class OfferController extends Controller
         $dompdf = App::make('dompdf.wrapper');
         $dompdf->setPaper('A4', 'portrait');
 
+        $setting = Setting::with('currency')->find($this->getSettingId());
 
-        $dompdf->loadView('documents.offer', [
+        $dompdf->loadView('documents.offerEng', [
             'offer' => $offer,
             'positions' => $positions,
-            'settings' => Setting::find(1),
+            'settings' => $setting,
+            'fmt' => numfmt_create( $setting->currency->locale, NumberFormatter::CURRENCY ),
             'i' => 1,
-            'button' => false
+            'button' => false,
+
         ])->save($filePath)->stream($fileName);
 
         $file = File::create([
@@ -344,13 +382,16 @@ class OfferController extends Controller
         $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $id)->get()->first();
         $positions = Position::where('offer_id', $id)->get();
 
+        $setting = Setting::with('currency')->find($this->getSettingId());
+
         if(empty($positions)){
             return ['status' => 'error', 'message' => 'Offer is empty'];
         }
-        return view('documents.offer', [
+        return view('documents.offerEng', [
             'offer' => $offer,
             'positions' => $positions,
-            'settings' => Setting::find(1),
+            'settings' => $setting,
+            'fmt' => numfmt_create( $setting->currency->locale, NumberFormatter::CURRENCY ),
             'i' => 1,
             'button' => true
         ]);

@@ -208,7 +208,7 @@
                             <div class="i-title">{{ position.title }}</div>
                             <div class="i-line">
                                 <div class="float-left">
-                                    {{ position.quantity }} x {{ position.price }} €
+                                    {{ position.quantity }} x {{ $root.format(position.price) }}
                                 </div>
                                 <div class="float-right">
                                     {{ $root.format(position.subtotal) }}

@@ -13,8 +13,8 @@ class CurrencySeeder extends Seeder
     public function run()
     {
         $data = [
-            ['country' => 'Europe', 'currency' => 'Euro', 'code' => 'EUR', 'symbol' => '€'],
-            ['country' => 'Great Britain', 'currency' => 'Pounds', 'code' => 'GBP', 'symbol' => '£'],
+            ['country' => 'Europe', 'currency' => 'Euro', 'code' => 'EUR', 'symbol' => '€', 'locale' => 'de_DE'],
+            ['country' => 'Great Britain', 'currency' => 'Pounds', 'code' => 'GBP', 'symbol' => '£', 'locale' => 'en_GB'],
         ];
 
         DB::table('currencies')->insert($data);

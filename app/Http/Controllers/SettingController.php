@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Currency;
+use App\Http\Requests\SettingRequest;
 use App\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 
@@ -35,10 +37,10 @@ class SettingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  SettingRequest  $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(SettingRequest $request)
     {
 
         $path = null;
@@ -46,8 +48,7 @@ class SettingController extends Controller
 
         if ($request->hasFile('file')) {
             $file_name = $request->file('file')->getClientOriginalName();
-            $path = Storage::disk('uploads')->putFile('images', $request->file('file'));
-
+            $path = Storage::disk('public')->putFile('uploads', $request->file('file'));
         }
 
         $setting = Setting::create($request->except('_method', '_token'));
@@ -86,20 +87,22 @@ class SettingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
+     * @param  SettingRequest  $request
      * @param  Setting  $setting
      * @return RedirectResponse
      */
-    public function update(Request $request, Setting $setting)
+    public function update(SettingRequest $request, Setting $setting)
     {
-        $setting->fill($request->except('_method', '_token', 'file'));
+        $setting->fill($request->except('_method', '_token', 'file_uri'));
 
         $path = null;
         $file_name = '';
 
-        if ($request->hasFile('file')) {
-            $file_name = $request->file('file')->getClientOriginalName();
-            $path = Storage::disk('uploads')->putFile('images', $request->file('file'));
+        if ($request->hasFile('file_uri')) {
+            $file_name = $request->file('file_uri')->getClientOriginalName();
+            $path = $request->file('file_uri')->store(
+                'avatars/'.$request->user()->id, 'public'
+            );
         }
 
         if (!empty($path)) {
@@ -136,6 +139,14 @@ class SettingController extends Controller
             return view('setting.index', ['settings' => $data->paginate(20), 'search' => $string]);
         } else {
             return $data->take(10)->get();
+        }
+    }
+
+    public function get(Request $request){
+        if(Auth::check()){
+            return Setting::with('currency')->where('id', $request->user()->setting_id)->first();
+        } else{
+            return [];
         }
     }
 }

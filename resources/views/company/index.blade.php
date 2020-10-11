@@ -16,13 +16,12 @@
                         <div class="d-inline-block" style="vertical-align: top; padding: 6px;">
                             <h4 >{{ __('Companies') }}</h4>
                         </div>
-                        <find route="company" fields="name,phone,code,email" search="{{ $search ?? '' }}"></find>
+                        <find route="company" fields="name,phone,code,email,address" search="{{ $search ?? '' }}"></find>
                     </div>
                     <div class="card-body">
                         <table class="table table-sm table-striped">
                             <thead class="thead">
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">{{ __("Created") }}</th>
                                 <th scope="col">{{ __("Name") }}</th>
 								<th scope="col">{{ __("Phone") }}</th>
@@ -41,7 +40,6 @@
                             <tbody>
                             @foreach($companies AS $company)
                                 <tr>
-                                    <th scope="row">{{ $company->id  }}</th>
                                     <td>{{ substr($company->created_at,0,10) }}</td>
                                     <td>{{ $company->name }}</td>
 									<td>{{ $company->phone }}</td>

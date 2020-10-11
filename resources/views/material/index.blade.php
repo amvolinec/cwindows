@@ -25,7 +25,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">{{ __("Name") }}</th>
 								<th scope="col">{{ __("Code") }}</th>
-								<th scope="col">{{ __("File Name") }}</th>
+								<th scope="col">{{ __("Image") }}</th>
 
                                 <th scope="col" style="width: 100px;">{{ __('Actions') }}</th>
                             </tr>
@@ -36,8 +36,9 @@
                                     <th scope="row">{{ $material->id  }}</th>
                                     <td>{{ $material->name }}</td>
 									<td>{{ $material->code }}</td>
-									<td>{{ $material->file_name }}</td>
-
+                                    <td>
+                                        <img class="img-thumbnail preview" src="{{ asset('storage/' . $material->file_uri) }}" alt="{{ $material->file_name }}">
+                                    </td>
                                     <td>
                                         <form class="float-right" action="{{ route('material.destroy', $material->id) }}"
                                               method="post" onsubmit="return confirm('Do you really want to delete?');">

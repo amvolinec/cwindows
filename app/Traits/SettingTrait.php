@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Auth;
 
 trait SettingTrait
 {
+    public static function getUser() {
+        return User::findOrFail(Auth::id());
+    }
+
     public function getSettingId()
     {
         $auth_user = Auth::user();

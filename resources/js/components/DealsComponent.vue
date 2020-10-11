@@ -164,8 +164,8 @@ export default {
         fetchItems() {
             axios.get('/deals').then(response => {
                 if (response.data.length > 0)
-                    this.items = response.data.offers;
-                    this.setting = response.data.setting;
+                    this.items = response.data;
+                    // this.setting = response.data.setting;
             }).catch((error) => {
                 this.$root.fetchError(error);
             });

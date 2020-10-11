@@ -14,7 +14,7 @@
                             </form>
                         </div>
                         <div class="d-inline-block" style="vertical-align: top; padding: 6px;">
-                            <h4 >{{ __('Settings') }}</h4>
+                            <h4 >{{ __('Owners') }}</h4>
                         </div>
                         <find route="setting" fields="" search="{{ $search ?? '' }}"></find>
                     </div>
@@ -31,7 +31,6 @@
 								<th scope="col">{{ __("Account") }}</th>
 								<th scope="col">{{ __("Email") }}</th>
 								<th scope="col">{{ __("Web") }}</th>
-								<th scope="col">{{ __("Logo Name") }}</th>
 								<th scope="col">{{ __("Logo") }}</th>
 								<th scope="col">{{ __("Currency") }}</th>
 
@@ -50,8 +49,9 @@
 									<td>{{ $setting->account }}</td>
 									<td>{{ $setting->email }}</td>
 									<td>{{ $setting->web }}</td>
-									<td>{{ $setting->file_name }}</td>
-									<td>{{ $setting->file_uri }}</td>
+									<td>
+                                        <img class="img-thumbnail preview" src="{{ asset('storage/' . $setting->file_uri) }}" alt="{{ $setting->file_name }}">
+                                    </td>
 									<td>{{ $setting->currency->currency ?? '' }}</td>
 
                                     <td>

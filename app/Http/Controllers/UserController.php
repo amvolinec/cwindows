@@ -4,25 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Setting;
+use App\Traits\SettingTrait;
 use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    use SettingTrait;
+
+    protected $user;
+    protected $repo;
+
+    public function __construct(UserRepositoryInterface $repo)
+    {
+        $this->repo = $repo;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return View
      */
+
     public function index()
     {
-        $users = User::paginate(20);
-        return view('user.index', ['users' => $users]);
+        $this->user = $this->repo->getCurrentUser();
+
+        if ($this->user->hasRole('super-admin')) {
+            $users = User::paginate(20);
+        } else {
+            $users = User::where('setting_id', '=', $this->user->setting_id)->paginate(20);
+        }
+
+        return view('user.index', ['users' => $users, 'user' => $this->user]);
     }
 
     /**
@@ -32,7 +53,12 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create', ['roles' => Role::all(), 'settings' => Setting::all()]);
+        return view('user.create',
+            [
+                'roles' => $this->repo->getRoles(),
+                'settings' => $this->repo->getSettings(),
+                'current_user' => $this->repo->getCurrentUser()
+            ]);
     }
 
     /**
@@ -81,7 +107,12 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('user.create', ['user' => $user, 'roles' => Role::all(), 'settings' => Setting::all()]);
+        return view('user.create', [
+            'user' => $user,
+            'roles' => $this->repo->getRoles(),
+            'settings' => $this->repo->getSettings(),
+            'current_user' => $this->repo->getCurrentUser()
+        ]);
     }
 
     /**
@@ -121,7 +152,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        try{
+        try {
             $user->delete();
         } catch (\Exception $exception) {
             return redirect()->back()->withErrors([$exception->getMessage()]);

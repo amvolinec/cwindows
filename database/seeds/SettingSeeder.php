@@ -19,7 +19,8 @@ class SettingSeeder extends Seeder
             'address' => '214 Essex Road, London n1 3AP',
             'phone' => '02081507171',
             'email' => 'info@agbespokesolutions.com',
-            'web' => 'agbespokewindows.com'
+            'web' => 'agbespokewindows.com',
+            'currency_id' => 2
         ];
 
         DB::table('settings')->insert($data);

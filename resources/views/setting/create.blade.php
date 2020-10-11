@@ -14,6 +14,12 @@
                     </div>
                     @endif
 
+                        @if($errors->any())
+                            <div class="alert alert-warning" role="alert">
+                                <h4>{{$errors->first()}}</h4>
+                            </div>
+                        @endif
+
                     <form action="{{ isset($setting) ? route('setting.update', $setting->id) : route('setting.store') }}" method="post" enctype="multipart/form-data">
                         @method( isset($setting) ? 'put' : 'post')
                         @csrf
@@ -116,19 +122,6 @@
                                     <input id="web" type="text" class="form-control @error('web') is-invalid @enderror" name="web" value="{{ $setting->web ?? old('web') }}" autocomplete="web" >
 
                                     @error('web')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="file_name" class="col-md-4 col-form-label text-md-right">{{ __('Logo Name') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="file_name" type="text" class="form-control @error('file_name') is-invalid @enderror" name="file_name" value="{{ $setting->file_name ?? old('file_name') }}" autocomplete="file_name" >
-
-                                    @error('file_name')
                                     <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
