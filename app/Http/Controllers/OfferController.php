@@ -11,6 +11,7 @@ use App\Http\Requests\OfferRequest;
 use App\Offer;
 use App\Position;
 
+use App\Repositories\Interfaces\OfferRepositoryInterface;
 use App\Setting;
 use App\State;
 use App\Tender;
@@ -30,9 +31,15 @@ use NumberFormatter;
 
 class OfferController extends Controller
 {
+    protected $repo;
+
     use TenderTrait;
     use SettingTrait;
 
+    public function __construct(OfferRepositoryInterface $repo)
+    {
+        $this->repo = $repo;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -41,53 +48,17 @@ class OfferController extends Controller
      */
     public function index(Request $request)
     {
-        $offers = Offer::whereNotNull('inquiry_date')->where('setting_id', $request->user()->setting_id)->get();
-        return view('offer.index', ['offers' => $offers]);
+        return view('offer.index', ['offers' => $this->repo->all($request)]);
     }
 
     public function get(Request $request)
     {
-        return Offer::with(
-                'client',
-                'architect',
-                'company',
-                'state',
-                'user',
-                'positions',
-                'manager',
-                'files',
-                'color',
-                'material',
-                'editor',
-                'maintenance',
-                'tenders'
-            )->whereNotNull('inquiry_date')->where('setting_id', $request->user()->setting_id)->get();
+        return $this->repo->get($request);
     }
 
     public function getData($id)
     {
-        return [
-            'offer' => Offer::with([
-                'client',
-                'architect',
-                'company',
-                'state',
-                'positions',
-                'user',
-                'files',
-                'manager',
-                'color',
-                'material',
-                'editor',
-                'maintenance',
-                'transactions',
-                'tenders'])
-                ->findOrFail($id),
-            'states' => State::all(),
-            'types' => TransactionType::all(),
-            'tenders' => Tender::with('positions', 'files')->where('offer_id','=', $id)->get()
-        ];
-
+        return $this->repo->getData($id);
     }
 
     /**
@@ -234,6 +205,7 @@ class OfferController extends Controller
         $offer->editor_id = Auth::user()->id;
 
         try {
+            $offer->balance = BalanceHelper::calc($offer->id);
             $offer->save();
         } catch (\Exception $exception) {
             return ['status' => 'error', 'message' => 'Save error: ' . PHP_EOL . $exception->getMessage()];
@@ -299,13 +271,15 @@ class OfferController extends Controller
 
     public function createOffer(Request $request)
     {
-        $offer = Offer::whereNull('inquiry_date')->get()->first();
+        $offer = Offer::whereNull('inquiry_date')->where('setting_id', $request->user()->setting_id)->get()->first();
         if (!$offer) {
             $offer = new Offer();
         }
         $offer->user_id = Auth::user()->id;
         $offer->created_at = date('Y-m-d H:i:s');
         $offer->setting_id = $request->user()->setting_id;
+        $offer->number = $this->repo->getNewNumber($request);
+//        $offer->number++;
         $offer->save();
         return ['offer' => $offer];
     }
@@ -339,6 +313,7 @@ class OfferController extends Controller
     }
 
     public function print($id) {
+        $files = [];
         $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $id)->get()->first();
         $offer->version = 1 + (int)Tender::where('offer_id','=', $offer->id)->max('version');
 
@@ -348,34 +323,17 @@ class OfferController extends Controller
             return ['status' => 'error', 'message' => 'Offer is empty'];
         }
 
-        $fileName = 'offer_' . date('Ymd_His') . '_v'. $offer->version .'.pdf';
-        $filePath = public_path('documents') . '/' . $fileName;
+        $file = $this->createPdf($offer, $positions, 'Eng');
+        array_push($files, $file->id);
 
-        $dompdf = App::make('dompdf.wrapper');
-        $dompdf->setPaper('A4', 'portrait');
-
-        $setting = Setting::with('currency')->find($this->getSettingId());
-
-        $dompdf->loadView('documents.offerEng', [
-            'offer' => $offer,
-            'positions' => $positions,
-            'settings' => $setting,
-            'fmt' => numfmt_create( $setting->currency->locale, NumberFormatter::CURRENCY ),
-            'i' => 1,
-            'button' => false,
-
-        ])->save($filePath)->stream($fileName);
-
-        $file = File::create([
-            'file_name' => $fileName,
-            'file_uri' => 'documents/' . $fileName
-        ]);
+        $file = $this->createPdf($offer, $positions, 'Lt');
+        array_push($files, $file->id);
 
         $offer->save();
 
-        $this->makeVersion($offer->id, $file);
+        $this->makeVersion($offer->id, $files);
 
-        return ['status' => 'success', 'file_name' => $fileName];
+        return ['status' => 'success', 'file_name' => ''];
     }
 
     public function preview($id) {
@@ -395,5 +353,38 @@ class OfferController extends Controller
             'i' => 1,
             'button' => true
         ]);
+    }
+
+    /**
+     * @param $offer
+     * @param $positions
+     * @param $lang
+     * @return mixed
+     */
+    protected function createPdf($offer, $positions, $lang)
+    {
+        $fileName = 'offer_' . date('Ymd_His') . '_v' . $offer->version . '_' . $lang . '.pdf';
+        $filePath = public_path('documents') . '/' . $fileName;
+
+        $dompdf = App::make('dompdf.wrapper');
+        $dompdf->setPaper('A4', 'portrait');
+
+        $setting = Setting::with('currency')->find($this->getSettingId());
+
+        $dompdf->loadView("documents.offer{$lang}", [
+            'offer' => $offer,
+            'positions' => $positions,
+            'settings' => $setting,
+            'fmt' => numfmt_create($setting->currency->locale, NumberFormatter::CURRENCY),
+            'i' => 1,
+            'button' => false,
+
+        ])->save($filePath)->stream($fileName);
+
+        $file = File::create([
+            'file_name' => $fileName,
+            'file_uri' => 'documents/' . $fileName
+        ]);
+        return $file;
     }
 }

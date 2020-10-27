@@ -31,8 +31,8 @@
                             <td width="60%">{{ item.inquiry_date }}</td>
                         </tr>
                         <tr>
-                            <th>ID#</th>
-                            <td>{{ item.id }}</td>
+                            <th>#</th>
+                            <td>{{ item.number }}</td>
                         </tr>
                         <tr>
                             <th>Version#</th>
@@ -142,7 +142,14 @@
                                 </textarea>
                             </td>
                         </tr>
-
+                        <tr v-if="item.info">
+                            <th>Notes / Terms (printable)</th>
+                            <td>
+                                <textarea :disabled="isDisabled" class="form-control-plaintext" v-model="item.info"
+                                          rows="4">
+                                </textarea>
+                            </td>
+                        </tr>
                         <tr>
                             <th scope="row">Responsible person</th>
                             <td>
@@ -174,7 +181,7 @@
                         </tr>
                         <tr v-if="item.number">
                             <th scope="row">Offer No.</th>
-                            <td>{{ item.number }}</td>
+                            <td>{{ item.number }}-{{ item.version }}</td>
                         </tr>
                         <tr v-if="item.order_number">
                             <th scope="row">Order No.</th>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="52px"
+	 height="87px" viewBox="0 0 52 87" enable-background="new 0 0 52 87" xml:space="preserve">
+<g id="stiklas">
+	<rect x="9.13" y="9.139" fill="#FFFFFF" width="33.746" height="68.76"/>
+	<g>
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="26.0599" y1="9.7233" x2="26.0599" y2="76.9381">
+			<stop  offset="0" style="stop-color:#C1EBFB"/>
+			<stop  offset="1" style="stop-color:#EBFFFF"/>
+		</linearGradient>
+		<rect x="9.375" y="9.297" opacity="0.4" fill="url(#SVGID_1_)" width="33.37" height="68.453"/>
+	</g>
+</g>
+<g id="istrizaines">
+	<g>
+		<polyline fill="none" stroke="#CAA078" stroke-linecap="square" stroke-miterlimit="10" points="41.934,9.896 10.814,43.571 
+			42.04,77.167 		"/>
+		<polyline fill="none" stroke="#CAA078" stroke-linecap="square" stroke-miterlimit="10" points="41.956,77.167 25.4,11.954 
+			10.109,77.167 		"/>
+	</g>
+</g>
+<g id="langu_remai">
+	<g>
+		<g>
+			<path fill="#444458" d="M51,1.016v85H1v-85H51 M52,0.016H0v87h52V0.016L52,0.016z"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<g>
+				<path fill="#444458" d="M41.87,10.139v66.76H10.124v-66.76H41.87 M42.87,9.139H9.124v68.76H42.87V9.139L42.87,9.139z"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<path fill="#444458" d="M46.871,5.141v76.75H5.123V5.141H46.871 M47.871,4.141H4.123v78.75h43.748V4.141L47.871,4.141z"/>
+		</g>
+	</g>
+</g>
+<g id="rankenele">
+	<g>
+		<g>
+			<rect x="5.65" y="40.71" fill="#FFFFFF" width="2.963" height="4.978"/>
+			<g>
+				<path fill="#444458" d="M8.363,40.96v4.478H5.9V40.96H8.363 M8.863,40.46H5.4v5.478h3.463V40.46L8.863,40.46z"/>
+			</g>
+		</g>
+		<g>
+			<rect x="6.45" y="42.507" fill="#FFFFFF" width="1.364" height="8.467"/>
+			<path fill="#444458" d="M7.564,42.757v7.967H6.7v-7.967H7.564 M8.064,42.257H6.2v8.967h1.864V42.257L8.064,42.257z"/>
+		</g>
+	</g>
+</g>
+</svg>

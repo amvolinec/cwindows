@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="52px"
+	 height="87px" viewBox="0 0 52 87" enable-background="new 0 0 52 87" xml:space="preserve">
+<g id="stiklas">
+	<rect x="4.123" y="4.141" fill="#FFFFFF" width="43.748" height="78.75"/>
+	<g>
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="25.9688" y1="4.7546" x2="25.9688" y2="81.8034">
+			<stop  offset="0" style="stop-color:#C1EBFB"/>
+			<stop  offset="1" style="stop-color:#EBFFFF"/>
+		</linearGradient>
+		<rect x="4.25" y="4.266" opacity="0.4" fill="url(#SVGID_1_)" width="43.438" height="78.469"/>
+	</g>
+</g>
+<g id="istrizaines">
+	<g>
+		<line fill="none" stroke="#CAA078" stroke-miterlimit="10" x1="26.052" y1="36.083" x2="26.052" y2="50.917"/>
+		<line fill="none" stroke="#CAA078" stroke-miterlimit="10" x1="18.052" y1="43.5" x2="33.885" y2="43.5"/>
+	</g>
+</g>
+<g id="langu_remai">
+	<g>
+		<g>
+			<path fill="#444458" d="M51,1.016v85H1v-85H51 M52,0.016H0v87h52V0.016L52,0.016z"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<path fill="#444458" d="M46.871,5.141v76.75H5.123V5.141H46.871 M47.871,4.141H4.123v78.75h43.748V4.141L47.871,4.141z"/>
+		</g>
+	</g>
+</g>
+</svg>

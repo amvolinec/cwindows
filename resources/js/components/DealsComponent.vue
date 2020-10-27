@@ -15,7 +15,7 @@
                     <table class="table table-sm table-striped table-responsive">
                         <thead class="thead">
                         <tr>
-                            <th scope="col">#ID</th>
+                            <th scope="col">Number</th>
                             <th scope="col">Inquiry Date</th>
                             <th scope="col">Company</th>
                             <th scope="col">Contact</th>
@@ -54,7 +54,7 @@
                         </thead>
                         <tbody>
                         <tr class="group-line" v-for="item in items">
-                            <th scope="row">{{ item.id }}</th>
+                            <th scope="row">{{ item.number }}</th>
                             <td scope="row">{{ item.inquiry_date }}</td>
                             <td>
                                 {{ item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : '' }}

@@ -36,22 +36,26 @@
                             {!! !empty($offer->company->phone) ? $offer->company->phone . "<br>" : '' !!}
                             {!! !empty($offer->company->code) ? $offer->company->code . "<br>" : '' !!}
                             {!! !empty($offer->company->vat_code) ? $offer->company->vat_code . "<br>" : '' !!}
-                            {!! !empty($offer->company->address) ? $offer->company->address . "<br>" : '' !!}
+                            @if(!empty($offer->company->address))
+                                @foreach(explode(',', $offer->company->address) as $line)
+                                    {!! trim($line) . "<br>" !!}
+                                @endforeach
+                            @endif
                         @endif
                     </p>
                 </td>
                 <td class="paragraph">
-                    <h3 style="width: 100%; text-align: center">
-                        <div style="width: 40%; display: inline-block; text-align: right;">Offer number:</div>
+                    <h4 style="width: 100%; text-align: center">
+                        <div style="width: 45%; display: inline-block; text-align: right;">Offer number:</div>
                         <div
-                            style="width: 40%; display: inline-block; text-align: left">{{ $offer->id . '-' . $offer->version }}</div>
-                    </h3>
+                            style="width: 45%; display: inline-block; text-align: left">{{ $offer->number . '-' . $offer->version }}</div>
+                    </h4>
 
-                    <h3 style="width: 100%; text-align: center">
-                        <div style="width: 40%; display: inline-block; text-align: right;">Offer date:</div>
+                    <h4 style="width: 100%; text-align: center">
+                        <div style="width: 45%; display: inline-block; text-align: right;">Offer date:</div>
                         <div
-                            style="width: 40%; display: inline-block; text-align: left">{{ substr($offer->created_at, 0, 10) }}</div>
-                    </h3>
+                            style="width: 45%; display: inline-block; text-align: left">{{ substr($offer->created_at, 0, 10) }}</div>
+                    </h4>
 
                 </td>
             </tr>
@@ -75,7 +79,7 @@
                     <td class="paragraph" style="text-align: right">{{ $item->quantity }}</td>
                     <td class="paragraph" style="text-align: right">{{ $item->final_price }}</td>
                     <td class="paragraph"
-                        style="text-align: right">{{ numfmt_format_currency($fmt, $item->total, $settings->currency->code) }}</td>
+                        style="text-align: right">{!! fixEuro(numfmt_format_currency($fmt, $item->total, $settings->currency->code)) !!} </td>
                 </tr>
             @endforeach
 
@@ -86,39 +90,31 @@
             <tbody style="border: none;">
             <tr>
                 <td class="paragraph" style="text-align: right">
-                    Subtotal: {{ numfmt_format_currency($fmt, $offer->total, $settings->currency->code) }}
+                    Subtotal: {!! fixEuro(numfmt_format_currency($fmt, $offer->total, $settings->currency->code)) !!}
                 </td>
             </tr>
             <tr>
                 <td class="paragraph" style="text-align: right">
-                    VAT
-                    20%: {{ numfmt_format_currency($fmt, $offer->total_with_vat - $offer->total, $settings->currency->code) }}
+                    VAT 20%:
+                    {!! fixEuro(numfmt_format_currency($fmt, $offer->total_with_vat - $offer->total, $settings->currency->code)) !!}
                 </td>
             </tr>
             <tr>
                 <td class="paragraph" style="text-align: right">
                     <strong>
-                        Total: {{ numfmt_format_currency($fmt, $offer->total_with_vat, $settings->currency->code) }}</strong>
+                        Total: {!! fixEuro(numfmt_format_currency($fmt, $offer->total_with_vat, $settings->currency->code)) !!} </strong>
                 </td>
             </tr>
             </tbody>
         </table>
 
-{{--        <table style="width: 100%">--}}
-{{--            <tr>--}}
-{{--                <td class="paragraph">--}}
-{{--                    <strong>Pasiūlymą paruošė: </strong> {{ $offer->user->name }}--}}
-{{--                </td>--}}
-{{--                <td class="paragraph">--}}
-{{--                    <strong>Pasiūlymą gavo: </strong>____________________________--}}
-{{--                </td>--}}
-{{--            </tr>--}}
-{{--        </table>--}}
-
         @if(!empty($offer->info))
             <h4>Notes / Terms</h4>
             {!! $offer->info !!}
         @endif
-        <h3 style="width: 100%; text-align: center;">THANK YOU FOR YOUR BUSINESS. IT IS OUR PLEASURE TO WORK WITH YOU.</h3>
+        <br>
+        <br>
+        <h3 style="width: 100%; text-align: center;">THANK YOU FOR YOUR BUSINESS. IT IS OUR PLEASURE TO WORK WITH
+            YOU.</h3>
     </div>
 @endsection
