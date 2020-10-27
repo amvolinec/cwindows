@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="planed_date">Inquiry date</label>
+                    <label class="col-md-4 text-right col-form-label" for="inquiry_date">Inquiry date</label>
                     <div class="col-md-8 p-0">
                         <datetime id="inquiry_date" v-model="offer.inquiry_date" type="date"
                                   input-class="form-control" format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
@@ -27,9 +27,9 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-4 text-right col-form-label" for="planed_date">Inquiry ID</label>
+                    <label class="col-md-4 text-right col-form-label">Inquiry ID</label>
                     <div class="col-md-8 p-0">
-                        <input class="form-control" v-model="offer.id" readonly>
+                        <input class="form-control" v-model="offer.number" readonly>
                     </div>
                 </div>
 
@@ -351,6 +351,7 @@ export default {
                 this.offer.id = r.data.offer.id;
                 this.offer.user_id = r.data.offer.user_id;
                 this.offer.created_at = r.data.offer.created_at;
+                this.offer.number = r.data.offer.number;
                 this.chance = {id: r.data.offer.chance, name: r.data.offer.chance}
             }).catch((error) => {
                 this.$root.fetchError(error);

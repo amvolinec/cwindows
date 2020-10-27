@@ -9,13 +9,13 @@ use Exception;
 
 trait TenderTrait
 {
-    public function makeVersion($offer_id, $file_id)
+    public function makeVersion($offer_id, $files)
     {
         $offer = Offer::with('positions', 'files')->findOrFail($offer_id);
-        $this->makeNewTender($offer, $file_id);
+        $this->makeNewTender($offer, $files);
     }
 
-    protected function makeNewTender(Offer $offer, $file_id)
+    protected function makeNewTender(Offer $offer, $files)
     {
         if (empty($offer->manager_id)) throw new Exception('Manager not defined');
         if (empty($offer->profile_id)) throw new Exception('Profile not defined');
@@ -52,7 +52,7 @@ trait TenderTrait
             $position->save();
         }
 
-        $tender->files()->sync($file_id);
+        $tender->files()->sync($files);
 
         $offer->save();
     }

@@ -3,7 +3,7 @@
 @section('content')
     <div style="padding: 1.5rem 2rem 1rem 2rem">
         <h2 style="width: 100%; text-align: center">KOMERCINIS PASIŪLYMAS</h2>
-        <h3 style="width: 100%; text-align: center">Nr. KM{{ date('Ymd-'). $offer->id . '-' . $offer->version }}</h3>
+        <h3 style="width: 100%; text-align: center">Nr. KM{{ date('Ymd-'). $offer->number . '-' . $offer->version }}</h3>
         <br>
         <table style="width:100%">
             <tbody>
@@ -111,7 +111,8 @@
             </tbody>
         </table>
         <p class="paragraph">
-            <strong>Suma žodžiu:</strong> {{ $offer->total_words }} Eur {{ $offer->fraction }} ct
+            <strong>Suma žodžiu:</strong> {{ $offer->total_words }}
+            Eur {{ substr(number_format($offer->total_with_vat, 2), -2) }} ct
         </p>
         <table style="width: 100%">
             <tr>
@@ -123,5 +124,11 @@
                 </td>
             </tr>
         </table>
+        <br>
+        @if(!empty($offer->info))
+            <h4>Notes / Terms</h4>
+            {!! $offer->info !!}
+        @endif
+        <br>
     </div>
 @endsection
