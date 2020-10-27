@@ -16,7 +16,6 @@
                         <table class="table table-sm table-striped">
                             <thead class="thead">
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">{{ __("Title") }}</th>
 								<th scope="col">{{ __("Phone") }}</th>
 								<th scope="col">{{ __("Email") }}</th>
@@ -28,7 +27,6 @@
                             <tbody>
                             @foreach($architects AS $architect)
                                 <tr>
-                                    <th scope="row">{{ $architect->id  }}</th>
                                     <td>{{ $architect->title }}</td>
 									<td>{{ $architect->phone }}</td>
 									<td>{{ $architect->email }}</td>

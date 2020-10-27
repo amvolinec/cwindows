@@ -13,9 +13,9 @@ class ProfileSeeder extends Seeder
     public function run()
     {
         $data = [
-            'name' => 'Wood',
-            'name' => 'Wood + All',
-            'name' => 'Aluminium',
+            ['name' => 'Wood'],
+            ['name' => 'Wood + All'],
+            ['name' => 'Aluminium'],
         ];
 
         DB::table('profiles')->insert($data);

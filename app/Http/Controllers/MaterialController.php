@@ -39,17 +39,9 @@ class MaterialController extends Controller
      */
     public function store(Request $request)
     {
+        list($file_name, $path) = $this->extractFile($request);
 
-        $path = null;
-        $file_name = '';
-
-        if ($request->hasFile('file')) {
-            $file_name = $request->file('file')->getClientOriginalName();
-            $path = Storage::disk('uploads')->putFile('images', $request->file('file'));
-
-        }
-
-        $material = Material::create($request->except('_method', '_token'));
+        $material = Material::create($request->except('_method', '_token', 'file_uri'));
 
         if (!empty($path)) {
             $material->file_name = $file_name;
@@ -93,13 +85,7 @@ class MaterialController extends Controller
     {
         $material->fill($request->except('_method', '_token', 'file'));
 
-        $path = null;
-        $file_name = '';
-
-        if ($request->hasFile('file')) {
-            $file_name = $request->file('file')->getClientOriginalName();
-            $path = Storage::disk('uploads')->putFile('images', $request->file('file'));
-        }
+        list($file_name, $path) = $this->extractFile($request);
 
         if (!empty($path)) {
             $material->file_name = $file_name;
@@ -127,14 +113,30 @@ class MaterialController extends Controller
     {
         $string = $search ?? $request->get('string');
 
-        $data = Material::where('name', 'like', '%' . $string . '%')
-            // ->orWhere('title', 'like', '%' . $string . '%')
-            ;
+        $data = Material::where('name', 'like', '%' . $string . '%');
 
         if ($search !== false && !empty($search)) {
             return view('material.index', ['materials' => $data->paginate(20), 'search' => $string]);
         } else {
             return $data->take(10)->get();
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function extractFile(Request $request): array
+    {
+        $file_name = null;
+        $path = null;
+
+        if ($request->hasFile('file_uri')) {
+            $file_name = $request->file('file_uri')->getClientOriginalName();
+            $path = $request->file('file_uri')->store(
+                'materials/' . $request->user()->id, 'public'
+            );
+        }
+        return array($file_name, $path);
     }
 }

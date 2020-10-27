@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NameRequest;
 use App\Maintenance;
+use App\Traits\SearchTrait;
+use App\Traits\SettingTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,15 +14,17 @@ use Illuminate\View\View;
 
 class MaintenanceController extends Controller
 {
+    use SettingTrait;
+    use SearchTrait;
 
     /**
      * Display a listing of the resource.
      *
      * @return View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $maintenances = Maintenance::paginate(20);
+        $maintenances = Maintenance::where('setting_id', $request->user()->setting_id)->paginate(20);
         return view('maintenance.index', ['maintenances' => $maintenances]);
     }
 
@@ -42,7 +46,10 @@ class MaintenanceController extends Controller
      */
     public function store(NameRequest $request)
     {
-        Maintenance::create($request->except('_method', '_token'));
+        $maintenances = Maintenance::create($request->except('_method', '_token'));
+        $maintenances ->setting_id = $request->user()->setting_id;
+        $maintenances ->save();
+
         return redirect()->route('maintenance.index');
     }
 
@@ -95,25 +102,38 @@ class MaintenanceController extends Controller
 
     public function find(Request $request, $search = false)
     {
-        $string     = !empty($search) ? $search : $request->get('string');
-        $cols    = $request->has('columns') ? $request->get('columns') : 'name,phone,address,email';
-        $columns = explode(',', $cols);
+//        $string     = !empty($search) ? $search : $request->get('string');
+//        $cols    = $request->has('columns') ? $request->get('columns') : 'name,phone,address,email';
+//        $columns = explode(',', $cols);
+//
+//        $query = "{$columns[0]} like ? ";
+//        $bindings = ["%{$string}%"];
+//
+//        if (count($columns) > 1) {
+//            for ($i = 1; $i < count($columns); $i++) {
+//                $query .= "or {$columns[$i]} like ? ";
+//                array_push($bindings, "%{$string}%");
+//            }
+//        }
+//
+//        $data = DB::table("maintenances")->whereRaw($query, $bindings);
+//        if ($search !== false && !empty($search)) {
+//            return view('maintenance.index', ['maintenances' => $data->paginate(20), 'search' => $string]);
+//        } else {
+//            return $data->take(10)->get();
+//        }
 
-        $query = "{$columns[0]} like ? ";
-        $bindings = ["%{$string}%"];
+        list($query, $bindings) = $this->getQuery($request, $search, 'name,phone,address,email', true);
 
-        if (count($columns) > 1) {
-            for ($i = 1; $i < count($columns); $i++) {
-                $query .= "or {$columns[$i]} like ? ";
-                array_push($bindings, "%{$string}%");
-            }
-        }
-
-        $data = DB::table("maintenances")->whereRaw($query, $bindings);
         if ($search !== false && !empty($search)) {
-            return view('maintenance.index', ['maintenances' => $data->paginate(20), 'search' => $string]);
+
+            $maintenances = Maintenance::whereRaw($query, $bindings)->paginate(20);
+            return view('maintenance.index', ['maintenances' => $maintenances]);
+
         } else {
-            return $data->take(10)->get();
+
+            return DB::table("maintenances")->whereRaw($query, $bindings)->get();
+
         }
     }
 }

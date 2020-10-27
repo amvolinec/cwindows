@@ -22,7 +22,6 @@
                         <table class="table table-sm table-striped">
                             <thead class="thead">
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">{{ __("Created") }}</th>
                                 <th scope="col">{{ __("Name") }}</th>
                                 <th scope="col">{{ __("Company") }}</th>
@@ -38,7 +37,6 @@
                             <tbody>
                             @foreach($clients AS $client)
                                 <tr>
-                                    <th scope="row">{{ $client->id  }}</th>
                                     <td>{{ substr($client->created_at,0,10) }}</td>
                                     <td>{{ $client->name }}</td>
                                     <td>{{ $client->company->name ?? '' }}</td>

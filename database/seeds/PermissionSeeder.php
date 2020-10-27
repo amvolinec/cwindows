@@ -41,6 +41,7 @@ class PermissionsSeeder extends Seeder
             'name' => 'Jonas Sakalauskas',
             'email' => 'user@example.com',
             'password' => Hash::make('adminas2020'),
+            'setting_id' => 1
         ]);
         $user->assignRole($role1);
 
@@ -48,13 +49,16 @@ class PermissionsSeeder extends Seeder
             'name' => 'Jonas Burbokas',
             'email' => 'admin@example.com',
             'password' => Hash::make('adminas2020'),
+            'setting_id' => 1
         ]);
         $user->assignRole($role2);
 
         $user = Factory(App\User::class)->create([
             'name' => 'Albertas Jonaitis',
             'email' => 'superadmin@example.com',
-                'password' => Hash::make('adminas2020'),
+            'password' => Hash::make('adminas2020'),
+            'setting_id' => 1
+
         ]);
         $user->assignRole($role3);
     }

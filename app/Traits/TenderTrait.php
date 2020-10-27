@@ -2,19 +2,20 @@
 
 namespace App\Traits;
 
+use App\File;
 use App\Offer;
 use App\Tender;
 use Exception;
 
 trait TenderTrait
 {
-    public function makeVersion($offer_id)
+    public function makeVersion($offer_id, $files)
     {
         $offer = Offer::with('positions', 'files')->findOrFail($offer_id);
-        $this->makeNewTender($offer);
+        $this->makeNewTender($offer, $files);
     }
 
-    protected function makeNewTender(Offer $offer)
+    protected function makeNewTender(Offer $offer, $files)
     {
         if (empty($offer->manager_id)) throw new Exception('Manager not defined');
         if (empty($offer->profile_id)) throw new Exception('Profile not defined');
@@ -51,18 +52,7 @@ trait TenderTrait
             $position->save();
         }
 
-        $tender->files()->sync($offer->files_ids);
-        $files = $offer->files;
-
-        foreach ($files as $file) {
-            $new = $file->replicate();
-            $new->push();
-
-            $file->offer_id = null;
-            $file->save();
-        }
-
-        $offer->version = 1 + (int)Tender::where('offer_id','=', $offer->id)->max('version');
+        $tender->files()->sync($files);
 
         $offer->save();
     }

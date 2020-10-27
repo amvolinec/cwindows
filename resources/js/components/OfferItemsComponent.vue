@@ -55,6 +55,8 @@
                     <td>
                         <select class="form-control item-sm" type="text" v-model="item.vat" @change="calcSum(item)">
                             <option value=21>21%</option>
+                            <option value=20>20%</option>
+                            <option value=16>16%</option>
                             <option value=9>9%</option>
                             <option value=5>5%</option>
                             <option value=0>0%</option>

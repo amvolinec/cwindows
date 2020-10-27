@@ -9,9 +9,9 @@ class Client extends Model
 {
     use LogsActivity;
 
-    protected $fillable = ["name", "contact", "phone", "email", "city", "company_id", "notes"];
+    protected $fillable = ["name", "contact", "phone", "email", "city", "company_id", "notes", "setting_id"];
 
-    protected static $logAttributes = ["name", "contact", "phone", "email", "city", "company_id", "notes"];
+    protected static $logAttributes = ["name", "contact", "phone", "email", "city", "company_id", "notes", "setting_id"];
 
 	public function company() {
 	    return $this->belongsTo('App\Company');
@@ -19,5 +19,9 @@ class Client extends Model
 
     public function offers() {
         return $this->hasMany('App\Offer');
+    }
+
+    public function setting(){
+        return $this->belongsTo('App\Setting');
     }
 }

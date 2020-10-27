@@ -45,26 +45,13 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="file_name" class="col-md-4 col-form-label text-md-right">{{ __('File Name') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="file_name" type="text" class="form-control @error('file_name') is-invalid @enderror" name="file_name" value="{{ $material->file_name ?? old('file_name') }}" autocomplete="file_name" >
-
-                                    @error('file_name')
-                                    <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
                                 <div class="col-md-4"></div>
                                 <div class="input-group col-md-6">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input"
                                                id="fileUpload" value="{{ $material->file_uri ?? old('file_uri') }}"
                                                aria-describedby="inputGroupFileAddon01" name="file_uri" >
-                                        <label class="custom-file-label" for="fileUpload">{{ __('File Path') }}</label>
+                                        <label class="custom-file-label" for="fileUpload">{{ __('Image') }}</label>
                                     </div>
                                 </div>
                             </div>

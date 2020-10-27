@@ -40,6 +40,16 @@ class Tender extends Model
         return $this->belongsToMany('App\File','tender_file');
     }
 
+    public function file()
+    {
+        return $this->files->last();
+    }
+
+    public function getFileUriAttribute()
+    {
+        return $this->files->pluck('file_uri')->last();
+    }
+
     public function getFilesIdsAttribute()
     {
         return $this->files->pluck('id');

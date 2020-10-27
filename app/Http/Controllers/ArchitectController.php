@@ -3,20 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Architect;
+use App\Traits\SettingTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ArchitectController extends Controller
 {
+    use SettingTrait;
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $architects = Architect::all();
+        $architects = Architect::where('setting_id', $request->user()->setting_id)->get();
         return view('architect.index', ['architects' => $architects]);
     }
 
@@ -38,7 +42,10 @@ class ArchitectController extends Controller
      */
     public function store(Request $request)
     {
-        Architect::create($request->except('_method', '_token'));
+        $architect = Architect::create($request->except('_method', '_token'));
+        $architect->setting_id = $request->user()->setting_id;
+        $architect->save();
+
         return redirect()->route('architect.index');
     }
 

@@ -17,6 +17,7 @@ class CompanySeeder extends Seeder
             'phone' => '+49 (0) 681 9376-4599',
             'email' => 'info@nord.co.uk',
             'address' => 'Unit 52.11, Woolyard 52 Bermondsey Street, London, England, SE1 ',
+            'setting_id' => 1
         ];
 
         DB::table('companies')->insert($data);

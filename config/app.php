@@ -180,6 +180,7 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
 
         App\Providers\HelperServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
 
     ],
 

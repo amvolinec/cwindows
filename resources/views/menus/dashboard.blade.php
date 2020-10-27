@@ -18,7 +18,7 @@
                     <hr>
                     <li><a href="{{ route('offer.index') }}"><i class="fas fa-id-card-alt"></i> Deals</a></li>
                     <li><a href="{{ route('service.index') }}"><i class="fas fa-screwdriver"></i> Service</a></li>
-                    <li><a href="{{ route('transaction.index') }}"><i class="fas fa-money-bill-wave-alt"></i></i> Transactions</a></li>
+                    <li><a href="{{ route('transaction.index') }}"><i class="fas fa-money-bill-wave-alt"></i> Transactions</a></li>
                     <hr>
 
                     <!-- Dropdown-->
@@ -43,11 +43,16 @@
 
                                     @if(Auth::user()->hasRole('super-admin'))
                                         <br />
-                                        <li><a href="{{ route('profile.index') }}"><i class="fas fa-wallet"></i> Profile</a></li>
-                                        <li><a href="{{ route('event.index') }}"><i class="fas fa-wallet"></i> Activity Log</a></li>
-                                        <li><a href="{{ route('setting.edit') }}"><i class="fas fa-wallet"></i> Settings</a></li>
-                                        <li><a href="{{ route('color.index') }}"><i class="fas fa-wallet"></i> Colors</a></li>
-                                        <li><a href="{{ route('material.index') }}"><i class="fas fa-wallet"></i> Materials</a></li>
+                                            <li><a href="{{ route('setting.index') }}"><i class="fas fa-wallet"></i>
+                                                    Owners</a></li>
+                                            <li><a href="{{ route('profile.index') }}"><i class="fas fa-wallet"></i>
+                                                    Profile</a></li>
+                                            <li><a href="{{ route('event.index') }}"><i class="fas fa-wallet"></i>
+                                                    Activity Log</a></li>
+                                            <li><a href="{{ route('color.index') }}"><i class="fas fa-wallet"></i>
+                                                    Colors</a></li>
+                                            <li><a href="{{ route('material.index') }}"><i class="fas fa-wallet"></i>
+                                                    Materials</a></li>
                                     @endif
                                 </ul>
                             </div>

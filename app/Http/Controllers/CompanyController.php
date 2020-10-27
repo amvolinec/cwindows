@@ -3,20 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Traits\SearchTrait;
+use App\Traits\SettingTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class CompanyController extends Controller
 {
+    use SettingTrait;
+    use SearchTrait;
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $companies = Company::with('offers', 'clients')->get();
+        $companies = Company::with('offers', 'clients')->where('setting_id', $request->user()->setting_id)->get();
         return view('company.index', ['companies' => $companies]);
     }
 
@@ -38,7 +45,11 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        Company::create($request->except('_method', '_token'));
+        $companies = Company::create($request->except('_method', '_token'));
+        $companies->setting_id = $this->getSettingId();
+        $companies->save();
+
+
         return redirect()->route('company.index');
     }
 
@@ -93,7 +104,9 @@ class CompanyController extends Controller
     public function getCompany(Request $request)
     {
         if ($request->has('name')) {
-            $companies = Company::where('name', 'like', '%' . $request->get('name') . '%')->get();
+            $companies = Company::where('setting_id', $request->user()->setting_id)
+                ->where('name', 'like', '%' . $request->get('name') . '%')
+                ->get();
         } else {
             $companies = [];
         }
@@ -102,19 +115,17 @@ class CompanyController extends Controller
 
     public function find(Request $request, $search = false)
     {
-        $string = $search ? $search : $request->get('string');
-
-        $data = Company::where('code', 'like', '%' . $string . '%')
-            ->orWhere('name', 'like', '%' . $string . '%')
-            ->orWhere('email', 'like', '%' . $string . '%')
-            ->orWhere('phone', 'like', '%' . $string . '%')
-            ->orWhere('address', 'like', '%' . $string . '%')
-            ->take(10)->get();
+        list($query, $bindings) = $this->getQuery($request, $search, 'name,phone,address,email', true);
 
         if ($search !== false && !empty($search)) {
-            return view('company.index', ['companies' => $data, 'search' => $string]);
+
+            $companies = Company::with('offers', 'clients')->whereRaw($query, $bindings)->paginate(20);
+            return view('company.index', ['companies' => $companies, 'search' => $request->get('string')]);
+
         } else {
-            return $data;
+
+            return DB::table("companies")->whereRaw($query, $bindings)->take(10)->get();
+
         }
     }
 }

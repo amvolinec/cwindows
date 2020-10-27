@@ -10,7 +10,7 @@
                     {{ this.message }}
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <input type="hidden" v-model="offer.id">
 
                         <div class="form-group mb-1 row">
@@ -83,8 +83,9 @@
 
                         <div class="form-group mb-1 row">
                             <label class="col-md-4 text-right col-form-label" for="number">Offer No.</label>
-                            <input id="number" type="text" class="form-control form-control-sm col-md-8" name="info"
-                                   v-model="offer.number">
+
+                            <input id="number" type="text" class="form-control form-control-sm col-md-8"
+                                   v-bind:value="offer.number + ' - ' + offer.version" readonly>
                         </div>
 
                         <div class="form-group mb-1 row">
@@ -94,13 +95,18 @@
                                    v-model="offer.order_number">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="description">Description</label>
                         <textarea id="description" type="text" class="form-control" name="description" rows="4"
                                   v-model="offer.description"></textarea>
                         <label for="comment" class="mt-1">Comment</label>
                         <textarea id="comment" type="text" class="form-control" name="comment" rows="4"
                                   v-model="offer.comment"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="info">Notes / Terms (printable)</label>
+                        <textarea id="info" type="text" class="form-control" name="description" rows="4"
+                                  v-model="offer.info"></textarea>
                     </div>
                 </div>
                 <offer-items></offer-items>

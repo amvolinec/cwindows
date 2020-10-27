@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header" v-if="setting !== null">
                     <div class="d-inline-block" style="vertical-align: top;">
                         <button class="btn btn-success" @click="addDeal"><i class="fas fa-plus"></i></button>
                     </div>
@@ -15,7 +15,7 @@
                     <table class="table table-sm table-striped table-responsive">
                         <thead class="thead">
                         <tr>
-                            <th scope="col">#ID</th>
+                            <th scope="col">Number</th>
                             <th scope="col">Inquiry Date</th>
                             <th scope="col">Company</th>
                             <th scope="col">Contact</th>
@@ -54,7 +54,7 @@
                         </thead>
                         <tbody>
                         <tr class="group-line" v-for="item in items">
-                            <th scope="row">{{ item.id }}</th>
+                            <th scope="row">{{ item.number }}</th>
                             <td scope="row">{{ item.inquiry_date }}</td>
                             <td>
                                 {{ item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : '' }}
@@ -146,6 +146,7 @@ export default {
             private: ['private', 'company'],
             types: ['Private', 'Apartments', 'Commercial'],
             profiles: ['Wood', 'Wood + Al', 'Aluminium'],
+            setting: []
         }
     },
     created() {
@@ -164,6 +165,7 @@ export default {
             axios.get('/deals').then(response => {
                 if (response.data.length > 0)
                     this.items = response.data;
+                    // this.setting = response.data.setting;
             }).catch((error) => {
                 this.$root.fetchError(error);
             });

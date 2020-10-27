@@ -14,7 +14,7 @@ class PersonTypeSeeder extends Seeder
     {
         $data = [
             [ 'name' => 'Architect', 'slug' => 'architect' ],
-            [ 'name' => 'Maintenance', 'slug' => 'maintenance' ],
+            [ 'name' => 'Maintenance', 'slug' => 'maintenance' ]
         ];
 
         DB::table('person_types')->insert($data);

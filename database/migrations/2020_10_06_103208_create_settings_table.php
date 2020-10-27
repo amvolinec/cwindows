@@ -22,6 +22,11 @@ class CreateSettingsTable extends Migration
 			$table->string('phone')->nullable();
 			$table->string('account')->nullable();
 			$table->string('email')->nullable();
+			$table->string('web')->nullable();
+			$table->string('file_name')->nullable();
+			$table->string('file_uri')->nullable();
+			$table->unsignedBigInteger('currency_id')->nullable();
+			$table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null');
 
             $table->timestamps();
         });

@@ -14,12 +14,12 @@
                             </form>
                         </div>
                         <div class="d-inline-block" style="vertical-align: top; padding: 6px;">
-                            <h4 >{{ __('Settings') }}</h4>
+                            <h4 >{{ __('Owners') }}</h4>
                         </div>
                         <find route="setting" fields="" search="{{ $search ?? '' }}"></find>
                     </div>
                     <div class="card-body">
-                        <table class="table table-sm table-striped">
+                        <table class="table table-sm table-striped table-responsive-md">
                             <thead class="thead">
                             <tr>
                                 <th scope="col">#</th>
@@ -30,8 +30,11 @@
 								<th scope="col">{{ __("Phone") }}</th>
 								<th scope="col">{{ __("Account") }}</th>
 								<th scope="col">{{ __("Email") }}</th>
+								<th scope="col">{{ __("Web") }}</th>
+								<th scope="col">{{ __("Logo") }}</th>
+								<th scope="col">{{ __("Currency") }}</th>
 
-                                <th scope="col">{{ __('Actions') }}</th>
+                                <th scope="col" style="width: 100px;">{{ __('Actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -45,6 +48,11 @@
 									<td>{{ $setting->phone }}</td>
 									<td>{{ $setting->account }}</td>
 									<td>{{ $setting->email }}</td>
+									<td>{{ $setting->web }}</td>
+									<td>
+                                        <img class="img-thumbnail preview" src="{{ asset('storage/' . $setting->file_uri) }}" alt="{{ $setting->file_name }}">
+                                    </td>
+									<td>{{ $setting->currency->currency ?? '' }}</td>
 
                                     <td>
                                         <form class="float-right" action="{{ route('setting.destroy', $setting->id) }}"

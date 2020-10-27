@@ -38,7 +38,7 @@ class CreateOffersTable extends Migration
 			$table->unsignedBigInteger('architect_id')->nullable()->index();
 			$table->date('inquiry_date')->nullable();
 			$table->date('contract_date')->nullable();
-			$table->string('number')->nullable();
+			$table->unsignedInteger('number')->nullable();
 			$table->string('order_number')->nullable();
             $table->string('contract_number')->nullable();
 			$table->string('title')->nullable();

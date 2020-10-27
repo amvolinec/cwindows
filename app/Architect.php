@@ -9,11 +9,15 @@ class Architect extends Model
 {
     use LogsActivity;
 
-    protected $fillable = ["title", "phone", "email", "company", "notes"];
+    protected $fillable = ["title", "phone", "email", "company", "notes", "setting_id"];
 
-    protected static $logAttributes = ["title", "phone", "email", "company", "notes"];
+    protected static $logAttributes = ["title", "phone", "email", "company", "notes", 'setting_id'];
 
     public function offers() {
         return $this->hasMany('App\Offer');
+    }
+
+    public function setting(){
+        return $this->belongsTo('App\Setting');
     }
 }

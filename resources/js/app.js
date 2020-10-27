@@ -61,7 +61,12 @@ const app = new Vue({
         configurator2: false,
         offer: [],
         newContact: false,
-        newTransaction: false
+        newTransaction: false,
+        locale: 'de-DE',
+        currency: 'EUR'
+    },
+    created() {
+        this.loadSettings();
     },
     methods: {
         fetchError(error){
@@ -88,9 +93,20 @@ const app = new Vue({
             }
             console.log(error.config);
         }, format(n) {
-            return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(n);
+            return new Intl.NumberFormat(this.locale, { style: 'currency', currency: this.currency }).format(n);
         }, percents(n) {
-            return new Intl.NumberFormat('de-DE', { style: 'percent', signDisplay: "exceptZero" }).format(n);
+            return new Intl.NumberFormat(this.locale, { style: 'percent', signDisplay: "exceptZero" }).format(n);
+        }, loadSettings(){
+            axios.get('/settings').then(r => {
+                console.log(r.data);
+                if (typeof r.data === 'object'){
+                    console.log(r.data.currency.code);
+                    this.locale = r.data.currency.locale.replace('_','-');
+                    this.currency = r.data.currency.code;
+                }
+            }).catch((error) => {
+                this.fetchError(error);
+            });
         }
     }
 });

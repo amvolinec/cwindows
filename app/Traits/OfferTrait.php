@@ -30,10 +30,12 @@ trait OfferTrait
 
         $this->offer->save();
 
-        $this->unsetPositions();
-        $this->unsetFiles();
         $this->setPositions();
-        $this->setFiles();
+
+        $this->unsetPositions();
+//        $this->unsetFiles();
+
+//        $this->setFiles();
 
         return $this->offer;
     }
@@ -45,12 +47,12 @@ trait OfferTrait
         }
     }
 
-    protected function unsetFiles(){
-        foreach($this->offer->files as $file){
-            $file->offer_id = null;
-            $file->save();
-        }
-    }
+//    protected function unsetFiles(){
+//        foreach($this->offer->files as $file){
+//            $file->offer_id = null;
+//            $file->save();
+//        }
+//    }
 
     protected function setPositions(){
         foreach($this->tender->positions as $position){
@@ -59,11 +61,11 @@ trait OfferTrait
         }
     }
 
-    protected function setFiles(){
-        foreach($this->tender->files as $file){
-            $file->offer_id = $this->offer->id;
-            $file->save();
-        }
-    }
+//    protected function setFiles(){
+//        foreach($this->tender->files as $file){
+//            $file->offer_id = $this->offer->id;
+//            $file->save();
+//        }
+//    }
 
 }
