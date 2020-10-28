@@ -42,7 +42,6 @@ class SettingController extends Controller
      */
     public function store(SettingRequest $request)
     {
-
         $path = null;
         $file_name = '';
 

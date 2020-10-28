@@ -8,6 +8,7 @@ use App\Traits\OfferTrait;
 use App\Traits\TenderTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class TenderController extends Controller
@@ -113,5 +114,15 @@ class TenderController extends Controller
         $offer = Offer::with('positions', 'files')->findOrFail($tender->offer_id);
 
         return $this->setVersion($offer, $tender);
+    }
+
+    public function setTender(Request $request, $id){
+        $offer = Offer::with('positions', 'files')->findOrFail($request->get('id'));
+        $offer->fill($request->except('client_id, manager_id, company_id, positions'));
+        $offer->save();
+//        Log::info('Tender ID:' . $id);
+
+
+        return $offer;
     }
 }

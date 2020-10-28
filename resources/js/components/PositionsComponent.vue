@@ -228,7 +228,8 @@ export default {
         saveOffer() {
             this.message = '';
             this.offer.delivery_date = this.offer.delivery_date.substr(0, 10);
-            axios.post('/set-offer', this.offer).then(response => {
+            let url = '/set-' + this.$root.$data.loaded + (this.$root.$data.loaded === 'tender' ? '/' + this.$root.$data.tenderId : '');
+            axios.post(url, this.offer).then(response => {
                 if (response.data.status === 'error') {
                     this.message = response.data.message;
                     return;

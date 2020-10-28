@@ -56,4 +56,13 @@ trait TenderTrait
 
         $offer->save();
     }
+
+    public function updatePositions($positions, $tender_id){
+
+
+        foreach ($positions as $position) {
+
+            $position->save();
+        }
+    }
 }

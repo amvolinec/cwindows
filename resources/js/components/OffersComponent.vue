@@ -205,7 +205,7 @@
                             <h5><i class="fa fa-building"></i> Product list</h5>
                         </div>
                         <div class="d-inline-flex">
-                            <button class="btn btn-sm btn-outline-secondary" @click="positionsLoad(item)"><i
+                            <button class="btn btn-sm btn-outline-secondary" @click="positionsLoad(item, 'offer')"><i
                                 class="far fa-edit"></i></button>
                         </div>
                     </div>
@@ -289,6 +289,8 @@
                                             {{ $root.format(tender.total_with_vat) }}
                                             <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
                                                      @click="setTender(tender.id)"><i class="fas fa-check"></i></button>
+                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
+                                                     @click="tenderLoad(tender)"><i class="fas fa-edit"></i></button>
                                             <a v-for="file in tender.files" class="btn btn-sm btn-outline-secondary"
                                                v-bind:href="'/' + file.file_uri" target="_blank">PDF</a>
                                         </span>
@@ -373,10 +375,11 @@ export default {
             this.$root.$emit('editOffer', item);
             this.$root.$data.popup = true;
         },
-        positionsLoad(item) {
+        positionsLoad(item, loaded) {
             this.$root.$emit('editPositions', item);
             this.$root.$data.offer = item;
             this.$root.$data.positions = true;
+            this.$root.$data.loaded = loaded;
         },
         itemDelete(item) {
             let data = {id: item.id, route: 'offers', message: 'Delete ' + item.title + ' ?'};
@@ -433,7 +436,11 @@ export default {
             this.itemSave();
         }, printTender(tenderId){
             window.location.href
-        }
+        }, tenderLoad(tender) {
+            this.item.positions = tender.positions;
+            this.positionsLoad(this.item, 'tender');
+            this.$root.$data.tenderId = tender.id;
+        },
     }
 }
 </script>

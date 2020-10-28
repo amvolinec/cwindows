@@ -104,7 +104,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('offer/preview/{id}', 'OfferController@preview')->name('offer.preview');
     Route::get('tender/{id}/make', 'TenderController@makeVersion')->name('tender.make');
     Route::get('tender/{id}/set', 'TenderController@set')->name('tender.set');
-
+    Route::post('set-tender/{id}', 'TenderController@setTender')->name('tender.set.tender');
 
 
     Route::post('client/find/', 'ClientController@find')->name('client.find');
