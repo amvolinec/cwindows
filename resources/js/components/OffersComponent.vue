@@ -205,7 +205,7 @@
                             <h5><i class="fa fa-building"></i> Product list</h5>
                         </div>
                         <div class="d-inline-flex">
-                            <button class="btn btn-sm btn-outline-secondary" @click="positionsLoad(item, 'offer')"><i
+                            <button class="btn btn-sm btn-outline-secondary" @click="positionsLoad(item, false)"><i
                                 class="far fa-edit"></i></button>
                         </div>
                     </div>
@@ -378,7 +378,6 @@ export default {
         positionsLoad(item, loaded) {
             this.$root.$emit('editPositions', item);
             this.$root.$data.offer = item;
-            this.$root.$data.positions = true;
             this.$root.$data.loaded = loaded;
         },
         itemDelete(item) {
@@ -437,8 +436,8 @@ export default {
         }, printTender(tenderId){
             window.location.href
         }, tenderLoad(tender) {
-            this.item.positions = tender.positions;
-            this.positionsLoad(this.item, 'tender');
+            // this.item.positions = tender.positions;
+            this.positionsLoad(this.item, true);
             this.$root.$data.tenderId = tender.id;
         },
     }
