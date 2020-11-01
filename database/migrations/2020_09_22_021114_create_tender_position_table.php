@@ -15,11 +15,11 @@ class CreateTenderPositionTable extends Migration
     {
         Schema::create('tender_position', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('tender_id')->nullable();
-            $table->unsignedBigInteger('position_id')->nullable();
+            $table->unsignedBigInteger('tender_id');
+            $table->unsignedBigInteger('position_id');
 
-            $table->foreign('tender_id')->references('id')->on('tenders')->onDelete('set null');
-            $table->foreign('position_id')->references('id')->on('positions')->onDelete('set null');
+            $table->foreign('tender_id')->references('id')->on('tenders')->onDelete('cascade');
+            $table->foreign('position_id')->references('id')->on('positions')->onDelete('cascade');
 
             $table->timestamps();
         });

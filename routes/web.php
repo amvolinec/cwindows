@@ -100,11 +100,13 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::delete('offers', 'OfferController@deleteMany');
     Route::get('offer/get/{id}', 'OfferController@getData')->name('offer.get.data');
-    Route::get('offer/print/{id}', 'OfferController@print')->name('offer.print');
-    Route::get('offer/preview/{id}', 'OfferController@preview')->name('offer.preview');
+    Route::get('offer/print/{id}/{lang}', 'OfferController@tenderPrint')->name('offer.print');
+    Route::get('offer/preview/{id}/{lang}', 'OfferController@preview')->name('offer.preview');
+    Route::get('offer/create-tender/{id}', 'OfferController@createTender')->name('offer.create.tender');
+
     Route::get('tender/{id}/make', 'TenderController@makeVersion')->name('tender.make');
     Route::get('tender/{id}/set', 'TenderController@set')->name('tender.set');
-
+    Route::post('delete-tender', 'TenderController@deleteTender')->name('tender.nope');
 
 
     Route::post('client/find/', 'ClientController@find')->name('client.find');

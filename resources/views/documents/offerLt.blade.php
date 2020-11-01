@@ -7,6 +7,11 @@
         <br>
         <table style="width:100%">
             <tbody>
+            @if($button)
+                <a href="/offer/print/{{ $offer->id }}/Lt">
+                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-print"></i> Print</button>
+                </a>
+            @endif
             <tr>
                 <td class="paragraph">
                     <strong>Pardavejas: </strong>

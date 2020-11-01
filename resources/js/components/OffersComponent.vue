@@ -215,7 +215,7 @@
                             <div class="i-title">{{ position.title }}</div>
                             <div class="i-line">
                                 <div class="float-left">
-                                    {{ position.quantity }} x {{ $root.format(position.price) }}
+                                    {{ position.quantity }} x {{ $root.format(position.final_price) }}
                                 </div>
                                 <div class="float-right">
                                     {{ $root.format(position.subtotal) }}
@@ -266,15 +266,14 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <div class="panel-info">
+                    <div class="panel-info flex-row">
                         <div class="d-inline-flex">
                             <h5><i class="far fa-file"></i> Offers (Tenders)</h5>
-                            <div class="d-inline-flex">
-                                <button v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary" @click="newTender(item.id)">
-                                    <i class="fas fa-plus"></i></button>
-                            </div>
                         </div>
-
+                        <div class="d-inline-flex">
+                            <button v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary" @click="createTender">
+                                <i class="fas fa-plus"></i></button>
+                        </div>
                     </div>
 
                     <ul class="i-list mb-2" v-for="tender in tenders">
@@ -288,9 +287,15 @@
                                         <span class="float-right">
                                             {{ $root.format(tender.total_with_vat) }}
                                             <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
-                                                     @click="setTender(tender.id)"><i class="fas fa-check"></i></button>
-                                            <a v-for="file in tender.files" class="btn btn-sm btn-outline-secondary"
-                                               v-bind:href="'/' + file.file_uri" target="_blank">PDF</a>
+                                                     @click="setTender(tender.id)"><i class="fas fa-edit"></i></button>
+<!--                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"-->
+<!--                                                     @click="editTender(tender)"><i class="fas fa-edit"></i></button>-->
+<!--                                            <a v-for="file in tender.files" class="btn btn-sm btn-outline-secondary"-->
+<!--                                               v-bind:href="'/' + file.file_uri" target="_blank">PDF</a>-->
+                                            <button class="btn btn-sm btn-outline-secondary" @click="print(tender, 'Eng')"> ENG</button>
+                                            <button class="btn btn-sm btn-outline-secondary" @click="print(tender, 'Lt')"> LT</button>
+                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
+                                                     @click="deleteTender(tender)"><i class="fas fa-eraser"></i></button>
                                         </span>
                                     </div>
                                 </div>
@@ -298,13 +303,18 @@
                                     <div class="row small">
                                         <div class="col-md-4">{{ pos.title }}</div>
                                         <div class="col-md-4">{{ pos.quantity }} x {{ pos.final_price }}</div>
-                                        <div class="col-md-4"><span class="float-right">{{ pos.total }}</span></div>
+                                        <div class="col-md-4"><span class="float-right">{{ pos.subtotal }}</span></div>
                                     </div>
                                 </div>
                             </div>
                         </li>
                     </ul>
-
+<!--                    <div class="row" v-if="item.state_id < 5">-->
+<!--                        <div class="col-md-12">-->
+<!--                            <button class="btn btn-outline-success" @click="createTender"><i class="fas fa-file"></i>-->
+<!--                                Create New Tender</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="row" v-if="item.state_id < 5">
                         <div class="col-md-12">
                             <button class="btn btn-outline-success" @click="createContract">Create Contract</button>
@@ -420,11 +430,13 @@ export default {
                 this.$root.fetchError(error);
             });
         }, setTender(id) {
-            axios.get('/tender/' + id + '/set', this.item).then(response => {
-                if (response.data.status === 'error') {
-                    this.message = response.data.message;
+            axios.get('/tender/' + id + '/set', this.item).then(r => {
+                if (r.data.status === 'error') {
+                    this.message = r.data.message;
                 }
-                this.fetchItems();
+                this.item = r.data.offer;
+                this.positions = typeof r.data.offer.positions !== 'undefined' ? r.data.offer.positions : [];
+                this.positionsLoad(this.item);
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -433,6 +445,41 @@ export default {
             this.itemSave();
         }, printTender(tenderId){
             window.location.href
+        }, deleteTender(tender){
+            if (confirm("Delete this tender?") == false) {
+                return;
+            }
+            axios.post('/delete-tender' , {tender_id: tender.id}).then(response => {
+                this.removeTender(tender);
+            }).catch((error) => {
+                this.$root.fetchError(error);
+            });
+        }, removeTender(tender){
+            let t = this.tenders.indexOf(tender);
+            this.tenders.splice(t);
+        }
+        , editTender(tender){
+            this.setTender(tender.id);
+            this.item.positions = tender.positions;
+            this.positionsLoad(this.item);
+            this.$root.$data.tenderId = tender.id;
+
+        }, createTender() {
+            axios.get('/offer/create-tender/' + this.item.id).then(response => {
+                if (response.data.status === 'error') {
+                    this.message = response.data.message;
+                    return;
+                }
+                // window.open('/documents/' + response.data.file_name);
+                // this.closePopup();
+                this.fetchItems();
+            }).catch((error) => {
+                this.$root.fetchError(error);
+            });
+        }, previewOffer(tender) {
+            window.open('/offer/preview/' + tender.id, "blank", "width=900,height=640");
+        }, print(tender, lang){
+            window.open('/offer/preview/' + tender.id + '/' + lang, "blank", "width=900,height=640");
         }
     }
 }

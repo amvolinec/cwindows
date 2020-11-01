@@ -63,7 +63,8 @@ const app = new Vue({
         newContact: false,
         newTransaction: false,
         locale: 'de-DE',
-        currency: 'EUR'
+        currency: 'EUR',
+        tenderId: 0,
     },
     created() {
         this.loadSettings();
