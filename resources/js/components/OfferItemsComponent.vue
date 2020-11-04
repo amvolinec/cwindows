@@ -156,7 +156,11 @@ export default {
     mounted() {
         this.$root.$on('offerItemsSaved', () => {
             this.items = this.$root.$data.offer.positions;
-            this.onLoad();
+            if(typeof this.items === 'undefined') {
+                console.log('OfferItemsComponents: Items Not Defined!');
+            } else {
+                this.onLoad();
+            }
         });
     },
     created() {

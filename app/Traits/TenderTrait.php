@@ -45,12 +45,12 @@ trait TenderTrait
         foreach ($positions as $position) {
             $new = $position->replicate();
             $new->push();
-            $new->offer_id = null;
+            $new->offer_id = $offer->id;
             $new->save();
             $tender->positions()->attach($new->id);
 
-//            $position->offer_id = null;
-//            $position->save();
+            $position->offer_id = null;
+            $position->save();
         }
 
 //        $tender->positions()->sync();

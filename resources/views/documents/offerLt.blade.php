@@ -9,7 +9,7 @@
             <tbody>
             @if($button)
                 <a href="/offer/print/{{ $offer->id }}/Lt">
-                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-print"></i> Print</button>
+                    <button class="btn btn-secondary"><i class="fas fa-print"></i> Download</button>
                 </a>
             @endif
             <tr>

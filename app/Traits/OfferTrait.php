@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Offer;
 use App\Tender;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 trait OfferTrait
 {
@@ -16,7 +17,7 @@ trait OfferTrait
         $this->tender = Tender::with('positions', 'files')->findOrFail($tender_id);
         $this->offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $this->tender->offer_id)->get()->first();
 
-        if($this->offer->version === $this->tender->version){
+        if ($this->offer->version === $this->tender->version) {
             return ['offer' => $this->offer];
         }
 
@@ -35,9 +36,8 @@ trait OfferTrait
         $this->offer->expenses = $this->tender->expenses;
         $this->offer->comment = $this->tender->comment;
 
-        $this->offer->save();
-
         $this->setPositions();
+        $this->offer->save();
 
         $this->offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $this->tender->offer_id)->get()->first();
         return ['offer' => $this->offer];
@@ -54,8 +54,9 @@ trait OfferTrait
     protected function setPositions()
     {
         foreach ($this->tender->positions as $position) {
+            Log::info('Position ' . json_encode($position, JSON_PRETTY_PRINT));
             $this->offer->positions()->save($position);
-            $this->offer->save();
+//            $this->offer->save();
         }
     }
 

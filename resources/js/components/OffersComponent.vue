@@ -153,7 +153,7 @@
                         <tr>
                             <th scope="row">Responsible person</th>
                             <td>
-                                <div>{{ typeof item.user_id === 'undefined' ? '' : item.user.name }}</div>
+                                <div>{{ typeof item.user === 'undefined' ? '' : item.user.name }}</div>
                                 <small class="">{{ item.created_at }}</small>
                             </td>
                         </tr>
