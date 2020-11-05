@@ -198,7 +198,7 @@
                 </div>
             </div>
 
-            <div class="card mt-2">
+            <div class="card mt-2 hidden" style="display: none;">
                 <div class="card-body">
                     <div class="panel-info">
                         <div class="d-inline-flex">
