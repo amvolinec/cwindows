@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Offer;
+use App\Position;
 use App\Tender;
 use App\Traits\OfferTrait;
 use App\Traits\TenderTrait;
@@ -91,6 +92,7 @@ class TenderController extends Controller
      */
     public function destroy(Tender $tender)
     {
+//        $tender->positions()->detach();
         $tender->delete();
         return redirect()->route('tender.index');
     }
@@ -109,9 +111,12 @@ class TenderController extends Controller
 
     public function set($id)
     {
-        $tender = Tender::with('positions', 'files')->findOrFail($id);
-        $offer = Offer::with('positions', 'files')->findOrFail($tender->offer_id);
+        return $this->setVersion($id);
+    }
 
-        return $this->setVersion($offer, $tender);
+    public function deleteTender(Request $request)
+    {
+        Tender::findOrFail($request->get('tender_id'))->delete();
+        return $request->get('tender_id');
     }
 }

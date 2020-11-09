@@ -40,6 +40,7 @@ class OfferController extends Controller
     {
         $this->repo = $repo;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -250,11 +251,46 @@ class OfferController extends Controller
 
         }
 
+        if ($offer->is_tender) {
+            $result = $this->updateTender($offer);
+            Log::info('Tender updated ' . $offer->version);
+        } else {
+            $result = $this->makeNewTender($offer, []);
+            Log::info('Tender created ' . $offer->version);
+        }
+
+
         return [
             'status' => 'success',
             'message' => 'Saved successfully',
-            'offer' => $this->getData($offer->id)
+            'offer' => $this->getData($offer->id),
+            'tender' => $result
         ];
+    }
+
+    protected function updateTender(Offer $offer)
+    {
+        $tender = Tender::where([['offer_id', $offer->id], ['version', $offer->version]])->first();
+        if (!$tender) {
+            Log::info('Tender not found');
+            return "Tender {$offer->id} - {$offer->version} not found";
+        }
+        $tender->profile_id = $offer->profile_id ?? null;
+        $tender->materials = $offer->materials ?? null;
+        $tender->colors = $offer->colors ?? null;
+        $tender->squaring = $offer->squaring ?? null;
+        $tender->meters = $offer->meters ?? null;
+        $tender->delivery_address = $offer->delivery_address ?? null;
+        $tender->total_with_vat = $offer->total_with_vat;
+        $tender->cost = $offer->cost;
+        $tender->expenses = $offer->expenses ?? null;
+        $tender->comment = $offer->comment ?? null;
+        $tender->total = $offer->total ?? null;
+        $tender->save();
+
+        $tender->positions()->detach();
+        $tender->positions()->sync($offer->positions_ids);
+        return 'updated';
     }
 
     public function deleteMany(Request $request)
@@ -312,22 +348,23 @@ class OfferController extends Controller
         return ['status' => 'success'];
     }
 
-    public function print($id) {
+    public function createTender($id)
+    {
         $files = [];
         $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $id)->get()->first();
-        $offer->version = 1 + (int)Tender::where('offer_id','=', $offer->id)->max('version');
+        $offer->version = 1 + (int)Tender::where('offer_id', '=', $offer->id)->max('version');
 
         $positions = Position::where('offer_id', $id)->get();
 
-        if(empty($positions)){
+        if (empty($positions)) {
             return ['status' => 'error', 'message' => 'Offer is empty'];
         }
 
-        $file = $this->createPdf($offer, $positions, 'Eng');
-        array_push($files, $file->id);
-
-        $file = $this->createPdf($offer, $positions, 'Lt');
-        array_push($files, $file->id);
+//        $file = $this->createPdf($offer, $positions, 'Eng');
+//        array_push($files, $file->id);
+//
+//        $file = $this->createPdf($offer, $positions, 'Lt');
+//        array_push($files, $file->id);
 
         $offer->save();
 
@@ -336,32 +373,46 @@ class OfferController extends Controller
         return ['status' => 'success', 'file_name' => ''];
     }
 
-    public function preview($id) {
-        $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $id)->get()->first();
-        $positions = Position::where('offer_id', $id)->get();
+    public function preview($id, $lang)
+    {
+        $tender = Tender::findOrFail($id);
+        $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $tender->offer_id)->get()->first();
+        $offer->manager_id = $tender->manager_id;
+        $offer->delivery_address = $tender->delivery_address;
+        $offer->version = $tender->version;
+        $offer->profile_id = $tender->profile_id;
+        $offer->materials = $tender->materials;
+        $offer->colors = $tender->colors;
+        $offer->squaring = $tender->squaring;
+        $offer->total = $tender->total;
+        $offer->total_with_vat = $tender->total_with_vat;
+        $offer->cost = $tender->cost;
+        $offer->expenses = $tender->expenses;
+        $offer->comment = $tender->comment;
+        $positions = $tender->positions;
 
         $setting = Setting::with('currency')->find($this->getSettingId());
 
-        if(empty($positions)){
+        if (empty($positions)) {
             return ['status' => 'error', 'message' => 'Offer is empty'];
         }
-        return view('documents.offerEng', [
+        return view('documents.offer' . $lang, [
             'offer' => $offer,
             'positions' => $positions,
             'settings' => $setting,
-            'fmt' => numfmt_create( $setting->currency->locale, NumberFormatter::CURRENCY ),
+            'fmt' => numfmt_create($setting->currency->locale, NumberFormatter::CURRENCY),
             'i' => 1,
             'button' => true
         ]);
     }
 
     /**
-     * @param $offer
+     * @param Offer $offer
      * @param $positions
-     * @param $lang
+     * @param string $lang
      * @return mixed
      */
-    protected function createPdf($offer, $positions, $lang)
+    protected function createPdf(Offer $offer, $positions, $lang)
     {
         $fileName = 'offer_' . date('Ymd_His') . '_v' . $offer->version . '_' . $lang . '.pdf';
         $filePath = public_path('documents') . '/' . $fileName;
@@ -381,10 +432,16 @@ class OfferController extends Controller
 
         ])->save($filePath)->stream($fileName);
 
-        $file = File::create([
+        return File::create([
             'file_name' => $fileName,
             'file_uri' => 'documents/' . $fileName
         ]);
-        return $file;
+    }
+
+    public function tenderPrint($offer_id, $lang)
+    {
+        $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $offer_id)->get()->first();
+        $file = $this->createPdf($offer, $offer->positions, $lang);
+        return Storage::disk('uploads')->download($file->file_uri);
     }
 }

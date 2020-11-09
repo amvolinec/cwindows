@@ -179,6 +179,10 @@ class Offer extends Model
         return $this->hasMany('App\Tender');
     }
 
+    public function getIsTenderAttribute(){
+        return !empty(Tender::where([['offer_id', $this->id], ['version', $this->version]])->first());
+    }
+
     public function getPositionsIdsAttribute()
     {
         return $this->positions->pluck('id');
