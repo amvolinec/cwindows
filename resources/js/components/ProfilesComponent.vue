@@ -28,6 +28,7 @@
                             <tbody>
                             <tr v-for="profile in profiles">
                                 <td>{{ profile.id }}</td>
+                                <td>{{ profile.name }}</td>
                                 <td>{{ profile.price }}</td>
                                 <td>{{ profile.index }}</td>
                                 <td>{{ profile.file_name }}</td>
