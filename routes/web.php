@@ -41,14 +41,14 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('material', 'MaterialController');
     Route::post('material/find/', 'MaterialController@find')->name('material.find');
     Route::get('material/find/{string}', 'MaterialController@find')->name('material.find.get');
-    Route::get('materials-get', 'MaterialController@get')->name('material.index');
+    Route::get('materials-get', 'MaterialController@get')->name('material.get');
     Route::post('materials-search', 'MaterialController@search')->name('material.search');
 
 
     Route::resource('color', 'ColorController');
     Route::post('color/find/', 'ColorController@find')->name('color.find');
     Route::get('color/find/{string}', 'ColorController@find')->name('color.find.get');
-    Route::get('colors-get', 'ColorController@get')->name('colors.index');
+    Route::get('colors-get', 'ColorController@get')->name('colors.get');
     Route::post('colors-search', 'ColorController@search')->name('colors.search');
 
     Route::resource('service', 'ServiceController');
@@ -84,7 +84,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('profile', 'ProfileController');
     Route::post('profile/find/', 'ProfileController@find')->name('profile.find');
     Route::get('profile/find/{string}', 'ProfileController@find')->name('profile.find.get');
-    Route::get('profiles-get', 'ProfileController@get')->name('profile.index');
+    Route::get('profiles-get', 'ProfileController@get')->name('profile.get');
     Route::post('profiles-search', 'ProfileController@search')->name('profile.search');
 
 
