@@ -117,16 +117,16 @@
                 </div>
 
                 <div class="form-group mb-0 text-right">
-                    <button class="btn btn-outline-secondary" type="button" @click="printOffer"
-                            v-if="typeof items[0].offer_id !== 'undefined'">
-                        <i class="fas fa-file-pdf"></i>
-                        Make Tender
-                    </button>
-                    <button class="btn btn-outline-secondary" type="button" @click="previewOffer"
-                            v-if="typeof items[0].offer_id !== 'undefined'">
-                        <i class="far fa-file-pdf"></i>
-                        Preview
-                    </button>
+<!--                    <button class="btn btn-outline-secondary" type="button" @click="printOffer"-->
+<!--                            v-if="typeof items[0].offer_id !== 'undefined'">-->
+<!--                        <i class="fas fa-file"></i>-->
+<!--                        Create New Tender-->
+<!--                    </button>-->
+<!--                    <button class="btn btn-outline-secondary" type="button" @click="previewOffer"-->
+<!--                            v-if="typeof items[0].offer_id !== 'undefined'">-->
+<!--                        <i class="far fa-file-pdf"></i>-->
+<!--                        Preview-->
+<!--                    </button>-->
                     <button class="btn btn-outline-dark" type="button" @click="closePopup"><i class="fas fa-times"></i>
                         Cancel
                     </button>
@@ -156,7 +156,11 @@ export default {
     mounted() {
         this.$root.$on('offerItemsSaved', () => {
             this.items = this.$root.$data.offer.positions;
-            this.onLoad();
+            if(typeof this.items === 'undefined') {
+                console.log('OfferItemsComponents: Items Not Defined!');
+            } else {
+                this.onLoad();
+            }
         });
     },
     created() {
@@ -275,20 +279,22 @@ export default {
                 this.$root.$data.configurator1 = true;
             if (val === 'wx2')
                 this.$root.$data.configurator2 = true;
-        }, previewOffer() {
-            window.open('/offer/preview/' + this.items[0].offer_id, "blank", "width=900,height=640");
-        }, printOffer() {
-            axios.get('/offer/print/' + this.items[0].offer_id).then(response => {
-                if (response.data.status === 'error') {
-                    this.message = response.data.message;
-                    return;
-                }
-                window.open('/documents/' + response.data.file_name);
-                this.closePopup();
-            }).catch((error) => {
-                this.$root.fetchError(error);
-            });
         }
+        // , previewOffer() {
+        //     window.open('/offer/preview/' + this.items[0].offer_id, "blank", "width=900,height=640");
+        // }
+        // , printOffer() {
+        //     axios.get('/offer/print/' + this.items[0].offer_id).then(response => {
+        //         if (response.data.status === 'error') {
+        //             this.message = response.data.message;
+        //             return;
+        //         }
+        //         window.open('/documents/' + response.data.file_name);
+        //         this.closePopup();
+        //     }).catch((error) => {
+        //         this.$root.fetchError(error);
+        //     });
+        // }
     }
 }
 </script>

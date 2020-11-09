@@ -5,6 +5,11 @@
         <br>
         <table style="width:100%">
             <tbody>
+            @if($button)
+                <a href="/offer/print/{{ $offer->id }}/Eng">
+                    <button class="btn btn-secondary"><i class="fas fa-print"></i> Download</button>
+                </a>
+            @endif
             <tr>
                 <td class="paragraph">
                     <img style="width: 200px; text-align: center" src="{{ asset('storage/' . $settings->file_uri) }}">

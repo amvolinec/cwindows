@@ -40,21 +40,25 @@ trait TenderTrait
             'updated_at' => date('Y-m-d H:i:s')
         ]);
 
-        $tender->positions()->sync($offer->positions_ids);
-
         $positions = $offer->positions;
 
         foreach ($positions as $position) {
             $new = $position->replicate();
             $new->push();
+            $new->offer_id = $offer->id;
+            $new->save();
+            $tender->positions()->attach($new->id);
 
             $position->offer_id = null;
             $position->save();
         }
 
+//        $tender->positions()->sync();
         $tender->files()->sync($files);
 
         $offer->save();
+
+        return 'created';
     }
 
     public function updatePositions($positions, $tender_id){

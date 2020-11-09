@@ -165,8 +165,12 @@ export default {
             this.saveOffer();
         });
         this.$root.$on('updateOffer', (offer) => {
-            this.offer = offer;
-            this.saveOffer();
+            if (typeof offer !== 'undefined') {
+                this.offer = offer;
+                this.saveOffer();
+            } else {
+                console.log('PositionsComponents: Offer Not Defined!');
+            }
         });
         this.$root.$on('closePopupNow', () => {
             document.location.reload();
@@ -227,18 +231,26 @@ export default {
         },
         saveOffer() {
             this.message = '';
-            this.offer.delivery_date = this.offer.delivery_date.substr(0, 10);
-            let url = '/set-' + this.$root.$data.loaded + (this.$root.$data.loaded === 'tender' ? '/' + this.$root.$data.tenderId : '');
-            axios.post(url, this.offer).then(response => {
-                if (response.data.status === 'error') {
-                    this.message = response.data.message;
+
+            if( typeof this.offer.delivery_date === 'string'){
+                this.offer.delivery_date = this.offer.delivery_date.substr(0, 10);
+            }
+
+            axios.post('/set-offer', this.offer).then(r => {
+                if (r.data.status === 'error') {
+                    this.message = r.data.message;
                     return;
                 }
-                this.offer = response.data.offer;
-                this.$root.$data.offer.positions = response.data.offer.positions;
                 this.clearPopup();
+                console.log('Data:');
+                console.log(r.data);
+
+                this.offer = r.data.offer;
+                this.$root.$data.offer.positions = r.data.offer.positions;
+
                 this.$root.$emit('offerItemsSaved');
                 this.$root.$emit('updateOffer', this.offer);
+
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
