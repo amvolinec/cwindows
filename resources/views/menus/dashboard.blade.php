@@ -43,12 +43,12 @@
 
                                     @if(Auth::user()->hasRole('super-admin'))
                                         <br />
+                                            <li><a href="{{ route('event.index') }}"><i class="fas fa-wallet"></i>
+                                                    Activity Log</a></li>
                                             <li><a href="{{ route('setting.index') }}"><i class="fas fa-wallet"></i>
                                                     Owners</a></li>
                                             <li><a href="{{ route('profile.index') }}"><i class="fas fa-wallet"></i>
                                                     Profile</a></li>
-                                            <li><a href="{{ route('event.index') }}"><i class="fas fa-wallet"></i>
-                                                    Activity Log</a></li>
                                             <li><a href="{{ route('color.index') }}"><i class="fas fa-wallet"></i>
                                                     Colors</a></li>
                                             <li><a href="{{ route('material.index') }}"><i class="fas fa-wallet"></i>

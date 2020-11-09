@@ -60,4 +60,13 @@ trait TenderTrait
 
         return 'created';
     }
+
+    public function updatePositions($positions, $tender_id){
+
+
+        foreach ($positions as $position) {
+
+            $position->save();
+        }
+    }
 }

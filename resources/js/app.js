@@ -38,6 +38,10 @@ Vue.component('offer-state', require('./components/OfferStateComponent.vue').def
 Vue.component('configurator', require('./components/СonfiguratorComponent.vue').default);
 Vue.component('configurator-w1', require('./components/СonfiguratorW1Component.vue').default);
 Vue.component('new-transaction', require('./components/NewTransactionComponent.vue').default);
+Vue.component('profiles', require('./components/ProfilesComponent.vue').default);
+Vue.component('colors', require('./components/ColorsComponent.vue').default);
+Vue.component('materials', require('./components/MaterialsComponent.vue').default);
+
 Vue.component('datetime', Datetime);
 Vue.component('v-select', vSelect);
 

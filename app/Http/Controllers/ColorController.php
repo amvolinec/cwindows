@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Annex;
 use App\Color;
+use App\Profile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -18,7 +20,9 @@ class ColorController extends Controller
     public function index()
     {
         $colors = Color::paginate(20);
-        return view('color.index', ['colors' => $colors]);
+       // return view('color.index', ['colors' => $colors]);
+
+        return view('color.colors');
     }
 
     /**
@@ -136,5 +140,20 @@ class ColorController extends Controller
         } else {
             return $data->take(10)->get();
         }
+    }
+
+    public function get()
+    {
+        return Color::paginate(20);
+    }
+
+    public function search(Request $request)
+    {
+        $string = $request->get('search');
+
+        return Color::with('colors')
+            ->where('name', 'like', '%%' . $string . '%%')
+
+            ->take(20)->get();
     }
 }
