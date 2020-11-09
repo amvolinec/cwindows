@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Color;
+use App\Organization;
 use App\Profile;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -17,8 +20,10 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $profiles = Profile::paginate(20);
-        return view('profile.index', ['profiles' => $profiles]);
+        //$profiles = Profile::paginate(20);
+        //return view('profile.index', ['profiles' => $profiles]);
+
+        return view('profile.profiles');
     }
 
     /**
@@ -144,4 +149,22 @@ class ProfileController extends Controller
             return $data->take(10)->get();
         }
     }
+
+    public function get()
+    {
+        return Profile::paginate(20);
+    }
+
+    public function search(Request $request)
+    {
+        $string = $request->get('search');
+
+        return Profile::with('profiles')
+            ->where('name', 'like', '%%' . $string . '%%')
+
+            ->take(20)->get();
+    }
+
+
+
 }

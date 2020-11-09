@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Material;
+use App\Profile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -18,7 +19,9 @@ class MaterialController extends Controller
     public function index()
     {
         $materials = Material::paginate(20);
-        return view('material.index', ['materials' => $materials]);
+        //return view('material.index', ['materials' => $materials]);
+
+        return view('material.materials');
     }
 
     /**
@@ -138,5 +141,21 @@ class MaterialController extends Controller
             );
         }
         return array($file_name, $path);
+    }
+
+    public function get()
+    {
+        return Material::paginate(20);
+    }
+
+
+    public function search(Request $request)
+    {
+        $string = $request->get('search');
+
+        return Material::with('materials')
+            ->where('name', 'like', '%%' . $string . '%%')
+
+            ->take(20)->get();
     }
 }
