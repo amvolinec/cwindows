@@ -33,7 +33,6 @@
                                 <td>{{ profile.index }}</td>
                                 <td>{{ profile.file_name }}</td>
                                 <td>{{ profile.created_at }}</td>
-
                             </tr>
                             </tbody>
                         </table>

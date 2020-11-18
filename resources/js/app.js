@@ -41,6 +41,7 @@ Vue.component('new-transaction', require('./components/NewTransactionComponent.v
 Vue.component('profiles', require('./components/ProfilesComponent.vue').default);
 Vue.component('colors', require('./components/ColorsComponent.vue').default);
 Vue.component('materials', require('./components/MaterialsComponent.vue').default);
+Vue.component('contract', require('./components/ContractComponent.vue').default);
 
 Vue.component('datetime', Datetime);
 Vue.component('v-select', vSelect);
@@ -69,6 +70,7 @@ const app = new Vue({
         locale: 'de-DE',
         currency: 'EUR',
         tenderId: 0,
+        offerId: 0,
     },
     created() {
         this.loadSettings();

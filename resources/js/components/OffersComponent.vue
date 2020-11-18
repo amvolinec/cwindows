@@ -309,12 +309,6 @@
                             </div>
                         </li>
                     </ul>
-<!--                    <div class="row" v-if="item.state_id < 5">-->
-<!--                        <div class="col-md-12">-->
-<!--                            <button class="btn btn-outline-success" @click="createTender"><i class="fas fa-file"></i>-->
-<!--                                Create New Tender</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
                     <div class="row" v-if="item.state_id < 5">
                         <div class="col-md-12">
                             <button class="btn btn-outline-success" @click="createContract">Create Contract</button>
@@ -322,12 +316,15 @@
                     </div>
                 </div>
             </div>
+
+            <contract v-bind:offerId="item.id"></contract>
         </div>
 
         <deals-popup ref="popup"></deals-popup>
         <positions-popup string="item"></positions-popup>
         <nope-popup ref="nope"></nope-popup>
         <new-transaction></new-transaction>
+
     </div>
 </template>
 
@@ -372,6 +369,7 @@ export default {
                 this.types = r.data.types;
                 this.positions = typeof r.data.offer.positions !== 'undefined' ? r.data.offer.positions : [];
                 this.tenders = typeof r.data.tenders !== 'undefined' ? r.data.tenders : [];
+                this.$root.$emit('getContract', this.item.id);
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -441,12 +439,17 @@ export default {
                 this.$root.fetchError(error);
             });
         }, createContract() {
+            axios.post('/create-contract' , {offer_id: this.item.id}).then(r => {
+                console.log(r);
+            }).catch((error) => {
+                this.$root.fetchError(error);
+            });
             this.item.state_id = 5;
             this.itemSave();
         }, printTender(tenderId){
             window.location.href
         }, deleteTender(tender){
-            if (confirm("Delete this tender?") == false) {
+            if (confirm("Delete this tender?") === false) {
                 return;
             }
             axios.post('/delete-tender' , {tender_id: tender.id}).then(response => {

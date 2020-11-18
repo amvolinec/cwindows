@@ -48,7 +48,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('materials-search', 'MaterialController@search')->name('material.search');
 
     Route::resource('contract','ContractController');
-
+    Route::post('create-contract', 'ContractController@createContract')->name('contract.new');
+    Route::get('contract/get/{id}', 'ContractController@get')->name('contract.get');
 
     Route::resource('color', 'ColorController');
     Route::post('color/find/', 'ColorController@find')->name('color.find');
@@ -124,9 +125,6 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('offer/print/{id}/{lang}', 'OfferController@tenderPrint')->name('offer.print');
     Route::get('offer/preview/{id}/{lang}', 'OfferController@preview')->name('offer.preview');
     Route::get('offer/create-tender/{id}', 'OfferController@createTender')->name('offer.create.tender');
-
-
-
 
     Route::get('tender/{id}/make', 'TenderController@makeVersion')->name('tender.make');
     Route::get('tender/{id}/set', 'TenderController@set')->name('tender.set');
