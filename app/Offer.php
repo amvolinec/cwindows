@@ -286,4 +286,9 @@ class Offer extends Model
         return $this->belongsTo('App\Setting');
     }
 
+    public function contract()
+    {
+        return $this->hasOne('App\Contract');
+    }
+
 }

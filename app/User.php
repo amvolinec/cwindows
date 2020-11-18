@@ -70,4 +70,8 @@ class User extends Authenticatable
 
         static::observe('App\Observers\UserObserver');
     }
+
+    public function contracts() {
+        return $this->hasMany('App\Contract');
+    }
 }
