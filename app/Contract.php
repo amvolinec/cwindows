@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contract extends Model
 {
     protected $fillable = [
-        "id",
+        "offer_id",
         "signed_at",
         "planed_at",
         "finished_at",
@@ -21,30 +21,23 @@ class Contract extends Model
         "maintenance_id",
         "expenses",
         "margin",
-        "periods",
+        "period_id",
         "production_start",
         "production_end",
-        "production_number",
         "installation_start",
         "installation_end",
         "installation_note",
     ];
 
-    public static function create(array $all)
-    {
-    }
-
-
     public function client(){
         return $this->belongsTo('App\Client');
     }
-
 
     public function company(){
         return $this->belongsTo('App\Company');
     }
 
-    public function user(){
+    public function manager(){
         return $this->belongsTo('App\User');
     }
 
@@ -55,8 +48,8 @@ class Contract extends Model
         return $this->belongsTo('App\Offer');
     }
 
-    public function product_number()
+    public function production_number()
     {
-        return $this->hasMany('App\ProductNumber');
+        return $this->hasMany('App\ProductionNumber');
     }
 }

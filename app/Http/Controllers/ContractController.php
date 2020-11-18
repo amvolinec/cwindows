@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 
 use App\Contract;
+use App\Period;
+use App\Traits\ContractTrait;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller
 {
+    use ContractTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -88,5 +92,18 @@ class ContractController extends Controller
         $contract->delete();
 
         return redirect()->route('contract.index');
+    }
+
+    public function createContract(Request $request){
+        $offer_id = $request->get('offer_id');
+        return $this->makeNewContract($offer_id);
+    }
+
+    public function get($id){
+        $data = [
+            'contract' => Contract::with('client', 'company', 'manager', 'offer', 'production_number')->where('offer_id', $id)->first(),
+            'periods' => Period::all(),
+            ];
+        return $data;
     }
 }
