@@ -21,6 +21,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::resource('period', 'PeriodController');
+    Route::post('period/find/', 'PeriodController@find')->name('period.find');
+    Route::get('period/find/{string}', 'PeriodController@find')->name('period.find.get');
     Route::resource('currency', 'CurrencyController');
     Route::post('currency/find/', 'CurrencyController@find')->name('currency.find');
     Route::get('currency/find/{string}', 'CurrencyController@find')->name('currency.find.get');
@@ -43,6 +46,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('material/find/{string}', 'MaterialController@find')->name('material.find.get');
     Route::get('materials-get', 'MaterialController@get')->name('material.get');
     Route::post('materials-search', 'MaterialController@search')->name('material.search');
+
+    Route::resource('contract','ContractController');
 
 
     Route::resource('color', 'ColorController');
@@ -119,6 +124,9 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('offer/print/{id}/{lang}', 'OfferController@tenderPrint')->name('offer.print');
     Route::get('offer/preview/{id}/{lang}', 'OfferController@preview')->name('offer.preview');
     Route::get('offer/create-tender/{id}', 'OfferController@createTender')->name('offer.create.tender');
+
+
+
 
     Route::get('tender/{id}/make', 'TenderController@makeVersion')->name('tender.make');
     Route::get('tender/{id}/set', 'TenderController@set')->name('tender.set');

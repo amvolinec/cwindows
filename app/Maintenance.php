@@ -19,4 +19,11 @@ class Maintenance extends Model
     public function setting(){
         return $this->belongsTo('App\Setting');
     }
+
+    public function contracts() {
+        return $this->hasMany('App\Contract');
+    }
+
 }
+
+
