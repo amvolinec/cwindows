@@ -1,22 +1,92 @@
-<template ref="contract">
-    <div class="card">
+<template ref="contract" v-if="contract.id">
+    <div class="card mt-3">
         <div class="card-body">
             <div class="panel-info flex-row">
                 <div class="d-inline-flex">
                     <h5><i class="fa fa-info-circle"></i> Contract</h5>
                 </div>
                 <div class="d-inline-flex">
-                    <!--                <button class="btn btn-sm btn-outline-secondary" @click="contractLoad(contract)"><i-->
-                    <!--                    class="far fa-edit"></i></button>-->
                     <button class="btn btn-sm btn-outline-secondary" @click="isDisabled=false">
                         <i class="fas fa-pencil-alt"></i></button>
                 </div>
             </div>
             <table class="table table-sm">
                 <tbody>
-                <tr>
+                <tr v-if="contract.signed_at || !isDisabled">
                     <th width="40%" scope="row">Signed date</th>
-                    <td width="60%">{{ contract.signed_at }}</td>
+                    <td width="60%">
+                        <datetime id="inquiry_date" v-model="contract.signed_at" type="date"
+                                  :disabled="isDisabled"
+                                  v-bind:input-class="[ isDisabled ? passiveClass : activeClass ]"
+                                  format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
+                    </td>
+                </tr>
+                <tr v-if="contract.planed_at || !isDisabled">
+                    <th>Planed date</th>
+                    <td>{{ contract.planed_at }}</td>
+                </tr>
+
+                <tr v-if="contract.finished_at || !isDisabled">
+                    <th>Finished  date</th>
+                    <td>{{ contract.finished_at }}</td>
+                </tr>
+
+                <tr v-if="contract.warranted_at || !isDisabled">
+                    <th>Warranted  date</th>
+                    <td>{{ contract.warranted_at }}</td>
+                </tr>
+
+                <tr v-if="contract.amount || !isDisabled">
+                    <th>Amount</th>
+                    <td>
+                        <input :disabled="isDisabled" type="number" step="0.01" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
+                               v-model="contract.amount">
+                    </td>
+                </tr>
+
+                <tr v-if="contract.payments || !isDisabled">
+                    <th>Payments</th>
+                    <td>{{ contract.payments }}</td>
+                </tr>
+
+                <tr v-if="contract.expenses || !isDisabled">
+                    <th>Expenses</th>
+                    <td>{{ contract.expenses }}</td>
+                </tr>
+
+                <tr v-if="contract.margin || !isDisabled">
+                    <th>Margin</th>
+                    <td>
+                    <input :disabled="isDisabled" type="number" step="0.01" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
+                              v-model="contract.margin">
+                    </td>
+                </tr>
+
+                <tr v-if="contract.production_start || !isDisabled">
+                    <th>Start production</th>
+                    <td>{{ contract.production_start }}</td>
+                </tr>
+
+                <tr v-if="contract.production_end || !isDisabled">
+                    <th>End production</th>
+                    <td>{{ contract.production_end }}</td>
+                </tr>
+
+                <tr v-if="contract.installation_start || !isDisabled">
+                    <th>Start installation</th>
+                    <td>{{ contract.installation_start }}</td>
+                </tr>
+
+                <tr v-if="contract.installation_end || !isDisabled">
+                    <th>End installation</th>
+                    <td>{{ contract.installation_end }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Period</th>
+                    <td>
+                        <v-select :disabled="isDisabled"  label="name" :options="periods" v-model="period"
+                                  @input="periodSelected"></v-select>
+                    </td>
                 </tr>
                 <tr v-if="(typeof contract.company !== 'undefined') && (contract.company !== null)">
                     <th scope="row">Company</th>
@@ -34,22 +104,18 @@
                         }}
                     </td>
                 </tr>
-                <tr v-if="contract.address">
+                <tr v-if="contract.address || !isDisabled">
                     <th>Delivery Address</th>
                     <td>{{ contract.address }}</td>
                 </tr>
-                <tr v-if="contract.description">
-                    <th>Description</th>
+                <tr v-if="contract.installation_note || !isDisabled">
+                    <th>Note installation</th>
                     <td>
-                    <textarea :disabled="isDisabled" class="form-control-plaintext"
+                    <textarea :disabled="isDisabled" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
                               v-model="contract.installation_note"
-                              rows="5">
+                              rows="3" cols="20">
                     </textarea>
                     </td>
-                </tr>
-                <tr v-if="contract.amount > 0">
-                    <th scope="row">Amount</th>
-                    <td>{{ contract.amount }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Project Manager</th>
@@ -77,9 +143,12 @@ export default {
         return {
             contract: [],
             periods: [],
+            period: {},
             types: [],
             isDisabled: true,
-            offerId: this.offerId,
+            // offerId: this.offerId,
+            passiveClass: 'form-control-plaintext',
+            activeClass: 'form-control-sm'
         }
     },
     mounted() {
@@ -97,6 +166,7 @@ export default {
             axios.get(url).then(r => {
                 this.contract = r.data.contract;
                 this.periods = r.data.periods;
+                this.period = this.contract.period_id;
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -123,6 +193,8 @@ export default {
                 this.$root.fetchError(error);
             });
             this.isDisabled = true;
+        }, periodSelected() {
+            this.contract.period_id = this.period.id;
         }
     }
 }
