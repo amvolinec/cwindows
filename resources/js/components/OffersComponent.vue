@@ -316,7 +316,6 @@
                     </div>
                 </div>
             </div>
-
             <contract v-bind:offerId="item.id"></contract>
         </div>
 
@@ -364,12 +363,12 @@ export default {
         fetchItems() {
             let url = '/offer/get/' + this.id;
             axios.get(url).then(r => {
+                this.$root.$emit('getContract', r.data.offer.id);
                 this.item = r.data.offer;
                 this.states = r.data.states;
                 this.types = r.data.types;
                 this.positions = typeof r.data.offer.positions !== 'undefined' ? r.data.offer.positions : [];
                 this.tenders = typeof r.data.tenders !== 'undefined' ? r.data.tenders : [];
-                this.$root.$emit('getContract', this.item.id);
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
