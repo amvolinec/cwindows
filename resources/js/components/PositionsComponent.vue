@@ -95,6 +95,7 @@
                                    v-model="offer.order_number">
                         </div>
                     </div>
+
                     <div class="col-md-4">
                         <label for="description">Description</label>
                         <textarea id="description" type="text" class="form-control" name="description" rows="4"
@@ -107,7 +108,24 @@
                         <label for="info">Notes / Terms (printable)</label>
                         <textarea id="info" type="text" class="form-control" name="description" rows="4"
                                   v-model="offer.info"></textarea>
+
+                        <div class="form-group row mt-4">
+                            <label class="col-md-4 text-right col-form-label">Upload files</label>
+                            <div class="col-md-8">
+                                <input type="file" id="file" ref="file"/>
+                                <button @click="fileAdd">Save</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-12">
+                                <div v-for="tenderFile in files">
+                                    <a target="_blank" :href="'/'  + tenderFile.file_uri">{{ tenderFile.file_name }}</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
                 <offer-items></offer-items>
             </div>
@@ -140,6 +158,7 @@ export default {
             showDropContact: false,
             message: '',
             positions: [],
+            files: [],
         }
     },
     created() {
@@ -152,7 +171,7 @@ export default {
             this.offer.company_name = item.company !== null && (typeof item.company !== 'undefined') ? item.company.name : '';
             this.offer.client_id = item.client !== null && (typeof item.client !== 'undefined') ? item.client.id : 0;
             this.offer.client_name = item.client !== null && (typeof item.client !== 'undefined') ? item.client.name : '';
-
+            this.filesLoad();
         });
         this.$root.$on('updateOfferSum', (total) => {
             this.offer.total = total.total;
@@ -269,6 +288,43 @@ export default {
 
         }, itemAdd() {
             // this.positions = { index: 0 };
+        }, fileAdd(){
+            this.file = this.$refs.file.files[0];
+            let formData = new FormData();
+            formData.append('file', this.file);
+            formData.append('offer_id', this.offer.id);
+            formData.append('version', this.offer.version);
+
+            axios.post('/set-tender-file', formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            ).then(response => {
+                if (response.data.status === 'error') {
+                    console.log(response.data);
+                    this.message = response.data.message;
+                } else {
+                    this.filesLoad();
+                }
+            }).catch((e) => {
+                if (typeof e.response !== 'undefined' && e.response.status === 422) {
+                    this.errors = e.response.data.errors;
+                } else {
+                    this.$root.fetchError(e);
+                }
+            });
+        }, filesLoad(){
+            axios.post('/get-tender-files', { offer_id: this.offer.id, version: this.offer.version } ).then(r => {
+                if (r.data.status === 'error') {
+                    this.message = r.data.message;
+                    return false;
+                }
+                this.files = r.data.files;
+            }).catch((error) => {
+                this.$root.fetchError(error);
+            });
         }
     }
 }
