@@ -1,5 +1,5 @@
-<template ref="contract" v-if="contract.id">
-    <div class="card mt-3">
+<template ref="contract">
+    <div class="card mt-3" v-if="contract !== null">
         <div class="card-body">
             <div class="panel-info flex-row">
                 <div class="d-inline-flex">
@@ -106,14 +106,17 @@
                 </tr>
                 <tr v-if="contract.address || !isDisabled">
                     <th>Delivery Address</th>
-                    <td>{{ contract.address }}</td>
+                    <td>
+                        <input :disabled="isDisabled" type="text" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
+                               v-model="contract.address">
+                    </td>
                 </tr>
                 <tr v-if="contract.installation_note || !isDisabled">
                     <th>Note installation</th>
                     <td>
                     <textarea :disabled="isDisabled" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
                               v-model="contract.installation_note"
-                              rows="3" cols="20">
+                              v-bind:rows="isDisabled ? 1 : 3" v-bind:cols="isDisabled ? 10 : 20">
                     </textarea>
                     </td>
                 </tr>
@@ -166,7 +169,7 @@ export default {
             axios.get(url).then(r => {
                 this.contract = r.data.contract;
                 this.periods = r.data.periods;
-                this.period = this.contract.period_id;
+                this.period = this.contract.period;
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -184,10 +187,9 @@ export default {
             document.location.href = '/contract/' + id;
         }, contractSave() {
             this.message = '';
-            axios.put('/contract', this.contract).then(r => {
+            axios.put('/contract/' + this.contract.id, this.contract).then(r => {
                 if (r.data.status === 'error') {
-                    this.message = response.data.message;
-
+                    this.message = r.data.message;
                 }
             }).catch((error) => {
                 this.$root.fetchError(error);

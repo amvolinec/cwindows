@@ -101,6 +101,7 @@ body {
 ul.i-list {
     list-style-type: none;
     margin: 0;
+    padding: 0;
 }
 
 ul.i-list li {
@@ -277,4 +278,6 @@ ul.i-list li {
     max-width: 120px;
 }
 
-
+.i-list.selected {
+    background-color: rgba(174, 204, 231, 0.28);
+}

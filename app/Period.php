@@ -8,7 +8,7 @@ class Period extends Model
 {
     protected $fillable = ["name"];
 
-    public function contract(){
-        return $this->belongsTo('App\Contract');
+    public function contracts(){
+        return $this->hasMany('App\Contract');
     }
 }

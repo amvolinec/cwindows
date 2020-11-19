@@ -276,7 +276,7 @@
                         </div>
                     </div>
 
-                    <ul class="i-list mb-2" v-for="tender in tenders">
+                    <ul class="i-list" v-for="tender in tenders" v-bind:class="[item.version === tender.version ? 'selected' : '']">
                         <li>
                             <div class="t-i-line">
                                 <div class="row">
@@ -287,9 +287,9 @@
                                         <span class="float-right">
                                             {{ $root.format(tender.total_with_vat) }}
                                             <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
-                                                     @click="setTender(tender.id)"><i class="fas fa-edit"></i></button>
-<!--                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"-->
-<!--                                                     @click="editTender(tender)"><i class="fas fa-edit"></i></button>-->
+                                                     @click="setTender(tender.id)"><i class="fas fa-check"></i></button>
+                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
+                                                     @click="editTender(tender)"><i class="fas fa-edit"></i></button>
 <!--                                            <a v-for="file in tender.files" class="btn btn-sm btn-outline-secondary"-->
 <!--                                               v-bind:href="'/' + file.file_uri" target="_blank">PDF</a>-->
                                             <button class="btn btn-sm btn-outline-secondary" @click="print(tender, 'Eng')"> ENG</button>
@@ -433,7 +433,7 @@ export default {
                 }
                 this.item = r.data.offer;
                 this.positions = typeof r.data.offer.positions !== 'undefined' ? r.data.offer.positions : [];
-                this.positionsLoad(this.item);
+                // this.positionsLoad(this.item);
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -445,6 +445,7 @@ export default {
             });
             this.item.state_id = 5;
             this.itemSave();
+            this.fetchItems();
         }, printTender(tenderId){
             window.location.href
         }, deleteTender(tender){
@@ -465,7 +466,6 @@ export default {
             this.item.positions = tender.positions;
             this.positionsLoad(this.item);
             this.$root.$data.tenderId = tender.id;
-
         }, createTender() {
             axios.get('/offer/create-tender/' + this.item.id).then(response => {
                 if (response.data.status === 'error') {

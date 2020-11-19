@@ -78,7 +78,12 @@ class ContractController extends Controller
     {
         $contract->fill($request->all())->save();
 
-        return redirect()->route('contract.index');
+        if($request->ajax()){
+            return ['status' => 'success'];
+        } else {
+            return redirect()->route('contract.index');
+        }
+
     }
 
     /**
@@ -101,7 +106,7 @@ class ContractController extends Controller
 
     public function get($id){
         $data = [
-            'contract' => Contract::with('client', 'company', 'manager', 'offer', 'production_number')->where('offer_id', $id)->first(),
+            'contract' => Contract::with('period', 'client', 'company', 'manager', 'offer', 'production_number')->where('offer_id', $id)->first(),
             'periods' => Period::all(),
             ];
         return $data;

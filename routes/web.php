@@ -129,7 +129,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('tender/{id}/make', 'TenderController@makeVersion')->name('tender.make');
     Route::get('tender/{id}/set', 'TenderController@set')->name('tender.set');
     Route::post('delete-tender', 'TenderController@deleteTender')->name('tender.nope');
-
+    Route::post('get-tender-files', 'TenderController@getFiles')->name('tender.get.files');
+    Route::post('set-tender-file', 'TenderController@setFile')->name('tender.set.file');
 
     Route::post('client/find/', 'ClientController@find')->name('client.find');
     Route::get('client/find/{string}', 'ClientController@find')->name('client.find.get');

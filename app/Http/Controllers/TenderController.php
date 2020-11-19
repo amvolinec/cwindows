@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\File;
 use App\Offer;
 use App\Position;
 use App\Tender;
@@ -10,6 +11,7 @@ use App\Traits\TenderTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class TenderController extends Controller
@@ -125,9 +127,38 @@ class TenderController extends Controller
         $offer = Offer::with('positions', 'files')->findOrFail($request->get('id'));
         $offer->fill($request->except('client_id, manager_id, company_id, positions'));
         $offer->save();
-//        Log::info('Tender ID:' . $id);
-
 
         return $offer;
+    }
+
+    public function getFiles(Request $request): array
+    {
+        $tender = Tender::with('files')->where([['offer_id', $request->get('offer_id')],['version', $request->get('version')]])->first();
+        return ['files' => $tender->files];
+    }
+
+    public function setFile(Request $request){
+        $path = '';
+
+        if ($request->hasFile('file')) {
+
+            $file_name = $request->file('file')->getClientOriginalName();
+            $tender = Tender::with('files')->where([['offer_id', $request->get('offer_id')],['version', $request->get('version')]])->first();
+
+            try {
+                $path = Storage::disk('uploads')->putFile('documents', $request->file('file'));
+            } catch (\Exception $exception) {
+                return ['status' => 'error', 'message' => 'File save error: ' . PHP_EOL . $exception->getMessage()];
+            }
+
+            $file = File::create([
+                'file_name' => $file_name,
+                'file_uri' => $path,
+            ]);
+
+            $tender->files()->attach($file->id);
+        }
+
+        return $path;
     }
 }
