@@ -171,7 +171,7 @@ export default {
             this.offer.company_name = item.company !== null && (typeof item.company !== 'undefined') ? item.company.name : '';
             this.offer.client_id = item.client !== null && (typeof item.client !== 'undefined') ? item.client.id : 0;
             this.offer.client_name = item.client !== null && (typeof item.client !== 'undefined') ? item.client.name : '';
-            this.filesLoad();
+            this. filesLoad();
         });
         this.$root.$on('updateOfferSum', (total) => {
             this.offer.total = total.total;
