@@ -205,7 +205,7 @@
                             <h5><i class="fa fa-building"></i> Product list</h5>
                         </div>
                         <div class="d-inline-flex">
-                            <button class="btn btn-sm btn-outline-secondary" @click="positionsLoad(item)"><i
+                            <button class="btn btn-sm btn-outline-secondary" @click="positionsLoad()"><i
                                 class="far fa-edit"></i></button>
                         </div>
                     </div>
@@ -380,9 +380,9 @@ export default {
             this.$root.$emit('editOffer', item);
             this.$root.$data.popup = true;
         },
-        positionsLoad(item) {
-            this.$root.$emit('editPositions', item);
-            this.$root.$data.offer = item;
+        positionsLoad() {
+            this.$root.$data.offer = this.item;
+            this.$root.$emit('editPositions');
             this.$root.$data.positions = true;
         },
         itemDelete(item) {
@@ -426,14 +426,18 @@ export default {
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
-        }, setTender(id) {
+        }, setTender(id, edit = false) {
             axios.get('/tender/' + id + '/set', this.item).then(r => {
                 if (r.data.status === 'error') {
                     this.message = r.data.message;
                 }
                 this.item = r.data.offer;
                 this.positions = typeof r.data.offer.positions !== 'undefined' ? r.data.offer.positions : [];
-                // this.positionsLoad(this.item);
+                if(edit){
+                    // this.item.positions = tender.positions;
+                    this.positionsLoad();
+                    this.$root.$data.tenderId = id;
+                }
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -462,10 +466,7 @@ export default {
             this.tenders.splice(t);
         }
         , editTender(tender){
-            this.setTender(tender.id);
-            this.item.positions = tender.positions;
-            this.positionsLoad(this.item);
-            this.$root.$data.tenderId = tender.id;
+            this.setTender(tender.id, true);
         }, createTender() {
             axios.get('/offer/create-tender/' + this.item.id).then(response => {
                 if (response.data.status === 'error') {

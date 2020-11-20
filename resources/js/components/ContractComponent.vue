@@ -15,7 +15,7 @@
                 <tr v-if="contract.signed_at || !isDisabled">
                     <th width="40%" scope="row">Signed date</th>
                     <td width="60%">
-                        <datetime id="inquiry_date" v-model="contract.signed_at" type="date"
+                        <datetime id="signed_at" v-model="contract.signed_at" type="date"
                                   :disabled="isDisabled"
                                   v-bind:input-class="[ isDisabled ? passiveClass : activeClass ]"
                                   format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
@@ -23,17 +23,32 @@
                 </tr>
                 <tr v-if="contract.planed_at || !isDisabled">
                     <th>Planed date</th>
-                    <td>{{ contract.planed_at }}</td>
+                    <td>
+                        <datetime id="planed_at" v-model="contract.planed_at" type="date"
+                                  :disabled="isDisabled"
+                                  v-bind:input-class="[ isDisabled ? passiveClass : activeClass ]"
+                                  format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
+                    </td>
                 </tr>
 
                 <tr v-if="contract.finished_at || !isDisabled">
                     <th>Finished  date</th>
-                    <td>{{ contract.finished_at }}</td>
+                    <td>
+                        <datetime id="finished_at" v-model="contract.finished_at" type="date"
+                                  :disabled="isDisabled"
+                                  v-bind:input-class="[ isDisabled ? passiveClass : activeClass ]"
+                                  format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
+                    </td>
                 </tr>
 
                 <tr v-if="contract.warranted_at || !isDisabled">
                     <th>Warranted  date</th>
-                    <td>{{ contract.warranted_at }}</td>
+                    <td>
+                        <datetime id="warranted_at" v-model="contract.warranted_at" type="date"
+                                  :disabled="isDisabled"
+                                  v-bind:input-class="[ isDisabled ? passiveClass : activeClass ]"
+                                  format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
+                    </td>
                 </tr>
 
                 <tr v-if="contract.amount || !isDisabled">
@@ -46,12 +61,18 @@
 
                 <tr v-if="contract.payments || !isDisabled">
                     <th>Payments</th>
-                    <td>{{ contract.payments }}</td>
+                    <td>
+                        <input :disabled="isDisabled" type="number" step="0.01" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
+                               v-model="contract.payments">
+                    </td>
                 </tr>
 
                 <tr v-if="contract.expenses || !isDisabled">
                     <th>Expenses</th>
-                    <td>{{ contract.expenses }}</td>
+                    <td>
+                        <input :disabled="isDisabled" type="number" step="0.01" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
+                               v-model="contract.expenses">
+                    </td>
                 </tr>
 
                 <tr v-if="contract.margin || !isDisabled">
@@ -64,22 +85,42 @@
 
                 <tr v-if="contract.production_start || !isDisabled">
                     <th>Start production</th>
-                    <td>{{ contract.production_start }}</td>
+                    <td>
+                        <datetime id="production_start" v-model="contract.production_start" type="date"
+                                  :disabled="isDisabled"
+                                  v-bind:input-class="[ isDisabled ? passiveClass : activeClass ]"
+                                  format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
+                    </td>
                 </tr>
 
                 <tr v-if="contract.production_end || !isDisabled">
                     <th>End production</th>
-                    <td>{{ contract.production_end }}</td>
+                    <td>
+                        <datetime id="production_end" v-model="contract.production_end" type="date"
+                                  :disabled="isDisabled"
+                                  v-bind:input-class="[ isDisabled ? passiveClass : activeClass ]"
+                                  format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
+                    </td>
                 </tr>
 
                 <tr v-if="contract.installation_start || !isDisabled">
                     <th>Start installation</th>
-                    <td>{{ contract.installation_start }}</td>
+                    <td>
+                        <datetime id="installation_start" v-model="contract.installation_start" type="date"
+                                  :disabled="isDisabled"
+                                  v-bind:input-class="[ isDisabled ? passiveClass : activeClass ]"
+                                  format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
+                    </td>
                 </tr>
 
                 <tr v-if="contract.installation_end || !isDisabled">
                     <th>End installation</th>
-                    <td>{{ contract.installation_end }}</td>
+                    <td>{{ contract.installation_end }}
+                        <datetime id="installation_end" v-model="contract.installation_end" type="date"
+                                  :disabled="isDisabled"
+                                  v-bind:input-class="[ isDisabled ? passiveClass : activeClass ]"
+                                  format="yyyy-MM-dd" value-zone="UTC+3"></datetime>
+                    </td>
                 </tr>
                 <tr>
                     <th scope="row">Period</th>
