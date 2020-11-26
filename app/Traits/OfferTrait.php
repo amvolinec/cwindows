@@ -54,9 +54,7 @@ trait OfferTrait
     protected function setPositions()
     {
         foreach ($this->tender->positions as $position) {
-//            Log::info('Position ' . json_encode($position, JSON_PRETTY_PRINT));
             $this->offer->positions()->save($position);
-//            $this->offer->save();
         }
     }
 
