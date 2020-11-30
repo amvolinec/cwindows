@@ -224,6 +224,14 @@ class Offer extends Model
         return $this->sources[(int)$this->received_id];
     }
 
+    public function getPaymentsAttribute(){
+        return $this->total_with_vat + $this->balance;
+    }
+
+    public function getCostsAttribute(){
+        return $this->total_with_vat - $this->sales_profit;
+    }
+
     public function getSumWords($skaicius){
 
         if ( $skaicius < 0 || strlen( $skaicius ) > 9 ) return "";

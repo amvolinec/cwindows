@@ -65,7 +65,7 @@ class TransactionObserver
 
     protected function updateOfferBalance(Transaction $transaction) {
         $offer = Offer::findOrFail((int)$transaction->offer_id);
-        $offer->balance = BalanceHelper::calc($offer->id);
+        $offer->balance = BalanceHelper::calc($offer);
         $offer->save();
     }
 }

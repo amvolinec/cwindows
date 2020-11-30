@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 
 use App\Contract;
+use App\Offer;
 use App\Period;
 use App\Traits\ContractTrait;
+use App\Transaction;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller
@@ -105,8 +107,11 @@ class ContractController extends Controller
     }
 
     public function get($id){
+        $offer = Offer::findOrFail($id);
         $data = [
             'contract' => Contract::with('period', 'client', 'company', 'manager', 'offer', 'production_number')->where('offer_id', $id)->first(),
+            'payments' => $offer->payments,
+            'costs' => $offer->costs,
             'periods' => Period::all(),
             ];
         return $data;

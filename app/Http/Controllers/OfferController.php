@@ -120,7 +120,7 @@ class OfferController extends Controller
     public function update(Request $request, Offer $offer)
     {
         $offer->fill($request->except('_method', '_token'));
-        $offer->balance = BalanceHelper::calc($offer->id);
+        $offer->balance = BalanceHelper::calc($offer);
         $offer->save();
         return redirect()->route('offer.index');
     }
@@ -202,11 +202,11 @@ class OfferController extends Controller
             ]);
         }
 
-        $offer->balance = BalanceHelper::calc($offer->id);
+//        $offer->balance = BalanceHelper::calc($offer);
         $offer->editor_id = Auth::user()->id;
 
         try {
-            $offer->balance = BalanceHelper::calc($offer->id);
+            $offer->balance = BalanceHelper::calc($offer);
             $offer->save();
         } catch (\Exception $exception) {
             return ['status' => 'error', 'message' => 'Save error: ' . PHP_EOL . $exception->getMessage()];
