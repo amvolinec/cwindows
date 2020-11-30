@@ -54,31 +54,28 @@
                 <tr>
                     <th>Total Amount</th>
                     <td>
-                        <input :disabled="true" type="number" step="0.01" v-model="contract.offer.total_with_vat">
+                        <input :disabled="true" v-model="contract.offer.total_with_vat" v-bind:class="passiveClass">
                     </td>
                 </tr>
 
                 <tr>
                     <th>Payments</th>
                     <td>
-                        <input :disabled="true" type="number" step="0.01"
-                               v-model="payments">
+                        <input :disabled="true" v-model="payments" v-bind:class="passiveClass">
                     </td>
                 </tr>
 
                 <tr>
                     <th>Expenses</th>
                     <td>
-                        <input :disabled="true" type="number" step="0.01" v-bind:class="passiveClass"
-                               v-model="costs">
+                        <input :disabled="true" v-model="costs" v-bind:class="passiveClass">
                     </td>
                 </tr>
 
                 <tr>
                     <th>Margin (Sales Profit)</th>
                     <td>
-                    <input :disabled="isDisabled" type="number" step="0.01"
-                              v-model="contract.offer.sales_profit">
+                    <input :disabled="true" v-model="contract.offer.sales_profit" v-bind:class="passiveClass">
                     </td>
                 </tr>
 
