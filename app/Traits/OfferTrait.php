@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Helpers\BalanceHelper;
 use App\Offer;
 use App\Tender;
 use Exception;
@@ -58,4 +59,8 @@ trait OfferTrait
         }
     }
 
+    protected function calcBalance(Offer $offer){
+        $offer->balance = BalanceHelper::calc($offer);
+        $offer->save();
+    }
 }

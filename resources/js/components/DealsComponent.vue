@@ -49,7 +49,7 @@
                             <th scope="col">Stage</th>
                             <th scope="col" width="200">Description</th>
                             <th scope="col">Files</th>
-                            <th scope="col"></th>
+                            <th scope="col">Actions</th>
                         </tr>
                         </thead>
                         <tbody>

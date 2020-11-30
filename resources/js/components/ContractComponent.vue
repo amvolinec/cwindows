@@ -51,35 +51,34 @@
                     </td>
                 </tr>
 
-                <tr v-if="contract.amount || !isDisabled">
-                    <th>Amount</th>
+                <tr>
+                    <th>Total Amount</th>
                     <td>
-                        <input :disabled="isDisabled" type="number" step="0.01" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
-                               v-model="contract.amount">
+                        <input :disabled="true" type="number" step="0.01" v-model="contract.offer.total_with_vat">
                     </td>
                 </tr>
 
-                <tr v-if="contract.payments || !isDisabled">
+                <tr>
                     <th>Payments</th>
                     <td>
-                        <input :disabled="isDisabled" type="number" step="0.01" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
-                               v-model="contract.payments">
+                        <input :disabled="true" type="number" step="0.01"
+                               v-model="payments">
                     </td>
                 </tr>
 
-                <tr v-if="contract.expenses || !isDisabled">
+                <tr>
                     <th>Expenses</th>
                     <td>
-                        <input :disabled="isDisabled" type="number" step="0.01" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
-                               v-model="contract.expenses">
+                        <input :disabled="true" type="number" step="0.01" v-bind:class="passiveClass"
+                               v-model="costs">
                     </td>
                 </tr>
 
-                <tr v-if="contract.margin || !isDisabled">
-                    <th>Margin</th>
+                <tr>
+                    <th>Margin (Sales Profit)</th>
                     <td>
-                    <input :disabled="isDisabled" type="number" step="0.01" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
-                              v-model="contract.margin">
+                    <input :disabled="isDisabled" type="number" step="0.01"
+                              v-model="contract.offer.sales_profit">
                     </td>
                 </tr>
 
@@ -192,7 +191,9 @@ export default {
             isDisabled: true,
             // offerId: this.offerId,
             passiveClass: 'form-control-plaintext',
-            activeClass: 'form-control-sm'
+            activeClass: 'form-control-sm',
+            payments: 0,
+            costs: 0,
         }
     },
     mounted() {
@@ -211,6 +212,8 @@ export default {
                 this.contract = r.data.contract;
                 this.periods = r.data.periods;
                 this.period = this.contract.period;
+                this.payments = r.data.payments;
+                this.costs = r.data.costs;
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
