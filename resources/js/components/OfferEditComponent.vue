@@ -197,15 +197,71 @@
                         <i class="fas fa-save"></i></button>
                 </div>
             </div>
+        </div>
 
-            <div class="card mt-2 hidden" style="display: none;">
+        <div class="col-md-6">
+
+            <div class="card" v-if="item.state_id < 5">
+                <div class="card-body">
+                    <div class="panel-info flex-row">
+                        <div class="d-inline-flex">
+                            <h5><i class="far fa-file"></i> Offers (Tenders)</h5>
+                        </div>
+                        <div class="d-inline-flex">
+                            <button v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary" @click="createTender">
+                                <i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <ul class="i-list" v-for="tender in tenders" v-bind:class="[item.version === tender.version ? 'selected' : '']">
+                        <li>
+                            <div class="t-i-line">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="float-left">{{ tender.created_at }} v{{ tender.version }}</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="float-right">
+                                            {{ $root.format(tender.total_with_vat) }}
+                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
+                                                     @click="setTender(tender.id)"><i class="fas fa-check"></i></button>
+                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
+                                                     @click="editTender(tender)"><i class="fas fa-edit"></i></button>
+<!--                                            <a v-for="file in tender.files" class="btn btn-sm btn-outline-secondary"-->
+<!--                                               v-bind:href="'/' + file.file_uri" target="_blank">PDF</a>-->
+                                            <button class="btn btn-sm btn-outline-secondary" @click="print(tender, 'Eng')"> ENG</button>
+                                            <button class="btn btn-sm btn-outline-secondary" @click="print(tender, 'Lt')"> LT</button>
+                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
+                                                     @click="deleteTender(tender)"><i class="fas fa-eraser"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="tender-item-line" v-for="pos in tender.positions">
+                                    <div class="row small">
+                                        <div class="col-md-4">{{ pos.title }}</div>
+                                        <div class="col-md-4">{{ pos.quantity }} x {{ pos.final_price }}</div>
+                                        <div class="col-md-4"><span class="float-right">{{ pos.subtotal }}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="row" v-if="item.state_id < 5">
+                        <div class="col-md-12">
+                            <button class="btn btn-outline-success" @click="createContract">Create Contract</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-2 hidden" v-if="item.state_id >= 5">
                 <div class="card-body">
                     <div class="panel-info">
                         <div class="d-inline-flex">
                             <h5><i class="fa fa-building"></i> Product list</h5>
                         </div>
                         <div class="d-inline-flex">
-                            <button class="btn btn-sm btn-outline-secondary" @click="positionsLoad(item)"><i
+                            <button class="btn btn-sm btn-outline-secondary" @click="positionsLoad()"><i
                                 class="far fa-edit"></i></button>
                         </div>
                     </div>
@@ -261,61 +317,7 @@
                     <div class="text-right"><strong>Balance: {{ this.$root.format(item.balance) }}</strong></div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="panel-info flex-row">
-                        <div class="d-inline-flex">
-                            <h5><i class="far fa-file"></i> Offers (Tenders)</h5>
-                        </div>
-                        <div class="d-inline-flex">
-                            <button v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary" @click="createTender">
-                                <i class="fas fa-plus"></i></button>
-                        </div>
-                    </div>
-
-                    <ul class="i-list" v-for="tender in tenders" v-bind:class="[item.version === tender.version ? 'selected' : '']">
-                        <li>
-                            <div class="t-i-line">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <span class="float-left">{{ tender.created_at }} v{{ tender.version }}</span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <span class="float-right">
-                                            {{ $root.format(tender.total_with_vat) }}
-                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
-                                                     @click="setTender(tender.id)"><i class="fas fa-check"></i></button>
-                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
-                                                     @click="editTender(tender)"><i class="fas fa-edit"></i></button>
-<!--                                            <a v-for="file in tender.files" class="btn btn-sm btn-outline-secondary"-->
-<!--                                               v-bind:href="'/' + file.file_uri" target="_blank">PDF</a>-->
-                                            <button class="btn btn-sm btn-outline-secondary" @click="print(tender, 'Eng')"> ENG</button>
-                                            <button class="btn btn-sm btn-outline-secondary" @click="print(tender, 'Lt')"> LT</button>
-                                            <button  v-if="item.state_id < 5" class="btn btn-sm btn-outline-secondary"
-                                                     @click="deleteTender(tender)"><i class="fas fa-eraser"></i></button>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="tender-item-line" v-for="pos in tender.positions">
-                                    <div class="row small">
-                                        <div class="col-md-4">{{ pos.title }}</div>
-                                        <div class="col-md-4">{{ pos.quantity }} x {{ pos.final_price }}</div>
-                                        <div class="col-md-4"><span class="float-right">{{ pos.subtotal }}</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="row" v-if="item.state_id < 5">
-                        <div class="col-md-12">
-                            <button class="btn btn-outline-success" @click="createContract">Create Contract</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <contract v-bind:offerId="item.id"></contract>
         </div>
 
@@ -380,9 +382,9 @@ export default {
             this.$root.$emit('editOffer', item);
             this.$root.$data.popup = true;
         },
-        positionsLoad(item) {
-            this.$root.$emit('editPositions', item);
-            this.$root.$data.offer = item;
+        positionsLoad() {
+            this.$root.$data.offer = this.item;
+            this.$root.$emit('editPositions');
             this.$root.$data.positions = true;
         },
         itemDelete(item) {
@@ -426,14 +428,18 @@ export default {
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
-        }, setTender(id) {
+        }, setTender(id, edit = false) {
             axios.get('/tender/' + id + '/set', this.item).then(r => {
                 if (r.data.status === 'error') {
                     this.message = r.data.message;
                 }
                 this.item = r.data.offer;
                 this.positions = typeof r.data.offer.positions !== 'undefined' ? r.data.offer.positions : [];
-                // this.positionsLoad(this.item);
+                if(edit){
+                    // this.item.positions = tender.positions;
+                    this.positionsLoad();
+                    this.$root.$data.tenderId = id;
+                }
             }).catch((error) => {
                 this.$root.fetchError(error);
             });
@@ -462,10 +468,7 @@ export default {
             this.tenders.splice(t);
         }
         , editTender(tender){
-            this.setTender(tender.id);
-            this.item.positions = tender.positions;
-            this.positionsLoad(this.item);
-            this.$root.$data.tenderId = tender.id;
+            this.setTender(tender.id, true);
         }, createTender() {
             axios.get('/offer/create-tender/' + this.item.id).then(response => {
                 if (response.data.status === 'error') {

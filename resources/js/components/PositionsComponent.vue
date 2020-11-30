@@ -165,13 +165,13 @@ export default {
         // this.$root.$emit('editOfferItems');
     },
     mounted() {
-        this.$root.$on('editPositions', (item) => {
-            this.offer = item;
-            this.offer.company_id = item.company !== null && (typeof item.company !== 'undefined') ? item.company.id : 0;
-            this.offer.company_name = item.company !== null && (typeof item.company !== 'undefined') ? item.company.name : '';
-            this.offer.client_id = item.client !== null && (typeof item.client !== 'undefined') ? item.client.id : 0;
-            this.offer.client_name = item.client !== null && (typeof item.client !== 'undefined') ? item.client.name : '';
-            this.filesLoad();
+            this.$root.$on('editPositions', () => {
+            this.offer = this.$root.$data.offer;
+            this.offer.company_id = this.offer.company !== null && (typeof this.offer.company !== 'undefined') ? this.offer.company.id : 0;
+            this.offer.company_name = this.offer.company !== null && (typeof this.offer.company !== 'undefined') ? this.offer.company.name : '';
+            this.offer.client_id = this.offer.client !== null && (typeof this.offer.client !== 'undefined') ? this.offer.client.id : 0;
+            this.offer.client_name = this.offer.client !== null && (typeof this.offer.client !== 'undefined') ? this.offer.client.name : '';
+            this.filesLoad(this.$root.$data.offer);
         });
         this.$root.$on('updateOfferSum', (total) => {
             this.offer.total = total.total;
@@ -306,7 +306,7 @@ export default {
                     console.log(response.data);
                     this.message = response.data.message;
                 } else {
-                    this.filesLoad();
+                    this.filesLoad(this.offer);
                 }
             }).catch((e) => {
                 if (typeof e.response !== 'undefined' && e.response.status === 422) {
@@ -315,8 +315,9 @@ export default {
                     this.$root.fetchError(e);
                 }
             });
-        }, filesLoad(){
-            axios.post('/get-tender-files', { offer_id: this.offer.id, version: this.offer.version } ).then(r => {
+        }, filesLoad(offer){
+            console.log('filesLoad ' + offer.id + ' version ' + offer.version);
+            axios.post('/get-tender-files', { offer_id: offer.id, version: offer.version } ).then(r => {
                 if (r.data.status === 'error') {
                     this.message = r.data.message;
                     return false;
