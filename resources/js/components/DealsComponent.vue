@@ -15,6 +15,8 @@
                     <table class="table table-sm table-striped table-responsive">
                         <thead class="thead">
                         <tr>
+
+                            <th scope="col">Actions</th>
                             <th scope="col">Number</th>
                             <th scope="col">Inquiry Date</th>
                             <th scope="col">Company</th>
@@ -49,11 +51,22 @@
                             <th scope="col">Stage</th>
                             <th scope="col" width="200">Description</th>
                             <th scope="col">Files</th>
-                            <th scope="col">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr class="group-line" v-for="item in items">
+
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary" @click="newTransaction(item.id)"><i
+                                    class="fas fa-dollar-sign"></i></button>
+                                <button class="btn btn-sm btn-outline-secondary" @click="itemShow(item.id)"><i
+                                    class="fas fa-search-dollar"></i></button>
+                                <button class="btn btn-sm btn-outline-secondary" @click="itemLoad(item)"><i
+                                    class="far fa-edit"></i></button>
+                                <button class="btn btn-sm btn-outline-info" @click="itemDelete(item)"><i
+                                    class="fas fa-trash"></i></button>
+                            </td>
+
                             <th scope="row">{{ item.number }}</th>
                             <td scope="row">{{ item.inquiry_date }}</td>
                             <td>
