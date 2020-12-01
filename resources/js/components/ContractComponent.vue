@@ -4,6 +4,12 @@
             <div class="panel-info flex-row">
                 <div class="d-inline-flex">
                     <h5><i class="fa fa-info-circle"></i> Contract</h5>
+                    <div class="d-inline-flex">
+                        <button class="btn btn-sm btn-outline-secondary" @click="print(contract.offer_id, 'Eng')"> ENG
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" @click="print(contract.offer_id, 'Lt')"> LT
+                        </button>
+                    </div>
                 </div>
                 <div class="d-inline-flex">
                     <button class="btn btn-sm btn-outline-secondary" @click="isDisabled=false">
@@ -32,7 +38,7 @@
                 </tr>
 
                 <tr v-if="contract.finished_at || !isDisabled">
-                    <th>Finished  date</th>
+                    <th>Finished date</th>
                     <td>
                         <datetime id="finished_at" v-model="contract.finished_at" type="date"
                                   :disabled="isDisabled"
@@ -42,7 +48,7 @@
                 </tr>
 
                 <tr v-if="contract.warranted_at || !isDisabled">
-                    <th>Warranted  date</th>
+                    <th>Warranted date</th>
                     <td>
                         <datetime id="warranted_at" v-model="contract.warranted_at" type="date"
                                   :disabled="isDisabled"
@@ -75,7 +81,7 @@
                 <tr>
                     <th>Margin (Sales Profit)</th>
                     <td>
-                    <input :disabled="true" v-model="contract.offer.sales_profit" v-bind:class="passiveClass">
+                        <input :disabled="true" v-model="contract.offer.sales_profit" v-bind:class="passiveClass">
                     </td>
                 </tr>
 
@@ -121,7 +127,7 @@
                 <tr>
                     <th scope="row">Period</th>
                     <td>
-                        <v-select :disabled="isDisabled"  label="name" :options="periods" v-model="period"
+                        <v-select :disabled="isDisabled" label="name" :options="periods" v-model="period"
                                   @input="periodSelected"></v-select>
                     </td>
                 </tr>
@@ -144,7 +150,8 @@
                 <tr v-if="contract.address || !isDisabled">
                     <th>Delivery Address</th>
                     <td>
-                        <input :disabled="isDisabled" type="text" v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
+                        <input :disabled="isDisabled" type="text"
+                               v-bind:class="[ isDisabled ? passiveClass : activeClass ]"
                                v-model="contract.address">
                     </td>
                 </tr>
@@ -238,7 +245,10 @@ export default {
             this.isDisabled = true;
         }, periodSelected() {
             this.contract.period_id = this.period.id;
+        }, print(id, lang) {
+            window.open('/offer/contract/' + id + '/' + lang, "blank", "width=900,height=640");
         }
+
     }
 }
 </script>

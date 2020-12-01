@@ -391,12 +391,18 @@ class OfferController extends Controller
         $offer->comment = $tender->comment;
         $positions = $tender->positions;
 
-        $setting = Setting::with('currency')->find($this->getSettingId());
+
 
         if (empty($positions)) {
             return ['status' => 'error', 'message' => 'Offer is empty'];
         }
-        return view('documents.offer' . $lang, [
+
+        return $this->getDocumentView($offer, $positions, $lang, 'documents.offer');
+    }
+
+    protected function getDocumentView($offer, $positions, $lang, $view){
+        $setting = Setting::with('currency')->find($this->getSettingId());
+        return view( $view. $lang, [
             'offer' => $offer,
             'positions' => $positions,
             'settings' => $setting,
@@ -406,15 +412,42 @@ class OfferController extends Controller
         ]);
     }
 
+    public function tenderPrint($offer_id, $lang)
+    {
+        $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $offer_id)->get()->first();
+        $file = $this->createPdf($offer, $offer->positions, $lang);
+        return Storage::disk('uploads')->download($file->file_uri);
+    }
+
+    public function contract($id, $lang)
+    {
+        $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $id)->get()->first();
+        $positions = $offer->positions;
+
+        if (empty($positions)) {
+            return ['status' => 'error', 'message' => 'Offer is empty'];
+        }
+
+        return $this->getDocumentView($offer, $positions, $lang, 'documents.contract');
+    }
+
+    public function contractPrint($offer_id, $lang)
+    {
+        $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $offer_id)->get()->first();
+        $file = $this->createPdf($offer, $offer->positions, $lang, 'contract');
+        return Storage::disk('uploads')->download($file->file_uri);
+    }
+
     /**
      * @param Offer $offer
      * @param $positions
      * @param string $lang
+     * @param string $document
      * @return mixed
      */
-    protected function createPdf(Offer $offer, $positions, $lang)
+    protected function createPdf(Offer $offer, $positions, string $lang, string $document = 'offer')
     {
-        $fileName = 'offer_' . date('Ymd_His') . '_v' . $offer->version . '_' . $lang . '.pdf';
+        $fileName = $document .'_' . date('Ymd_His') . '_v' . $offer->version . '_' . $lang . '.pdf';
         $filePath = public_path('documents') . '/' . $fileName;
 
         $dompdf = App::make('dompdf.wrapper');
@@ -422,7 +455,7 @@ class OfferController extends Controller
 
         $setting = Setting::with('currency')->find($this->getSettingId());
 
-        $dompdf->loadView("documents.offer{$lang}", [
+        $dompdf->loadView("documents.{$document}{$lang}", [
             'offer' => $offer,
             'positions' => $positions,
             'settings' => $setting,
@@ -436,12 +469,5 @@ class OfferController extends Controller
             'file_name' => $fileName,
             'file_uri' => 'documents/' . $fileName
         ]);
-    }
-
-    public function tenderPrint($offer_id, $lang)
-    {
-        $offer = Offer::with(['client', 'company', 'state', 'files', 'positions', 'manager'])->where('id', $offer_id)->get()->first();
-        $file = $this->createPdf($offer, $offer->positions, $lang);
-        return Storage::disk('uploads')->download($file->file_uri);
     }
 }

@@ -125,6 +125,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('offer/print/{id}/{lang}', 'OfferController@tenderPrint')->name('offer.print');
     Route::get('offer/preview/{id}/{lang}', 'OfferController@preview')->name('offer.preview');
     Route::get('offer/create-tender/{id}', 'OfferController@createTender')->name('offer.create.tender');
+    Route::get('offer/contract/{id}/{lang}', 'OfferController@contract')->name('offer.contract');
+    Route::get('offer/contract-print/{id}/{lang}', 'OfferController@contractPrint')->name('contract.print');
 
     Route::get('tender/{id}/make', 'TenderController@makeVersion')->name('tender.make');
     Route::get('tender/{id}/set', 'TenderController@set')->name('tender.set');
