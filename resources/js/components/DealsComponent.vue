@@ -7,7 +7,7 @@
                         <button class="btn btn-success" @click="addDeal"><i class="fas fa-plus"></i></button>
                     </div>
                     <div class="d-inline-block" style="vertical-align: top; padding: 6px;">
-                        <h4>Deals</h4>
+                        <h4>Project list</h4>
                     </div>
                 </div>
 
@@ -16,44 +16,52 @@
                         <thead class="thead">
                         <tr>
                             <th scope="col">Actions</th>
-                            <th scope="col">Number</th>
-                            <th scope="col">Inquiry Date</th>
-                            <th scope="col">Company</th>
-                            <th scope="col">Contact</th>
+                            <th scope="col">Project ID</th>
+                            <th scope="col">Project ID_Name</th>
+                            <th scope="col" width="200">Project enquiry message</th>
+                            <th scope="col">Project attachments </th>
+                            <th scope="col">Project address</th>
+                            <th scope="col">Project status ID</th>
+                            <th scope="col">Project comments</th>
+                            <th scope="col">Manager ID</th>
+                            <th scope="col">Architect ID</th>
+                            <th scope="col">Project manager</th>
+                            <th scope="col">Company ID</th>
+                            <th scope="col">Project create date </th>
+                            <th scope="col">User ID</th>
+
+
+
+
                             <th scope="col">Offer Number</th>
                             <th scope="col">Order Number</th>
-                            <th scope="col">Title</th>
                             <th scope="col">Info</th>
                             <th scope="col">Total</th>
                             <th scope="col">Total with vat</th>
                             <th scope="col">Balance</th>
                             <th scope="col">Expences (services)</th>
                             <th scope="col">Profit</th>
-                            <th scope="col">User (created by)</th>
-                            <th scope="col">Delivery address</th>
                             <th scope="col">Delivery date</th>
-                            <th scope="col">Comment</th>
-                            <th scope="col">Manager</th>
-                            <th scope="col">Architect</th>
                             <th scope="col">Request received</th>
-                            <th scope="col">Private|Company</th>
+                            <th scope="col">Private Company</th>
                             <th scope="col">Inquiry type</th>
                             <th scope="col">Inquiry profile</th>
                             <th scope="col">Maintenance (staff service)</th>
                             <th scope="col">Partner</th>
-                            <th scope="col">Date created</th>
-                            <th scope="col">Date updated</th>
+                            <th scope="col">Quote date</th>
+                            <th scope="col">Agreement date</th>
                             <th scope="col">Updated By</th>
                             <th scope="col">Version</th>
                             <th scope="col">Probability %</th>
                             <th scope="col">Contract Date</th>
-                            <th scope="col">Stage</th>
-                            <th scope="col" width="200">Description</th>
-                            <th scope="col">Files</th>
+
+
+
                         </tr>
                         </thead>
                         <tbody>
                         <tr class="group-line" v-for="item in items">
+<!--                        1 Actions-->
                             <td>
                                 <button class="btn btn-sm btn-outline-secondary" @click="newTransaction(item.id)"><i
                                     class="fas fa-dollar-sign"></i></button>
@@ -64,33 +72,90 @@
                                 <button class="btn btn-sm btn-outline-info" @click="itemDelete(item)"><i
                                     class="fas fa-trash"></i></button>
                             </td>
+
+<!--                        2   Project_ID(autoincremental)-->
                             <th scope="row">{{ item.number }}</th>
-                            <td scope="row">{{ item.inquiry_date }}</td>
+
+<!--                        3 -->
+                            <td>{{ item.title }}</td>
+
+<!--                        4-->
+                            <td>
+                                <div class="offer-comment">
+                                    {{ item.description }}
+                                </div>
+                            </td>
+<!--                            5-->
+
+                            <td>
+                                <ul>
+                                    <li v-for="file in item.files">
+                                        <a v-bind:href="file.file_uri" target="_blank">{{ file.file_name}}</a>
+                                    </li>
+                                </ul>
+                            </td>
+
+<!--                            6-->
+                            <td>{{ item.delivery_address }}</td>
+
+
+<!--                            7 -->
+                            <td>
+                                <div class="stage " v-bind:class="item.state.class">
+                                    {{ item.state !== null && (typeof item.state.name !== undefined) ? item.state.name : '' }}
+                                </div>
+                            </td>
+
+
+<!--                            8-->
+
+<!--                            9-->
+
+                            <td>{{ item.comment }}</td>
+
+
+<!--                            10-->
+                            <td>
+                                {{ item.manager !== null && (typeof item.manager.name !== undefined) ? item.manager.name : '' }}
+                            </td>
+
+<!--                            11-->
+                            <td>
+                                {{ item.architect !== null && (typeof item.architect.title !== undefined) ? item.architect.title : '' }}
+                            </td>
+
+<!--                            12-->
+
+<!--                            13-->
+                            <td>{{ item.user.name }}</td>
+
+
+<!--                            20-->
                             <td>
                                 {{ item.company !== null && (typeof item.company.name !== undefined) ? item.company.name : '' }}
                             </td>
+
+
+<!--                            21-->
+
+
+<!--                            22-->
+                            <td scope="row">{{ item.inquiry_date }}</td>
+
                             <td>
                                 {{ item.client !== null && (typeof item.client.name !== undefined) ? item.client.name : '' }}
                             </td>
+
+
                             <td>{{ item.number }}</td>
                             <td>{{ item.order_number }}</td>
-                            <td>{{ item.title }}</td>
                             <td>{{ item.info }}</td>
                             <td>{{ item.total }}</td>
                             <td>{{ item.total_with_vat }}</td>
                             <td>{{ item.balance }}</td>
                             <td>{{ item.expenses }}</td>
                             <td>{{ item.sales_profit }}</td>
-                            <td>{{ item.user.name }}</td>
-                            <td>{{ item.delivery_address }}</td>
                             <td>{{ item.delivery_date }}</td>
-                            <td>{{ item.comment }}</td>
-                            <td>
-                                {{ item.manager !== null && (typeof item.manager.name !== undefined) ? item.manager.name : '' }}
-                            </td>
-                            <td>
-                                {{ item.architect !== null && (typeof item.architect.title !== undefined) ? item.architect.title : '' }}
-                            </td>
                             <td>{{ sources[item.received_id] }}</td>
                             <td>{{ private[item.private] }}</td>
                             <td>{{ types[item.type_id] }}</td>
@@ -99,31 +164,19 @@
                                 {{ item.maintenance !== null && (typeof item.maintenance.name !== undefined) ? item.maintenance.name : '' }}
                             </td>
                             <td>{{ item.partner }}</td>
+
+<!--                            27-->
                             <td>{{ item.created_at }}</td>
+
+<!--                            28-->
                             <td>{{ item.updated_at }}</td>
+
                             <td>{{ item.editor.name }}</td>
                             <td>{{ item.version }}</td>
                             <td>{{ item.chance }}</td>
                             <td scope="row">{{ item.contract_date }}</td>
-                            <td>
-                                <div class="stage " v-bind:class="item.state.class">
-                                    {{ item.state !== null && (typeof item.state.name !== undefined) ? item.state.name : '' }}
-                                </div>
-                            </td>
-                            <td>
-                                <div class="offer-comment">
-                                    {{ item.description }}
-                                </div>
 
-                            </td>
-                            <td>
-                                <ul>
-                                    <li v-for="file in item.files">
-                                        <a v-bind:href="file.file_uri" target="_blank">{{ file.file_name}}</a>
 
-                                    </li>
-                                </ul>
-                            </td>
                         </tr>
                         </tbody>
                     </table>
