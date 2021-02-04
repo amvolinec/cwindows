@@ -65,9 +65,9 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('persontype/find/', 'PersonTypeController@find')->name('persontype.find');
     Route::get('persontype/find/{string}', 'PersonTypeController@find')->name('persontype.find.get');
 
-    Route::resource('personoffer', 'PersonToOfferController');
-    Route::post('personoffer/find/', 'PersonToOfferController@find')->name('personoffer.find');
-    Route::get('personoffer/find/{string}', 'PersonToOfferController@find')->name('personoffer.find.get');
+//    Route::resource('personoffer', 'PersonToOfferController');
+//    Route::post('personoffer/find/', 'PersonToOfferController@find')->name('personoffer.find');
+//    Route::get('personoffer/find/{string}', 'PersonToOfferController@find')->name('personoffer.find.get');
 
     Route::resource('person', 'PersonController');
     Route::post('person/find/', 'PersonController@find')->name('person.find');

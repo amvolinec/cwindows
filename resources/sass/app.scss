@@ -181,9 +181,11 @@ ul.i-list li {
 }
 
 .offer-comment {
-    max-height: 112px;
-    max-width: 200px;
-    overflow: auto;
+    white-space: nowrap;
+    max-height: 22px;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .editing {
@@ -280,4 +282,10 @@ ul.i-list li {
 
 .i-list.selected {
     background-color: rgba(174, 204, 231, 0.28);
+}
+
+.deals thead th {
+    font-size: 12px;
+    font-weight: bold;
+    color: #3f80a4;
 }
