@@ -15,15 +15,15 @@ class CreateFirmsTable extends Migration
     {
         Schema::create('firms', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code');
-            $table->string('vat_code');
-            $table->string('account');
+            $table->string('code')->nullable();
+            $table->string('vat_code')->nullable();
+            $table->string('account')->nullable();
             $table->string('name');
-            $table->string('phone');
-            $table->string('address');
-            $table->string('email');
-            $table->string('city');
-            $table->string('comment');
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('email')->nullable();
+            $table->string('city')->nullable();
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Firm;
+
 use Illuminate\Http\Request;
 
 class FirmController extends Controller
@@ -14,7 +15,7 @@ class FirmController extends Controller
      */
     public function index()
     {
-        //
+        return view('firm.index', ['firms' => Firm::paginate(20)]);
     }
 
     /**
@@ -24,7 +25,7 @@ class FirmController extends Controller
      */
     public function create()
     {
-        //
+        return view ('firm.create');
     }
 
     /**
@@ -35,7 +36,9 @@ class FirmController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Firm::create($request->all());
+
+        return redirect()->route('firm.index');
     }
 
     /**
@@ -46,7 +49,7 @@ class FirmController extends Controller
      */
     public function show(Firm $firm)
     {
-        //
+        return view('firm.show', ['contact' => $firm]);
     }
 
     /**
@@ -57,7 +60,7 @@ class FirmController extends Controller
      */
     public function edit(Firm $firm)
     {
-        //
+        return view ('firm.create', ['firm' => $firm]);
     }
 
     /**
@@ -69,7 +72,11 @@ class FirmController extends Controller
      */
     public function update(Request $request, Firm $firm)
     {
-        //
+        $firm->fill($request->all())->save();
+
+        {
+            return redirect()->route('firm.index');
+        }
     }
 
     /**
@@ -80,6 +87,7 @@ class FirmController extends Controller
      */
     public function destroy(Firm $firm)
     {
-        //
+        $firm->delete();
+        return redirect()->route('firm.index');
     }
 }
