@@ -22,7 +22,8 @@
                                 <label for="file_name" class="col-md-4 col-form-label text-md-right">{{ __('File Name') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="file_name" type="text" class="form-control @error('file_name') is-invalid @enderror" name="file_name" value="{{ $file->file_name ?? old('file_name') }}" autocomplete="file_name" >
+                                    <input id="file_name" type="text"
+                                           class="form-control @error('file_name') is-invalid @enderror" name="file_name" value="{{ $file->file_name ?? old('file_name') }}" autocomplete="file_name" >
 
                                     @error('file_name')
                                     <span class="invalid-feedback" role="alert">

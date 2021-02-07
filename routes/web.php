@@ -51,6 +51,20 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('create-contract', 'ContractController@createContract')->name('contract.new');
     Route::get('contract/get/{id}', 'ContractController@get')->name('contract.get');
 
+
+    Route::resource('contact','ContactController');
+    Route::post('create-contact', 'ContactController@createContact')->name('contact.new');
+    Route::get('contact/get/{id}', 'ContactController@get')->name('contact.get');
+    Route::post('contact/find/', 'ContactController@find')->name('contact.find');
+    Route::get('contact/find/{string}', 'ContactController@find')->name('contact.find.get');
+
+    Route::resource('firm','FirmController');
+    Route::post('create-firm', 'FirmController@createFirm')->name('firm.new');
+    Route::get('firm/get/{id}', 'FirmController@get')->name('firm.get');
+    Route::post('firm/find/', 'FirmController@find')->name('firm.find');
+    Route::get('firm/find/{string}', 'FirmController@find')->name('firm.find.get');
+
+
     Route::resource('color', 'ColorController');
     Route::post('color/find/', 'ColorController@find')->name('color.find');
     Route::get('color/find/{string}', 'ColorController@find')->name('color.find.get');

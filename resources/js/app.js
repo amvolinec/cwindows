@@ -42,6 +42,7 @@ Vue.component('profiles', require('./components/ProfilesComponent.vue').default)
 Vue.component('colors', require('./components/ColorsComponent.vue').default);
 Vue.component('materials', require('./components/MaterialsComponent.vue').default);
 Vue.component('contract', require('./components/ContractComponent.vue').default);
+Vue.component('contact', require('./components/ContactComponent.vue').default);
 
 Vue.component('datetime', Datetime);
 Vue.component('v-select', vSelect);
