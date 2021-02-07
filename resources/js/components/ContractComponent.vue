@@ -57,7 +57,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr v-if="contract.offer">
                     <th>Total Amount</th>
                     <td>
                         <input :disabled="true" v-model="contract.offer.total_with_vat" v-bind:class="passiveClass">
@@ -78,7 +78,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr v-if="contract.offer">
                     <th>Margin (Sales Profit)</th>
                     <td>
                         <input :disabled="true" v-model="contract.offer.sales_profit" v-bind:class="passiveClass">

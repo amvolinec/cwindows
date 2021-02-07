@@ -165,6 +165,13 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 });
 
 Route::middleware(['web', 'auth', 'super-admin'])->group(function () {
+    Route::get('w-contact-index', function(){
+        return view('table.index');
+    })->name('contact.multi.index');
+
+    Route::get('w-contact', 'PersonController@index')->name('contact.multi.get');
+    Route::post('w-contact', 'PersonController@multiStore')->name('contact.multi.store');
+    Route::get('w-contact/add', 'PersonController@add')->name('contact.multi.add');
 
 });
 

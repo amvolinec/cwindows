@@ -43,6 +43,11 @@ Vue.component('colors', require('./components/ColorsComponent.vue').default);
 Vue.component('materials', require('./components/MaterialsComponent.vue').default);
 Vue.component('contract', require('./components/ContractComponent.vue').default);
 Vue.component('contact', require('./components/ContactComponent.vue').default);
+Vue.component('w-table', require('./components/TableComponent.vue').default);
+Vue.component('w-contact', require('./components/ContactComponent.vue').default);
+Vue.component('w-checkbox', require('./components/InputCheckBox.vue').default);
+Vue.component('w-input', require('./components/InputText.vue').default);
+Vue.component('w-pagination', require('./components/PaginateComponent.vue').default);
 
 Vue.component('datetime', Datetime);
 Vue.component('v-select', vSelect);

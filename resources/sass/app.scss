@@ -57,15 +57,17 @@
 }
 
 .stage {color: #fafafa; text-align: center; padding: 4px; border-radius: 4px;}
-.stage.first { background: #aaabbc;};
-.stage.enquiry { background: #8b8982;};
-.stage.proposal { background: #aab4b3;};
-.stage.negotiation { background: #373f47;};
-.stage.contract { background: #c3dbd9;};
-.stage.manufacturing { background: #006a4e;};
-.stage.completed { background: #6dacaa;};
-.stage.lost { background: #ff82a9;};
-.stage.canceled { background: #ffc0be;};
+.stage.enquiry { background: #aaabbc;};
+.stage.proposal { background: #8b8982;};
+.stage.negotiations { background: #aab4b3;};
+.stage.hot { background: #373f47;};
+.stage.agreement { background: #c3dbc6;};
+.stage.preparation { background: #006a4e;};
+.stage.manufacturing { background: #6dacaa;};
+.stage.transportation { background: #ff82a9;};
+.stage.installation { background: #ffc0be;};
+.stage.semifinished { background: #fff9be;};
+.stage.finished { background: #beffc5;};
 
 .popup-window.full {
     width: calc(100% - 40px);
