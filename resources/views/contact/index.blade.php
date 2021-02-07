@@ -28,6 +28,7 @@
                                 <th scope="col">{{ __("Address") }}</th>
                                 <th scope="col">{{ __("Email") }}</th>
                                 <th scope="col">{{ __("City") }}</th>
+                                <th scope="col">{{ __("Company name") }}</th>
                                 <th scope="col">{{ __("Comment") }}</th>
 
                                 <th scope="col">{{ __('Actions') }}</th>
@@ -42,6 +43,7 @@
                                     <td>{{ $contact->address }}</td>
                                     <td>{{ $contact->email }}</td>
                                     <td>{{ $contact->city }}</td>
+                                    <td>{{ $contact->firm->name ?? '' }}</td>
                                     <td>{{ $contact->comment }}</td>
                                     <td>
                                     <td>
