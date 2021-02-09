@@ -171,6 +171,21 @@
                                             </div>
                                         </div>
 
+{{--                                        <div class="form-group row">--}}
+{{--                                            <label for="contact_type_id"--}}
+{{--                                                   class="col-md-4 col-form-label text-md-right">{{ __('Contact Type') }}</label>--}}
+
+{{--                                            <div class="col-md-6">--}}
+{{--                                                <select class="form-control select2" name="contact_type_id" id="contact_type_id">--}}
+{{--                                                    <option value="" disabled--}}
+{{--                                                            selected>{{ __('Select your option') }}</option>--}}
+{{--                                                    @foreach($contactTypes as $item)--}}
+{{--                                                        <option value="{{ $item->id }}"--}}
+{{--                                                                @if(isset($contact) && $item->id === $contact->firm_id) selected @endif>{{ $item->name }}</option>--}}
+{{--                                                    @endforeach--}}
+{{--                                                </select>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
 
                                         <div class="form-group row">
@@ -187,11 +202,11 @@
                                         </div>
                                     </form>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+        @endsection
 
         @section('scripts')
             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
