@@ -28,7 +28,6 @@
                                                    class="col-md-4 col-form-label text-md-right">{{ __('Code') }}</label>
                                             <div class="col-md-6">
                                                 <input id="code" type="text"
-                                                       class="form-control" id="exampleInputEmail1" a
                                                        placeholder="Enter code"
                                                        class="form-control @error('code') is-invalid @enderror"
                                                        name="code" value="{{ $contact->code ?? old('code') }}"
@@ -46,7 +45,6 @@
                                                    class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
                                             <div class="col-md-6">
                                                 <input id="name" type="text"
-                                                       class="form-control" id="exampleInputEmail1" a
                                                        placeholder="Enter name"
                                                        class="form-control @error('name') is-invalid @enderror"
                                                        name="name" value="{{ $contact->name ?? old('name') }}"
@@ -66,9 +64,8 @@
 
                                             <div class="col-md-6">
                                                 <input id="phone" type="text"
-                                                       class="form-control" id="exampleInputEmail1" a
                                                        placeholder="Enter phone number"
-                                                       class="form-control @error('name') is-invalid @enderror"
+                                                       class="form-control @error('phone') is-invalid @enderror"
                                                        name="phone" value="{{ $contact->phone ?? old('phone') }}"
                                                        autocomplete="phone">
 
@@ -86,10 +83,7 @@
 
                                             <div class="col-md-6">
                                                 <input id="address" type="text" class="form-control"
-                                                       id="exampleInputEmail1" a
                                                        placeholder="Enter address"
-
-                                                       accept=""
                                                        class="form-control @error('address') is-invalid @enderror"
                                                        name="address" value="{{ $contact->address ?? old('address') }}"
                                                        autocomplete="address">
@@ -107,8 +101,7 @@
                                                    class="col-md-4 col-form-label text-md-right"> {{ __('Email') }} </label>
 
                                             <div class="col-md-6">
-                                                <input id="email" type="text" class="form-control"
-                                                       id="exampleInputEmail1" a
+                                                <input id="email" type="text"
                                                        placeholder="Enter email"
                                                        class="form-control @error('email') is-invalid @enderror"
                                                        name="email" value="{{ $contact->email ?? old('email') }}"
@@ -127,8 +120,7 @@
                                                    class="col-md-4 col-form-label text-md-right">{{ __('City') }}</label>
 
                                             <div class="col-md-6">
-                                                <input id="city" type="text" class="form-control"
-                                                       id="exampleInputEmail1" a
+                                                <input id="city" type="text"
                                                        placeholder="Enter city"
                                                        class="form-control @error('city') is-invalid @enderror"
                                                        name="city" value="{{ $contact->city ?? old('city') }}"
@@ -163,6 +155,38 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group row">
+                                            <label for="firm_id"
+                                                   class="col-md-4 col-form-label text-md-right">{{ __('Firm') }}</label>
+
+                                            <div class="col-md-6">
+                                                <select class="form-control select2" name="firm_id" id="firm_id">
+                                                    <option value="" disabled
+                                                            selected>{{ __('Select your option') }}</option>
+                                                    @foreach($firms as $item)
+                                                        <option value="{{ $item->id }}"
+                                                                @if(isset($contact) && $item->id === $contact->firm_id) selected @endif>{{ $item->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+{{--                                        <div class="form-group row">--}}
+{{--                                            <label for="contact_type_id"--}}
+{{--                                                   class="col-md-4 col-form-label text-md-right">{{ __('Contact Type') }}</label>--}}
+
+{{--                                            <div class="col-md-6">--}}
+{{--                                                <select class="form-control select2" name="contact_type_id" id="contact_type_id">--}}
+{{--                                                    <option value="" disabled--}}
+{{--                                                            selected>{{ __('Select your option') }}</option>--}}
+{{--                                                    @foreach($contactTypes as $item)--}}
+{{--                                                        <option value="{{ $item->id }}"--}}
+{{--                                                                @if(isset($contact) && $item->id === $contact->firm_id) selected @endif>{{ $item->name }}</option>--}}
+{{--                                                    @endforeach--}}
+{{--                                                </select>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+
 
                                         <div class="form-group row">
                                             <div class="col-md-4"></div>
@@ -177,12 +201,19 @@
                                             </div>
                                         </div>
                                     </form>
+
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        @endsection
+
+        @section('scripts')
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $('#firm_id').select2();
+                });
+            </script>
 @endsection
-
-
 

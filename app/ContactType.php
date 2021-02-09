@@ -14,7 +14,7 @@ class ContactType extends Model
 
     public function contacts()
     {
-        return $this->belongsTo('App\Contact');
+        return $this->hasMany('App\Contact','contact_type_id', 'id');
     }
 
 

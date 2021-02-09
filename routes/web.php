@@ -58,6 +58,12 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('contact/find/', 'ContactController@find')->name('contact.find');
     Route::get('contact/find/{string}', 'ContactController@find')->name('contact.find.get');
 
+    Route::resource('contact_type','ContactTypeController');
+    Route::post('create-contact_type', 'ContactTypeController@createContact')->name('contact_type.new');
+    Route::get('contact_type/get/{id}', 'ContactTypeController@get')->name('contact_type.get');
+    Route::post('contact_type/find/', 'ContactTypeController@find')->name('contact_type.find');
+    Route::get('contact_type/find/{string}', 'ContactTypeController@find')->name('contact_type.find.get');
+
     Route::resource('firm','FirmController');
     Route::post('create-firm', 'FirmController@createFirm')->name('firm.new');
     Route::get('firm/get/{id}', 'FirmController@get')->name('firm.get');

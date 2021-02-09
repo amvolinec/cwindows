@@ -36,7 +36,8 @@ class ClientController extends Controller
     public function create(Request $request)
     {
         return view('client.create', [
-            'companies' => Company::where('setting_id', $request->user()->setting_id)->get()]
+            'companies' => Company::where('setting_id', $request->user()->setting_id)->get()
+            ]
         );
     }
 
