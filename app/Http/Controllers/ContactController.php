@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 
+use App\ContactType;
 use App\Firm;
 use App\Http\Requests\ContactRequest;
 use App\Traits\SearchTrait;
@@ -20,7 +21,7 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
     {
@@ -34,9 +35,13 @@ class ContactController extends Controller
      */
     public function create(Request $request)
     {
+//        $contactTypes = ContactType::all();
+//        dd($contactTypes);
+
         return view('contact.create',
             [
-                'firms' => Firm::all()
+                'firms' => Firm::all(),
+                'contactTypes' => ContactType::all()
             ]);
     }
 
@@ -72,7 +77,11 @@ class ContactController extends Controller
      */
     public function edit(Contact $contact)
     {
-        return view('contact.create', ['contact' => $contact]);
+        return view('contact.create', [
+            'contact' => $contact,
+            'firms' => Firm::all()
+        ],
+        );
     }
 
     /**

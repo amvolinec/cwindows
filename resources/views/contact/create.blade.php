@@ -30,8 +30,9 @@
                                                 <input id="code" type="text"
                                                        placeholder="Enter code"
                                                        class="form-control @error('code') is-invalid @enderror"
-                                                       name="code" value="{{ $contact->code ?? old('code') }}"
-                                                       autocomplete="code">
+                                                       name="code"
+                                                       value="{{ $contact->code ?? old('code') }}"
+                                                       autocomplete="none">
 
                                                 @error('code')
                                                 <span class="invalid-feedback" role="alert">
@@ -171,22 +172,21 @@
                                             </div>
                                         </div>
 
-{{--                                        <div class="form-group row">--}}
-{{--                                            <label for="contact_type_id"--}}
-{{--                                                   class="col-md-4 col-form-label text-md-right">{{ __('Contact Type') }}</label>--}}
+                                        <div class="form-group row">
+                                            <label for="contact_type_id"
+                                                   class="col-md-4 col-form-label text-md-right">{{ __('Contact Type') }}</label>
 
-{{--                                            <div class="col-md-6">--}}
-{{--                                                <select class="form-control select2" name="contact_type_id" id="contact_type_id">--}}
-{{--                                                    <option value="" disabled--}}
-{{--                                                            selected>{{ __('Select your option') }}</option>--}}
-{{--                                                    @foreach($contactTypes as $item)--}}
-{{--                                                        <option value="{{ $item->id }}"--}}
-{{--                                                                @if(isset($contact) && $item->id === $contact->firm_id) selected @endif>{{ $item->name }}</option>--}}
-{{--                                                    @endforeach--}}
-{{--                                                </select>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-
+                                            <div class="col-md-6">
+                                                <select class="form-control select2" name="contact_type_id" id="contact_type_id">
+                                                    <option value="" disabled
+                                                            selected>{{ __('Select your option') }}</option>
+                                                    @foreach($contactTypes as $item)
+                                                        <option value="{{ $item->id }}"
+                                                                @if(isset($contact) && $item->id === $contact->contact_type_id) selected @endif>{{ $item->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
 
                                         <div class="form-group row">
                                             <div class="col-md-4"></div>
@@ -201,7 +201,6 @@
                                             </div>
                                         </div>
                                     </form>
-
                     </div>
                 </div>
             </div>
@@ -213,6 +212,7 @@
             <script>
                 $(document).ready(function () {
                     $('#firm_id').select2();
+                    $('#contact_type_id').select2();
                 });
             </script>
 @endsection
