@@ -4,17 +4,23 @@ namespace App\Http\Controllers;
 
 use App\ContactType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ContactTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
     {
-        return view('contacttype.index', ['contactTypes' => ContactType::with('contacts')->paginate(20)]);
+//        $contact_types = DB::table('contact_types')->get();
+//        $contact_types = ContactType::paginate(10);
+
+        return view('contacttype.index', [
+            'contactTypes' => ContactType::orderBy('id', 'desc')->paginate(15),
+        ]);
     }
 
     /**s
