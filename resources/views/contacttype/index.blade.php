@@ -34,8 +34,8 @@
                             @foreach($contactTypes AS $contactType)
                                 <tr>
                                     <td>{{ $contactType->name }}</td>
-                                    <td>{{ $contactType->title}}</td>
-                                    <td>{{ $contactType->description}}</td>
+                                    <td>{{ $contactType->title }}</td>
+                                    <td>{{ $contactType->description }}</td>
 
                                     <td>
                                     <td>

@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CurrencySeeder::class);
         $this->call(SettingSeeder::class);
         $this->call(PersonTypeSeeder::class);
-        $this->call(PermissionsSeeder::class);
+        $this->call(PermissionSeeder::class);
         $this->call(TypeSeeder::class);
         $this->call(CompanySeeder::class);
         $this->call(ManagerSeeder::class);

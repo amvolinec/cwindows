@@ -47,7 +47,6 @@ export default {
     methods: {
         getContacts() {
             axios.get(this.uri + '?page=' + this.currentPage).then(r => {
-                // this.currentPage = parseInt(r.data.from)
                 this.totalPages = parseInt(r.data.last_page)
                 this.items = r.data.data
             }).catch((error) => {
