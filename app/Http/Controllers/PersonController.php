@@ -19,10 +19,9 @@ class PersonController extends Controller
     {
         if ($request->ajax()) {
             return Person::orderBy('id', 'desc')->paginate(10);
-        } else {
-            $persons = Person::paginate(10);
-            return view('person.index', ['persons' => $persons]);
         }
+
+        return view('person.index', ['persons' => Person::paginate(10)]);
 
     }
 
@@ -104,9 +103,9 @@ class PersonController extends Controller
 
         if ($search !== false && !empty($search)) {
             return view('person.index', ['persons' => $data->paginate(10), 'search' => $string]);
-        } else {
-            return $data->take(10)->get();
         }
+
+        return $data->take(10)->get();
     }
 
     public function multiStore(Request $request)
@@ -117,7 +116,6 @@ class PersonController extends Controller
             try {
                 $person = Person::find($row['id']);
                 if(isset($row['deleted']) && $row['deleted'] === true){
-//                    Log::info('Deleted ' . $row['id']);
                     $person->delete();
                 } else {
                     unset($row['id']);
